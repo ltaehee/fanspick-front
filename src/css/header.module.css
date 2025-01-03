@@ -17,15 +17,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 24px;
   font-weight: bold;
-  color: #ffd700;
   cursor: pointer;
   text-decoration: none;
 }
 
 .logoImage {
-  height: 30px;
+  height: 40px;
 }
 
 .icons {

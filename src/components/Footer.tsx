@@ -25,7 +25,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
         </a>
         {/* 네비게이션 */}
         <nav className={styles.footerNav}>
-          <a href="#home">홈</a>
+          <a href="/">홈</a>
           <a href="#figures">인형</a>
           <a href="#digital">디지털</a>
           <a href="#stationery">문구</a>
