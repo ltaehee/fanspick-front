@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
+import Test from "./pages/Test.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
     ],
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
   {
     path: "/login",
