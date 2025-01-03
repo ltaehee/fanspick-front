@@ -5,6 +5,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
+import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
 import Test from "./pages/Test.tsx";
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/categoryFirst",
+    element: <CategoryFirst />,
   },
   {
     path: "*",
