@@ -1,5 +1,4 @@
 import styles from "../css/homepage.module.css";
-import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import dummyImg1 from "/images/product/dog1.jpg";
 import dummyImg2 from "/images/product/dog2.jpg";
@@ -41,8 +40,7 @@ const products: Product[] = [
 
 const HomePage = () => {
   return (
-    <>
-        <div className={styles.container}>
+    <div className={styles.container}>
       <h2>이달의 한정판 굿즈</h2>
       <h1>
         한정 수량으로 준비된 이달의 인기 굿즈!
@@ -60,9 +58,6 @@ const HomePage = () => {
         ))}
       </div>
     </div>
-    <Footer></Footer>
-    </>
-
   );
 };
 
