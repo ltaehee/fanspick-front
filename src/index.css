@@ -3,3 +3,17 @@
   margin: 0;
   letter-spacing: -1px;
 }
+
+html,
+body,
+#root {
+  height: 100%;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.content {
+  flex: 1;
+}
