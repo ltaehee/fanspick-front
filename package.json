@@ -27,5 +27,13 @@
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "https://kdt-gitlab.elice.io/react-node-track/class02/project2/team02/fanspick-user-front.git"
+  },
+  "author": "",
+  "license": "ISC"
 }
