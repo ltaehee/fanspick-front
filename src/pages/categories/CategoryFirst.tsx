@@ -1,4 +1,4 @@
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "../../components/product/ProductCard";
 import styles from "../../css/homepage.module.css";
 import dummyImg1 from "/images/product/dog1.jpg";
 import dummyImg2 from "/images/product/dog2.jpg";
