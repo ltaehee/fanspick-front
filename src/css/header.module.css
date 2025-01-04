@@ -1,66 +1,99 @@
 .header {
-  background-color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background-color: #ffd700;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .headerContent {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
 }
 
 .logoImage {
-  height: 40px;
+    height: 50px;
+}
+
+.logoText {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}
+
+.headerNav {
+    display: flex;
+    align-items: center;
+}
+
+.navList {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+
+.navLink {
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    padding: 5px 10px;
+}
+
+.active, .navLink:hover {
+    color: black;
+    font-weight: 900;
+    padding: 5px 10px;
+    text-underline-offset: 5px;
 }
 
 .icons {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .icon {
-  height: 24px;
-  cursor: pointer;
+    height: 24px;
+    cursor: pointer;
 }
 
-.profileContainer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.icon:hover {
+    transform: scale(1.1); 
 }
 
 .profileIcon {
-  height: 35px;
-  width: 35px;
-  border-radius: 50%;
-  object-fit: cover;
-  cursor: pointer;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
-.logoutButton {
-  background-color: #ffd700;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
+.profileIcon:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+    transform: scale(1.1); 
 }
 
-.logoutButton:hover {
-  background-color: #f2f2f2;
+.loginText, .logoutText {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+.loginText:hover, .logoutText:hover {
+    transform: scale(1.1); 
 }

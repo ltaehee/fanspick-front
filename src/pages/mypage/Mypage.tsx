@@ -1,4 +1,4 @@
-import userProfile from '../../../public/icons/User Thumb.png';
+import userProfile from '../../../public/icons/user_icon.png';
 import { ChangeEvent, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from '../../styles/mypage.module.css';
