@@ -8,6 +8,7 @@ import Layout from "./components/Layout.tsx";
 import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
 import Test from "./pages/Test.tsx";
 import Mypage from "./pages/mypage/Mypage.tsx";
+import MypageCart from "./pages/mypage/MypageCart.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: '/mypage',
         element: <Mypage />,
+      },
+      {
+        path: '/cart',
+        element: <MypageCart />,
       },
     ],
   },

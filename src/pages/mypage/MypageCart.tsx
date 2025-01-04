@@ -1,0 +1,38 @@
+import { useState } from "react";
+import styles from '../../css/mypage/mypage.module.css';
+import cartStyles from '../../css/mypage/mypageCart.module.css';
+import noticeImg from '../../../public/icons/alert-circle.png';
+
+const MypageCart = () => {
+    const [cart, setCart] = useState();
+
+
+    return(
+        <div>
+            {cart ? (
+                <div></div>
+            ) : (
+                <div>
+                    <div className={styles.h1_box}>
+                        <h1 className={styles.h1}>마이페이지</h1>
+                    </div>
+                    <div className={styles.button_box}>
+                        <button className={styles.buttons}>프로필 수정</button>
+                        <button className={styles.buttons}>주문내역</button>
+                        <button className={styles.buttons}>등록한 리뷰</button>
+                        <button className={styles.buttons}>장바구니</button>
+                        <button className={styles.buttons}>즐겨찾기</button>
+                    </div>
+                    <div className={cartStyles.none_wrap}>
+                        <img src={noticeImg} className={cartStyles.alertImg}/>
+                        <p className={cartStyles.p1}>장바구니에 담긴 상품이 없습니다.</p>
+                        <p className={cartStyles.p2}>마음에 드는 상품을 담아보세요!</p>
+                        <button>계속 쇼핑하기</button>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default MypageCart;
