@@ -19,6 +19,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
+      {
+        path: '/mypage',
+        element: <Mypage />,
+      },
     ],
   },
   {
@@ -32,10 +36,6 @@ const router = createBrowserRouter([
   {
     path: "/categoryFirst",
     element: <CategoryFirst />,
-  },
-  {
-    path: '/mypage',
-    element: <Mypage />,
   },
   {
     path: "*",
