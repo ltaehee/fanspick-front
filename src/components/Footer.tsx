@@ -23,15 +23,10 @@ const Footer: FC<FooterProps> = ({ className }) => {
         <a href="/" className={styles.footerLogo}>
           <img src={footerLogo} alt="Footer Logo" className={styles.logoImage} />
         </a>
-        {/* 네비게이션 */}
-        <nav className={styles.footerNav}>
-          <a href="/">홈</a>
-          <a href="#figures">인형</a>
-          <a href="#digital">디지털</a>
-          <a href="#stationery">문구</a>
-          <a href="#lifestyle">생활</a>
-          <a href="#faq" className={styles.bold}>FAQ</a>
-        </nav>
+        {/* 저작권 */}
+        <div className={styles.footerCopyright}>
+          FansPick © 2025. All rights reserved.
+        </div>
         {/* 소셜 미디어 */}
         <div className={styles.footerSocial}>
           <a href="#youtubve">
@@ -50,10 +45,6 @@ const Footer: FC<FooterProps> = ({ className }) => {
             <img src={linkedinIcon} alt="LinkedIn" className={styles.socialIcon} />
           </a>
         </div>
-      </div>
-      {/* 저작권 */}
-      <div className={styles.footerCopyright}>
-        CompanyName © 202X. All rights reserved.
       </div>
     </footer>
   );
