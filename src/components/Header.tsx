@@ -4,7 +4,7 @@ import api from '../utils/api';
 import styles from '../css/header.module.css';
 import noticeIcon from '../../public/icons/notice.png';
 import cartIcon from '../../public/icons/cart_icon.png';
-import defaultProfile from '../../public/icons/gust_icon.png';
+import defaultProfile from '../../public/icons/user_icon.png';
 import fanspickLogo from '../../public/icons/footer_logo.png';
 
 interface User {
