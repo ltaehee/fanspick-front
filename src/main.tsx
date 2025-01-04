@@ -5,6 +5,8 @@ import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
+import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
+import Test from "./pages/Test.tsx";
 import Mypage from "./pages/mypage/Mypage.tsx";
 
 const router = createBrowserRouter([
@@ -17,15 +19,23 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
-      {
-        path: '/mypage',
-        element: <Mypage />,
-      }
     ],
+  },
+  {
+    path: "/test",
+    element: <Test />,
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/categoryFirst",
+    element: <CategoryFirst />,
+  },
+  {
+    path: '/mypage',
+    element: <Mypage />,
   },
   {
     path: "*",
