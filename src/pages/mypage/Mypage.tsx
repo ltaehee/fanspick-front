@@ -5,6 +5,8 @@ import styles from '../../styles/mypage.module.css';
 import { passwordPattern, emailPattern } from '../../consts/patterns';
 import DaumPostcode, { Address } from 'react-daum-postcode';
 import Modal from 'react-modal';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 
 interface User {
@@ -111,6 +113,7 @@ const Mypage = () => {
     
     return(
         <div className={styles.total}>
+            <Header />
             <div className={styles.h1_box}>
                 <h1 className={styles.h1}>마이페이지</h1>
             </div>
@@ -169,6 +172,7 @@ const Mypage = () => {
                     <button onClick={handleClickOpen} className={styles.modal_button}>X</button>
                 </Modal>
             )}
+            <Footer/>
         </div>
     )
 }
