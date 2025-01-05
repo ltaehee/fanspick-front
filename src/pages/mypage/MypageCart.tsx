@@ -2,6 +2,9 @@ import { useState } from "react";
 import styles from '../../css/mypage/mypage.module.css';
 import cartStyles from '../../css/mypage/mypageCart.module.css';
 import noticeImg from '../../../public/icons/alert-circle.png';
+import ProductTableHeader from "../../components/productTable/ProductTableHeader";
+import ProductTableHeaderMenu from "../../components/productTable/ProductTableHeaderMenu";
+import ProductTableMenu from "../../components/productTable/ProductTableMenu";
 
 const MypageCart = () => {
     const [cart, setCart] = useState();
@@ -9,7 +12,16 @@ const MypageCart = () => {
 
     return(
         <div>
-            {cart ? (
+            <ProductTableHeader >
+                <ProductTableHeaderMenu menu='상품정보'/>
+                <ProductTableHeaderMenu menu='판매 금액'/>
+                <ProductTableHeaderMenu menu='수량'/>
+            </ProductTableHeader>
+            <ProductTableMenu >
+                <ProductTableMenu.Quantity />
+                
+            </ProductTableMenu>
+            {/* {cart ? (
                 <div></div>
             ) : (
                 <div>
@@ -30,7 +42,7 @@ const MypageCart = () => {
                         <button>계속 쇼핑하기</button>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     )
 }
