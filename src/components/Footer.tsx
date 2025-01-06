@@ -1,11 +1,9 @@
 import { FC, useMemo } from "react"
 import styles from "../css/footer.module.css"
-// import footerLogo from "../../public/icons/footer_logo.png"
-// import youtubeIcon from "../../public/icons/youtube.png"
-import facebookIcon from "../../public/icons/facebook.png"
-import twitterIcon from "../../public/icons/twitter.png"
-import instagramIcon from "../../public/icons/instagram.png"
-import linkedinIcon from "../../public/icons/linkedin.png"
+import facebookIcon from "/icons/facebook.png"
+import twitterIcon from "/icons/twitter.png"
+import instagramIcon from "/icons/instagram.png"
+import linkedinIcon from "/icons/linkedin.png"
 
 interface FooterProps {
   className?: string;
@@ -19,19 +17,12 @@ const Footer: FC<FooterProps> = ({ className }) => {
   return (
     <footer className={footerCls}>
       <div className={styles.footerContent}>
-        {/* 로고 */}
-        {/* <a href="/" className={styles.footerLogo}>
-          <img src={footerLogo} alt="Footer Logo" className={styles.logoImage} />
-        </a> */}
         {/* 저작권 */}
         <div className={styles.footerCopyright}>
           FansPick © 2025. All rights reserved.
         </div>
         {/* 소셜 미디어 */}
         <div className={styles.footerSocial}>
-          {/* <a href="#youtubve">
-            <img src={youtubeIcon} alt="Youtube" className={styles.socialIcon} />
-          </a> */}
           <a href="#linkedin">
             <img src={linkedinIcon} alt="LinkedIn" className={styles.socialIcon} />
           </a>
