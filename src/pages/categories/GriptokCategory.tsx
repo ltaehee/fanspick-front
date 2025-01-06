@@ -41,7 +41,6 @@ const products: Product[] = [
 const GriptokCategory = () => {
   return (
     <div className={styles.container}>
-      <h2>이달의 한정판 굿즈</h2>
       <h1>그립톡 카테고리</h1>
       <div className={styles.productListWrap}>
         {products.map((product) => (
