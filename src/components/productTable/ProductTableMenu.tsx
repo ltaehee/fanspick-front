@@ -1,7 +1,7 @@
 import { ChangeEvent, createContext, Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 import ProductQuantity from "./ProductQuantity";
-import ProductCheckBox from "./productCheckBox";
+import ProductCheckBox from "./ProductCheckBox";
 import styles from '../../css/productTable/productTableMenu.module.css';
 
 interface TableMenu {
