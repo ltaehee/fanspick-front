@@ -1,4 +1,4 @@
-import styles from "../../../css/product.module.css";
+import styles from "../../../css/product/product.module.css";
 
 /* const mockProducts = [
   {

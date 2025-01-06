@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from '../../css/mypage/mypage.module.css';
-import cartStyles from '../../css/mypage/mypageCart.module.css';
-import tableStyles from '../../css/productTable/productTable.module.css';
+import cartStyles from '../../../css/mypage/mypageCart.module.css';
+import tableStyles from '../../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from "../../../components/productTable/ProductTableHeader";
 import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
@@ -13,19 +13,20 @@ const MypageCart = () => {
 
 
     return(
-        <div>
+        <div className={cartStyles.content_wrap}>
             <div>
                 <ProductTableHeader className={tableStyles.Header_wrap}>
-                    <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu}/>
+                    <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
                     <ProductTableHeaderMenu menu='판매 금액' className={tableStyles.Header_menu} />
                     <ProductTableHeaderMenu menu='수량' className={tableStyles.Header_menu}/>
+                    <ProductTableHeaderMenu menu='' className={tableStyles.Header_menu} />
                 </ProductTableHeader>
                 <ProductTableMenu >
                     <ProductTableMenu.Quantity />
                 </ProductTableMenu>
             </div>
-            <div>
-                <button>구매하기</button>
+            <div className={cartStyles.button_box}>
+                <button className={cartStyles.button}>구매하기</button>
             </div>
             {/* {cart ? (
                 <div></div>
