@@ -47,10 +47,18 @@
     font-size: 14px;
 }
 
-.signupButton {
+.checkboxLabel>span{
+    color: red;
+}
+
+.signupButton, .modalButton {
     background-color: #ffd700;
     color: #000;
     border: none;
+}
+
+.modalButton {
+    margin-top: 20px;
 }
 
 .loginPrompt {

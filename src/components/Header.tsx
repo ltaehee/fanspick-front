@@ -20,10 +20,10 @@ const Header = () => {
 
   const Menu = [
     { label: "홈", path: "/" },
-    { label: "인형", path: "/doll-category" },
-    { label: "디지털", path: "/digital-category" },
+    { label: "그립톡", path: "/griptok-category" },
+    { label: "의류", path: "/clothing-category" },
     { label: "문구", path: "/stationery-category" },
-    { label: "생활", path: "/lifestyle-category" },
+    { label: "케이스", path: "/case-category" },
   ];
 
   const fetchUser = async () => {
