@@ -14,35 +14,35 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    title: "인형 1",
+    title: "그립톡 1",
     price: "10,000원",
     imageUrl: dummyImg1,
   },
   {
     id: 2,
-    title: "인형 2",
+    title: "그립톡 2",
     price: "20,000원",
     imageUrl: dummyImg2,
   },
   {
     id: 3,
-    title: "인형 3",
+    title: "그립톡 3",
     price: "30,000원",
     imageUrl: dummyImg3,
   },
   {
     id: 4,
-    title: "인형 4",
+    title: "그립톡 4",
     price: "15,000원",
     imageUrl: dummyImg1,
   },
 ];
 
-const LifestyleCategory = () => {
+const GriptokCategory = () => {
   return (
     <div className={styles.container}>
       <h2>이달의 한정판 굿즈</h2>
-      <h1>생활 카테고리</h1>
+      <h1>그립톡 카테고리</h1>
       <div className={styles.productListWrap}>
         {products.map((product) => (
           <ProductCard
@@ -57,4 +57,4 @@ const LifestyleCategory = () => {
   );
 };
 
-export default LifestyleCategory;
+export default GriptokCategory;

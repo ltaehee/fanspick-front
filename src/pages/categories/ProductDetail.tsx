@@ -5,6 +5,7 @@ import dummyImg3 from "/images/product/dogDetail1.png";
 import { Button, Tabs } from "ys-project-ui";
 import { useState } from "react";
 import ProductCount from "../../components/product/ProductCount";
+import ReviewBox from "../../components/review/ReviewBox";
 
 const mockProduct = {
   id: 1,
@@ -44,7 +45,7 @@ const ProductDetail = () => {
           <h1 className={styles.productTitle}>{mockProduct.title}</h1>
           <p className={styles.productPrice}>{mockProduct.price}</p>
           <p className={styles.productDescription}>{mockProduct.description}</p>
-          <ProductCount initialCount={1} />
+          <ProductCount />
           <Button label="구매하기" className={styles.buyButton} />
           <div className={styles.secondBtnWrap}>
             <Button label="장바구니" />
@@ -87,7 +88,11 @@ const ProductDetail = () => {
             alt="상품 상세 이미지"
           />
         </Tabs.Pannel>
-        <Tabs.Pannel className={styles.tabsPannel}>리뷰입니다~~</Tabs.Pannel>
+        <Tabs.Pannel className={styles.tabsPannel}>
+          <div className={styles.reviewListWrap}>
+            <ReviewBox />
+          </div>
+        </Tabs.Pannel>
         <Tabs.Pannel className={styles.tabsPannel}>
           문의사항은 임시로 넣어놨습니다~~
         </Tabs.Pannel>
