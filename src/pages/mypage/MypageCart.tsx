@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from '../../css/mypage/mypage.module.css';
-import cartStyles from '../../css/mypage/mypageCart.module.css';
-import noticeImg from '../../../public/icons/alert-circle.png';
+import styles from '/css/mypage/mypage.module.css';
+import cartStyles from '/css/mypage/mypageCart.module.css';
+import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from "../../components/productTable/ProductTableHeader";
 import ProductTableHeaderMenu from "../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../components/productTable/ProductTableMenu";
