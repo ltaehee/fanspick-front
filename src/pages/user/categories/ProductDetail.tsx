@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import styles from "../../css/product/productDetail.module.css";
+import styles from "../../../css/product/productDetail.module.css";
 import dummyImg2 from "/images/product/dog2.jpg";
 import dummyImg3 from "/images/product/dogDetail1.png";
 import { Button, Tabs } from "ys-project-ui";
 import { useState } from "react";
-import ProductCount from "../../components/product/ProductCount";
-import ReviewBox from "../../components/review/ReviewBox";
+import ProductCount from "../../../components/product/ProductCount";
+import ReviewBox from "../../../components/review/ReviewBox";
 
 const mockProduct = {
   id: 1,
