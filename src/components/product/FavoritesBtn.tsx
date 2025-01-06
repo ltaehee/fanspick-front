@@ -8,7 +8,8 @@ const FavoritesBtn: SVGIconProps = (props) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   // 좋아요 상태 토글 함수
-  const toggleFavorite = () => {
+  const toggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation(); /* 버튼 눌러도 페이지 이동안하게 */
     setIsFavorite(!isFavorite);
   };
 

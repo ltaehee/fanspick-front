@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styles from "../../css/homepage.module.css";
+import styles from "../../css/product/product.module.css";
 import FavoritesBtn from "./FavoritesBtn";
 
 interface ProductCardProps {
@@ -15,8 +15,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    navigate(`/product`);
+  };
+
   return (
-    <div className={styles.productCard} onClick={() => navigate(`/product`)}>
+    <div className={styles.productCard} onClick={handleCardClick}>
       <div className={styles.imgBox}>
         <img src={imageUrl} alt="상품 이미지" className={styles.productImage} />
         <FavoritesBtn className={styles.favoritImage} />
