@@ -152,7 +152,7 @@ function Signup() {
                             className={styles.checkbox}
                         />
                         <Input.Label htmlFor="terms" className={styles.checkboxLabel}>
-                            약관에 동의합니다.
+                            약관에 동의합니다. <span>(필수)</span>
                         </Input.Label>
                     </Input.Box>
                     <span onClick={openModal} className={styles.termsLink}>
@@ -186,7 +186,15 @@ function Signup() {
                 borderRadius={8}
             >
                 <Terms />
-                <Modal.Button onClick={closeModal}>닫기</Modal.Button>
+                <Modal.Button
+                    onClick={() => {
+                        setIsTermsChecked(true); 
+                        closeModal(); 
+                    }}
+                    className={styles.modalButton}
+                >
+                    약관 동의하기
+                </Modal.Button>
             </Modal>
         </div>
     );
