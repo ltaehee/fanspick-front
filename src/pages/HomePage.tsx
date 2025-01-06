@@ -11,7 +11,7 @@ interface Product {
   price: string;
 }
 
-const products: Product[] = [
+export const products: Product[] = [
   {
     id: 1,
     title: "상품 1",
@@ -35,6 +35,18 @@ const products: Product[] = [
     title: "상품 4",
     price: "15,000원",
     imageUrl: dummyImg1,
+  },
+  {
+    id: 5,
+    title: "상품 4",
+    price: "15,000원",
+    imageUrl: dummyImg2,
+  },
+  {
+    id: 6,
+    title: "상품 4",
+    price: "15,000원",
+    imageUrl: dummyImg3,
   },
 ];
 
