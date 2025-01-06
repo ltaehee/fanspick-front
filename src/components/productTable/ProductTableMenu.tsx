@@ -54,12 +54,13 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
 
 
     // 수량 빼기
-    const handleDown = () => { 
+    const handleDown = () => {  
         if(isQuantity === 0) {
             return;
         }else{
             setIsQuantity((prev) => (prev - 1));
         }
+
     }
 
 
