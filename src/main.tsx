@@ -5,10 +5,14 @@ import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
-import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
 import Test from "./pages/Test.tsx";
 import Mypage from "./pages/mypage/Mypage.tsx";
 import MypageCart from "./pages/mypage/MypageCart.tsx";
+import DollCategory from "./pages/categories/DollCategory.tsx";
+import DigitalCategory from "./pages/categories/DigitalCategory.tsx";
+import StationeryCategory from "./pages/categories/StationeryCategory.tsx";
+import LifestyleCategory from "./pages/categories/LifestyleCategory.tsx";
+import Product from "./pages/categories/Product.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,12 +25,32 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/mypage',
+        path: "/mypage",
         element: <Mypage />,
       },
       {
-        path: '/cart',
+        path: "/cart",
         element: <MypageCart />,
+      },
+      {
+        path: "/doll-category",
+        element: <DollCategory />,
+      },
+      {
+        path: "/digital-category",
+        element: <DigitalCategory />,
+      },
+      {
+        path: "/stationery-category",
+        element: <StationeryCategory />,
+      },
+      {
+        path: "/lifestyle-category",
+        element: <LifestyleCategory />,
+      },
+      {
+        path: "/product",
+        element: <Product />,
       },
     ],
   },
@@ -37,10 +61,6 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/categoryFirst",
-    element: <CategoryFirst />,
   },
   {
     path: "*",
