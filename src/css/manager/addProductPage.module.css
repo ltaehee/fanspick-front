@@ -30,7 +30,7 @@
 
 .addProductInfo {
   position: relative;
-  width: fit-content;
+  width: 100%;
   margin: 3px auto 20px auto;
 }
 
