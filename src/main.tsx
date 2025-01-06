@@ -9,13 +9,13 @@ import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
 import Mypage from "./pages/user/mypage/Mypage.tsx";
 import MypageCart from "./pages/user/mypage/MypageCart.tsx";
-import DollCategory from "./pages/user/categories/DollCategory.tsx";
-import DigitalCategory from "./pages/user/categories/DigitalCategory.tsx";
 import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
-import LifestyleCategory from "./pages/user/categories/LifestyleCategory.tsx";
 import ProductDetail from "./pages/user/categories/ProductDetail.tsx";
 import MainPage from "./pages/manager/MainPage.tsx";
 import AddProductPage from "./pages/manager/AddProductPage.tsx";
+import CaseCategory from "./pages/user/categories/CaseCategory.tsx";
+import GriptokCategory from "./pages/user/categories/GriptokCategory.tsx";
+import ClothingCategory from "./pages/user/categories/ClothingCategory.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,20 +52,20 @@ const router = createBrowserRouter([
         element: <MypageCart />,
       },
       {
-        path: "/doll-category",
-        element: <DollCategory />,
+        path: "/griptok-category",
+        element: <GriptokCategory />,
       },
       {
-        path: "/digital-category",
-        element: <DigitalCategory />,
+        path: "/clothing-category",
+        element: <ClothingCategory />,
       },
       {
         path: "/stationery-category",
         element: <StationeryCategory />,
       },
       {
-        path: "/lifestyle-category",
-        element: <LifestyleCategory />,
+        path: "/case-category",
+        element: <CaseCategory />,
       },
       {
         path: "/product",
