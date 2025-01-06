@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../utils/api';
 import styles from '../css/header.module.css';
-import noticeIcon from '../../public/icons/notice.png';
-import cartIcon from '../../public/icons/cart_icon.png';
-import defaultProfile from '../../public/icons/user_icon.png';
-import fanspickLogo from '../../public/icons/footer_logo.png';
+import noticeIcon from '/icons/notice.png';
+import cartIcon from '/icons/cart_icon.png';
+import defaultProfile from '/icons/user_icon.png';
+import fanspickLogo from '/icons/footer_logo.png';
 
 interface User {
     id: string;

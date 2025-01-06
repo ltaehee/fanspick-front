@@ -1,0 +1,89 @@
+.signupContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 32px;
+    margin: 60px 0 50px 0;
+    font-weight: bold;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 20px;
+}
+
+.inputRow {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.inputLabel {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: left; 
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    margin: 0 0 0 10px; 
+    vertical-align: middle;
+}
+
+.checkboxLabel {
+    font-size: 14px;
+}
+
+.signupButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffd700;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.signupButton:hover {
+    background-color: #ffd700;
+}
+
+.loginPrompt {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.loginLink, .termsLink {
+    font-size: 14px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}

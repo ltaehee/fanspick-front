@@ -9,6 +9,7 @@ import CategoryFirst from "./pages/categories/CategoryFirst.tsx";
 import Test from "./pages/Test.tsx";
 import Mypage from "./pages/mypage/Mypage.tsx";
 import MypageCart from "./pages/mypage/MypageCart.tsx";
+import Singup from "./pages/Signup.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,15 +29,19 @@ const router = createBrowserRouter([
         path: '/cart',
         element: <MypageCart />,
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Singup />,
+      },
     ],
   },
   {
     path: "/test",
     element: <Test />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
   },
   {
     path: "/categoryFirst",
