@@ -38,11 +38,11 @@ const products: Product[] = [
   },
 ];
 
-const CategoryFirst = () => {
+const LifestyleCategory = () => {
   return (
     <div className={styles.container}>
       <h2>이달의 한정판 굿즈</h2>
-      <h1>인형카테고리</h1>
+      <h1>생활 카테고리</h1>
       <div className={styles.productListWrap}>
         {products.map((product) => (
           <ProductCard
@@ -57,4 +57,4 @@ const CategoryFirst = () => {
   );
 };
 
-export default CategoryFirst;
+export default LifestyleCategory;

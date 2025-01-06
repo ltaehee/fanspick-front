@@ -1,6 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import styles from "../../css/homepage.module.css";
 import FavoritesBtn from "./FavoritesBtn";
-// import emptyHeart from "/icons/favoritIcon.svg";
 
 interface ProductCardProps {
   imageUrl: string;
@@ -13,15 +13,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   title,
   price,
 }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className={styles.productCard}>
+    <div className={styles.productCard} onClick={() => navigate(`/product`)}>
       <div className={styles.imgBox}>
         <img src={imageUrl} alt="상품 이미지" className={styles.productImage} />
-        {/* <img
-          src={emptyHeart}
-          alt="즐겨찾기 아이콘"
-          className={styles.favoritImage}
-        /> */}
         <FavoritesBtn className={styles.favoritImage} />
       </div>
       <div className={styles.cardTextBox}>
