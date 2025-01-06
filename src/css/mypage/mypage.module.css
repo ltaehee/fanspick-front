@@ -1,3 +1,5 @@
+
+
 .total {
     width: 1280;
     margin: 0 auto;
@@ -14,9 +16,6 @@
     text-align: left;
 }
 
-.h1{
-
-}
 
 .button_box{
     display: flex;
@@ -29,6 +28,7 @@
     border: solid 2px #FFE300;
     background-color: #ffffff;
     cursor: pointer;
+    font-size: 17px;
 }
 
 .buttons:hover{
@@ -81,9 +81,10 @@
     background-color: #ffffff;
     border: none;
     box-shadow: 0px 0px 5px 5px #F2F4F8;
-    padding: 10px 25px;
+    padding: 10px;
     cursor: pointer;
     border-radius: 10px;
+    font-size: 17px;
 }   
 
 
@@ -122,9 +123,10 @@
 }
 
 .edit_button {
-    padding: 10px 25px;
+    padding: 10px;
     border: none;
     background-color: #FFE300;
+    font-size: 17px;
 }
 
 .modal {
