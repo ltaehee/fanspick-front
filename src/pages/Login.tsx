@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'ys-project-ui'; 
 import styles from '../css/login.module.css'; 
@@ -15,8 +15,18 @@ function Login() {
     });
 
     const [showPassword, setShowPassword] = useState(false);
+    const [saveEmail, setSaveEmail] = useState(false); // 이메일 저장 상태
 
     const navigate = useNavigate();
+
+    // 로컬 스토리지에서 이메일 불러오기
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('savedEmail');
+        if (savedEmail) {
+            setUser((prev) => ({ ...prev, email: savedEmail }));
+            setSaveEmail(true); // 저장된 이메일이 있으면 체크박스도 체크
+        }
+    }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -27,12 +37,25 @@ function Login() {
         setShowPassword((prev) => !prev);
     };
 
+    const handleSaveEmailChange = () => {
+        setSaveEmail((prev) => !prev);
+        if (!saveEmail) {
+            localStorage.setItem('savedEmail', user.email); // 이메일 저장
+        } else {
+            localStorage.removeItem('savedEmail'); // 이메일 삭제
+        }
+    };
+
     const handleLogin = async () => {
         const { email, password } = user;
 
         if (!email.trim() || !password.trim()) {
             alert('이메일과 비밀번호를 입력해주세요.');
             return;
+        }
+
+        if (saveEmail) {
+            localStorage.setItem('savedEmail', email); // 로그인 시 이메일 저장
         }
 
         try {
@@ -93,6 +116,22 @@ function Login() {
                     />
                 </div>
 
+                {/* 이메일 저장 체크박스 추가 */}
+                <div className={styles.saveEmailRow}>
+                <Input.Box className={styles.inputBox}>
+                    <Input.Label htmlFor="saveEmail" className={styles.saveEmailLabel}>
+                        이메일 저장하기
+                    </Input.Label>
+                    <Input
+                        type="checkbox"
+                        id="saveEmail"
+                        className={styles.saveEmailCheckbox}
+                        checked={saveEmail}
+                        onChange={handleSaveEmailChange}
+                    />
+                </Input.Box>
+            </div>
+
                 <Button
                     type="button"
                     label="로그인"
@@ -101,7 +140,7 @@ function Login() {
                 />
             </form>
 
-            {/* 간편로그인 문구 추가 */}
+            {/* 간편로그인 문구 */}
             <div className={styles.simpleLogin}>
                 <hr className={styles.separator} />
                 <span className={styles.simpleLoginText}>간편로그인</span>
@@ -109,26 +148,27 @@ function Login() {
             </div>
 
             {/* 소셜 로그인 버튼 */}
+            {/* oauth 추가 예정 */}
             <div className={styles.socialLogin}>
-            <img 
-                src={googleLoginIcon} 
-                alt="Google Login" 
-                className={styles.socialButton} 
-                onClick={() => console.log('구글 로그인 클릭')} 
-            />
-            <img 
-                src={kakaoLoginIcon} 
-                alt="Kakao Login" 
-                className={styles.socialButton} 
-                onClick={() => console.log('카카오 로그인 클릭')} 
-            />
-            <img 
-                src={naverLoginIcon} 
-                alt="Naver Login" 
-                className={styles.socialButton} 
-                onClick={() => console.log('네이버 로그인 클릭')} 
-            />
-        </div>
+                <img 
+                    src={googleLoginIcon} 
+                    alt="Google Login" 
+                    className={styles.socialButton} 
+                    onClick={() => console.log('구글 로그인 클릭')} 
+                />
+                <img 
+                    src={kakaoLoginIcon} 
+                    alt="Kakao Login" 
+                    className={styles.socialButton} 
+                    onClick={() => console.log('카카오 로그인 클릭')} 
+                />
+                <img 
+                    src={naverLoginIcon} 
+                    alt="Naver Login" 
+                    className={styles.socialButton} 
+                    onClick={() => console.log('네이버 로그인 클릭')} 
+                />
+            </div>
 
             <p className={styles.signupPrompt}>
                 계정이 없으신가요?{' '}

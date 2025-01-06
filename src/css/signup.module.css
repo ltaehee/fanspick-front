@@ -36,19 +36,25 @@
     gap: 10px;
 }
 
+.checkboxBox {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+}
+
 .checkbox {
     width: 16px;
     height: 16px;
-    margin: 0 0 0 10px; 
-    vertical-align: middle;
+    margin: 0; 
 }
 
 .checkboxLabel {
     font-size: 14px;
+    color: #666;
 }
 
-.checkboxLabel>span{
-    color: red;
+.checkboxLabel > span {
+    color: red; 
 }
 
 .signupButton, .modalButton {
