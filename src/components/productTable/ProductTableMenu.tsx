@@ -3,6 +3,7 @@ import axios from "axios";
 import ProductQuantity from "./ProductQuantity";
 import ProductCheckBox from "./ProductCheckBox";
 import styles from '../../css/productTable/productTableMenu.module.css';
+import { useNavigate } from "react-router-dom";
 
 interface TableMenu {
     className?: string;
@@ -46,7 +47,8 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
     const {children, className} = props;
     const [productInCart,setProductInCart] = useState<Product[]>([]);
     const [isQuantity, setIsQuantity] = useState<number>(0);
-    const [isSelected, setIsSelected] = useState<string[]>([])
+    const [isSelected, setIsSelected] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     const getProductData = async() => {  //장바구니 목록 가져오기
         try{
@@ -138,7 +140,10 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
                     <div key={product.id} className={styles.content}>
                         <div className={styles.detail}>
                             <img src={product.image} className={styles.image}/>
-                            <p>{product.name}</p>
+                            <div>
+                                <p>{product.name}</p>
+                                <a onClick={() => navigate('/')}>리뷰 작성하기</a>
+                            </div>
                         </div>
                         <div className={styles.price}>
                             <p>{product.price}</p>
