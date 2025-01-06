@@ -4,6 +4,8 @@ import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui'; 
 import styles from '../css/signup.module.css'; 
 import Terms from '../components/Terms';
+import axios from 'axios'; 
+import api from '../utils/api';
 
 function Signup() {
     const [user, setUser] = useState({
@@ -52,27 +54,25 @@ function Signup() {
         }
 
         try {
-            const response = await fetch('/api/user/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password,
-                    termsAccepted: isTermsChecked,
-                }),
+            const response = await api.post('/oauth/signup', {
+                name,
+                email,
+                password,
+                termsAccepted: isTermsChecked,
             });
 
-            if (response.ok) {
+            if (response.status === 201) {
                 alert('회원가입 성공!');
                 navigate('/login');
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || '회원가입 실패. 다시 시도하세요.');
             }
-        } catch (err) {
-            console.error('회원가입 중 오류 발생:', err);
-            alert('오류가 발생했습니다. 다시 시도하세요.');
+        } catch (error) {
+            console.error('회원가입 실패:', error);
+        
+            if (axios.isAxiosError(error)) {
+                alert(error.response?.data?.message || '회원가입 실패. 다시 시도하세요.');
+            } else {
+                alert('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
+            }
         }
     };
 
@@ -82,6 +82,7 @@ function Signup() {
     const handleCheckboxChange = () => {
         setIsTermsChecked((prev) => !prev);
     };
+
 
     return (
         <div className={styles.signupContainer}>

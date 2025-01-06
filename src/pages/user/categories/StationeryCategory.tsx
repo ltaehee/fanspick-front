@@ -1,5 +1,5 @@
-import ProductCard from "../../components/product/ProductCard";
-import styles from "../../css/homepage.module.css";
+import ProductCard from "../../../components/product/ProductCard";
+import styles from "../../../css/homepage.module.css";
 import dummyImg1 from "/images/product/dog1.jpg";
 import dummyImg2 from "/images/product/dog2.jpg";
 import dummyImg3 from "/images/product/pet2.jpg";
@@ -38,11 +38,11 @@ const products: Product[] = [
   },
 ];
 
-const DollCategory = () => {
+const StationeryCategory = () => {
   return (
     <div className={styles.container}>
       <h2>이달의 한정판 굿즈</h2>
-      <h1>인형 카테고리</h1>
+      <h1>문구 카테고리</h1>
       <div className={styles.productListWrap}>
         {products.map((product) => (
           <ProductCard
@@ -57,4 +57,4 @@ const DollCategory = () => {
   );
 };
 
-export default DollCategory;
+export default StationeryCategory;

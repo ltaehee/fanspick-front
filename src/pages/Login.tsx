@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'ys-project-ui'; 
+import axios from 'axios'; 
+import api from '../utils/api';
 import styles from '../css/login.module.css'; 
 import showPasswordIcon from '/icons/showPassword.png';
 import hidePasswordIcon from '/icons/hidePassword.png';
@@ -58,24 +60,22 @@ function Login() {
         }
 
         try {
-            const response = await fetch('/api/user/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
+            const response = await api.post('/oauth/login', { email, password });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 alert('로그인 성공!');
                 navigate('/');
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || '로그인 실패. 다시 시도하세요.');
             }
-        } catch (err) {
-            console.error('로그인 중 오류 발생:', err);
-            alert('오류가 발생했습니다. 다시 시도하세요.');
+        } catch (error) {
+            console.error('로그인 실패:', error);
+            if (axios.isAxiosError(error)) {
+                alert(error.response?.data?.message || '로그인 실패. 다시 시도하세요.');
+            } else {
+                alert('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
+            }
         }
     };
+
 
     return (
         <div className={styles.loginContainer}>
