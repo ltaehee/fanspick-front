@@ -11,7 +11,6 @@ import ProductCheckBox from "../../../components/productTable/ProductCheckBox";
 const MypageCart = () => {
     const [cart, setCart] = useState();
 
-
     return(
         <div className={cartStyles.content_wrap}>
             <div>
