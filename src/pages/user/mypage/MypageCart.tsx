@@ -3,10 +3,10 @@ import styles from '../../css/mypage/mypage.module.css';
 import cartStyles from '../../css/mypage/mypageCart.module.css';
 import tableStyles from '../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
-import ProductTableHeader from "../../components/productTable/ProductTableHeader";
-import ProductTableHeaderMenu from "../../components/productTable/ProductTableHeaderMenu";
-import ProductTableMenu from "../../components/productTable/ProductTableMenu";
-import ProductCheckBox from "../../components/productTable/productCheckBox";
+import ProductTableHeader from "../../../components/productTable/ProductTableHeader";
+import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
+import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
+import ProductCheckBox from "../../../components/productTable/ProductCheckBox";
 
 const MypageCart = () => {
     const [cart, setCart] = useState();
