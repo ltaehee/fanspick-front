@@ -34,6 +34,7 @@ button{
   font-size: 17px;
   cursor: pointer;
   padding: 10px;
+  border: none;
 }
 
 input {
