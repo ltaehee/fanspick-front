@@ -9,6 +9,7 @@ import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
 import Mypage from "./pages/mypage/Mypage.tsx";
 import MypageCart from "./pages/mypage/MypageCart.tsx";
+import MypageBookmark from "./pages/mypage/MypageBookmark.tsx";
 import DollCategory from "./pages/categories/DollCategory.tsx";
 import DigitalCategory from "./pages/categories/DigitalCategory.tsx";
 import StationeryCategory from "./pages/categories/StationeryCategory.tsx";
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <MypageCart />,
+      },
+      {
+        path:'/bookmark',
+        element: <MypageBookmark />,
       },
       {
         path: "/doll-category",
