@@ -2,6 +2,7 @@ import { ChangeEvent, createContext, Dispatch, FC, ReactNode, SetStateAction, us
 import axios from "axios";
 import ProductQuantity from "./ProductQuantity";
 import ProductCheckBox from "./productCheckBox";
+import styles from '../../css/productTable/productTableMenu.module.css';
 
 interface TableMenu {
     className?: string;
@@ -89,22 +90,65 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
         setIsSelected((prev) => isChecked ? [...prev, productId] : prev.filter((id) => id !== productId));
     }
 
+    const handleSelectAll = () => {
+        if(isSelected.length === cart.length) {
+            setIsSelected([]);
+        } else {
+            setIsSelected(cart.map((product) => product.id));
+        }
+    }
+
+    const handleDeleteSelected = () => {
+        setCart((prevcart) => prevcart.filter((product) => !isSelected.includes(product.id)));
+    }
+
     //장바구니 아이템 삭제 버튼
     const handleDeleteItem = (productId: string) => {
         setProductInCart((prev) => prev.filter((product) => product.id !== productId));
     }
 
 
+    //예시 데이터
+    const [cart, setCart] = useState([
+        {
+            id: "1",
+            name: "상품 A",
+            price: "10,000원",
+            image: "/images/productA.jpg",
+        },
+        {
+            id: "2",
+            name: "상품 B",
+            price: "20,000원",
+            image: "/images/productB.jpg",
+        },
+        {
+            id: "3",
+            name: "상품 C",
+            price: "30,000원",
+            image: "/images/productC.jpg",
+        },
+    ]);
+
+
     return(
         <TableMenuContext.Provider value={{isQuantity, setIsQuantity,handleDown, handleUp, isSelected, setIsSelected, handleCheckBoxChange, handleDeleteItem}}>
-            <div>
-                {productInCart.map((product) => (
-                    <div key={product.id}>
-                        <img src={product.image} className={className}/>
-                        <p>{product.name}</p>
-                        <p>{product.price}</p>
-                        <ProductCheckBox productId={product.id}/>
-                        {children}
+            <div className={styles.content_wrap}>
+                {cart.map((product) => (
+                    <div key={product.id} className={styles.content}>
+                        <div className={styles.detail}>
+                            <img src={product.image} className={styles.image}/>
+                            <p>{product.name}</p>
+                        </div>
+                        <div className={styles.price}>
+                            <p>{product.price}</p>
+                        </div>
+                        <div className={styles.children}>
+                            {children}
+                        </div>
+                        <div className={styles.checkbox}>
+                            <ProductCheckBox productId={product.id}/>
+                        </div>
                     </div>
                 ))}
             </div>

@@ -1,3 +1,11 @@
+.content_wrap {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 1080px;
+    margin: 0 auto;
+}
+
 .none_wrap {
     display: flex;
     flex-direction: column;
@@ -29,4 +37,18 @@
     color: #FFE300;
     border: none;
     border-radius: 5px;
+}
+
+.button_box{
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+}
+
+.button {
+    border: none;
+    background-color: #000;
+    padding: 10px;
+    color: #ffd700;
+    width: 150px;
 }
