@@ -11,7 +11,7 @@
   text-align: center;
 }
 .container h2 {
-  margin-top: 4rem;
+  margin-top: 2rem;
   font-size: 18px;
   color: #001d6c;
 }
@@ -22,11 +22,17 @@
 }
 
 .productListWrap {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
   width: 100%;
   padding: 0 1rem;
-  justify-content: space-between;
   margin-top: 50px;
+}
+@media (max-width: 1024px) {
+  .productListWrap {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* productCard 컴포넌트 스타일 */
