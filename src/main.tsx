@@ -7,14 +7,13 @@ import Singup from "./pages/Signup.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
-import Mypage from "./pages/mypage/Mypage.tsx";
-import MypageCart from "./pages/mypage/MypageCart.tsx";
-import MypageBookmark from "./pages/mypage/MypageBookmark.tsx";
-import DollCategory from "./pages/categories/DollCategory.tsx";
-import DigitalCategory from "./pages/categories/DigitalCategory.tsx";
-import StationeryCategory from "./pages/categories/StationeryCategory.tsx";
-import LifestyleCategory from "./pages/categories/LifestyleCategory.tsx";
-import Product from "./pages/categories/Product.tsx";
+import Mypage from "./pages/user/mypage/Mypage.tsx";
+import MypageCart from "./pages/user/mypage/MypageCart.tsx";
+import DollCategory from "./pages/user/categories/DollCategory.tsx";
+import DigitalCategory from "./pages/user/categories/DigitalCategory.tsx";
+import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
+import LifestyleCategory from "./pages/user/categories/LifestyleCategory.tsx";
+import Product from "./pages/user/categories/Product.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,10 +40,6 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <MypageCart />,
-      },
-      {
-        path:'/bookmark',
-        element: <MypageBookmark />,
       },
       {
         path: "/doll-category",

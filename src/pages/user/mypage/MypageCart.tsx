@@ -7,27 +7,25 @@ import ProductTableHeader from "../../components/productTable/ProductTableHeader
 import ProductTableHeaderMenu from "../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../components/productTable/ProductTableMenu";
 import ProductCheckBox from "../../components/productTable/productCheckBox";
-import { Button } from "ys-project-ui";
 
 const MypageCart = () => {
     const [cart, setCart] = useState();
 
 
     return(
-        <div className={cartStyles.content_wrap}>
-            <div className={cartStyles.Table_wrap}>
+        <div>
+            <div>
                 <ProductTableHeader className={tableStyles.Header_wrap}>
-                    <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
+                    <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu}/>
                     <ProductTableHeaderMenu menu='판매 금액' className={tableStyles.Header_menu} />
                     <ProductTableHeaderMenu menu='수량' className={tableStyles.Header_menu}/>
-                    <ProductTableHeaderMenu menu='' className={tableStyles.Header_menu}/>
                 </ProductTableHeader>
                 <ProductTableMenu >
                     <ProductTableMenu.Quantity />
                 </ProductTableMenu>
             </div>
-            <div className={cartStyles.button_box}>
-                <Button label={'구매하기'} className={cartStyles.button}/>
+            <div>
+                <button>구매하기</button>
             </div>
             {/* {cart ? (
                 <div></div>
