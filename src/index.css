@@ -27,3 +27,23 @@ body,
   flex: 1;
   margin-top: 120px;
 }
+
+button{
+  width: 100%;
+  border-radius: 5px;
+  font-size: 17px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+Label {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: left;
+}
