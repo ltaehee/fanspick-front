@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui'; 
 import styles from '../css/signup.module.css'; 
+import Terms from '../components/Terms';
 
 function Signup() {
     const [user, setUser] = useState({
@@ -84,7 +85,7 @@ function Signup() {
 
     return (
         <div className={styles.signupContainer}>
-            <h2 className={styles.title}>회원가입</h2>
+            <h1 className={styles.title}>회원가입</h1>
             <form className={styles.form}>
                 <div className={styles.inputGroup}>
                     <Input.Box className={styles.inputRow}>
@@ -184,10 +185,7 @@ function Signup() {
                 padding={20}
                 borderRadius={8}
             >
-                <h2>이용 약관</h2>
-                <p>
-                    약관은 회원가입 시 필수로 동의해야 합니다.
-                </p>
+                <Terms />
                 <Modal.Button onClick={closeModal}>닫기</Modal.Button>
             </Modal>
         </div>
