@@ -1,6 +1,5 @@
 import { ChangeEvent, MouseEvent, useRef, useState } from "react";
-import styles from "../css/addProductPage.module.css";
-import plus from "/Images/plus.png";
+import styles from "../../css/manager/addProductPage.module.css";
 import { Button, ImageUpload, Input } from "ys-project-ui";
 import { AxiosError } from "axios";
 // import { api } from "../utils/api";
@@ -209,7 +208,6 @@ const AddProductPage = () => {
                 <div className={styles.addProductPhotoDiv}>
                   <img
                     className={styles.addProductPhotoImg}
-                    src={plus}
                     alt="기본 이미지 클릭해서 이미지 선택"
                     onClick={handleClickDefaultImage}
                   />
@@ -298,7 +296,6 @@ const AddProductPage = () => {
                 <div className={styles.addProductPhotoDiv}>
                   <img
                     className={styles.addProductPhotoDetailDefaultImg}
-                    src={plus}
                     alt="기본 이미지 클릭해서 이미지 선택"
                     onClick={handleClickDefaultDetailImage}
                   />

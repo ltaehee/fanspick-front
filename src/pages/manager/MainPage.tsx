@@ -1,5 +1,5 @@
 import { Button, Popover, Tabs } from "ys-project-ui";
-import styles from "../css/mainPage.module.css";
+import styles from "../../css/manager/mainPage.module.css";
 import { useState } from "react";
 const MainPage = () => {
   const [activeTab, setActiveTab] = useState(0);
