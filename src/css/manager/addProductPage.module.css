@@ -1,0 +1,160 @@
+.body {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.main {
+  padding: 121px 461px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  margin: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #ffacac;
+}
+
+.addProduct {
+  max-width: 1024px;
+  padding-bottom: 40px;
+  margin: 0 auto;
+}
+
+.addProductInfo {
+  position: relative;
+  width: fit-content;
+  margin: 3px auto 20px auto;
+}
+
+.addProductPhoto {
+  display: flex;
+  flex-direction: column;
+}
+
+.addProductPhotoImg {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.addProductPhotoImg:hover {
+  background-color: #727f88;
+}
+
+.addProductPhotoDiv {
+  display: flex;
+  justify-content: center;
+}
+.addProductPhotoDetailDefaultImg {
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+.addProductPhotoDetailDefaultImg:hover {
+  background-color: #727f88;
+}
+.addProductImgContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.addProductImgContainer > div {
+  position: relative;
+}
+.addProductDetailImgContainer > div {
+  position: relative;
+}
+.addProductPhotoDetailImg {
+  width: 900px;
+  cursor: pointer;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 204px;
+  height: 204px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.overlayDetail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: 2000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.addProductImgContainer > div:hover .overlay {
+  opacity: 1;
+}
+.addProductDetailImgContainer > div:hover .overlayDetail {
+  opacity: 1;
+}
+
+.deleteImg {
+  font-size: 60px;
+  color: white;
+}
+
+.addProductPhotoLabel {
+  color: #727f88;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.addProductPhotoInput {
+  display: none;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: black;
+  width: 100%;
+  margin: 40px 0;
+}
+.input {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+.inputCategory {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.input label {
+  font-size: 16px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.submitButton {
+  background-color: #ffacac;
+}

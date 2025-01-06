@@ -18,7 +18,7 @@
     "react-dom": "^18.3.1",
     "react-modal": "^3.16.3",
     "react-router-dom": "^7.1.1",
-    "ys-project-ui": "^0.0.8"
+    "ys-project-ui": "^0.0.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

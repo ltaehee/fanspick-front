@@ -14,6 +14,8 @@ import DigitalCategory from "./pages/user/categories/DigitalCategory.tsx";
 import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
 import LifestyleCategory from "./pages/user/categories/LifestyleCategory.tsx";
 import ProductDetail from "./pages/user/categories/ProductDetail.tsx";
+import MainPage from "./pages/manager/MainPage.tsx";
+import AddProductPage from "./pages/manager/AddProductPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <Mypage />,
+      },
+      {
+        path: "/main",
+        element: <MainPage />,
+      },
+      {
+        path: "/add-product",
+        element: <AddProductPage />,
       },
       {
         path: "/login",
