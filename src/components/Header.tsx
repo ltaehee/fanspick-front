@@ -6,6 +6,7 @@ import noticeIcon from '/icons/notice.png';
 import cartIcon from '/icons/cart_icon.png';
 import defaultProfile from '/icons/user_icon.png';
 import fanspickLogo from '/icons/footer_logo.png';
+import logoutIcon from '/icons/logout_icon.png';
 
 interface User {
   id: string;
@@ -118,6 +119,13 @@ const Header = () => {
                   className={styles.profileIcon}
                 />
               </a>
+              <a onClick={handleLogout} className={styles.logoutIcon}>
+                <img
+                src={logoutIcon}
+                alt="Logout"
+                className={styles.icon}
+                />
+            </a>
             </>
           ) : (
             <>
