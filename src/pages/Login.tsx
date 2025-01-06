@@ -15,16 +15,15 @@ function Login() {
     });
 
     const [showPassword, setShowPassword] = useState(false);
-    const [saveEmail, setSaveEmail] = useState(false); // 이메일 저장 상태
+    const [saveEmail, setSaveEmail] = useState(false);
 
     const navigate = useNavigate();
 
-    // 로컬 스토리지에서 이메일 불러오기
     useEffect(() => {
         const savedEmail = localStorage.getItem('savedEmail');
         if (savedEmail) {
             setUser((prev) => ({ ...prev, email: savedEmail }));
-            setSaveEmail(true); // 저장된 이메일이 있으면 체크박스도 체크
+            setSaveEmail(true); 
         }
     }, []);
 
@@ -40,9 +39,9 @@ function Login() {
     const handleSaveEmailChange = () => {
         setSaveEmail((prev) => !prev);
         if (!saveEmail) {
-            localStorage.setItem('savedEmail', user.email); // 이메일 저장
+            localStorage.setItem('savedEmail', user.email); 
         } else {
-            localStorage.removeItem('savedEmail'); // 이메일 삭제
+            localStorage.removeItem('savedEmail'); 
         }
     };
 
@@ -55,7 +54,7 @@ function Login() {
         }
 
         if (saveEmail) {
-            localStorage.setItem('savedEmail', email); // 로그인 시 이메일 저장
+            localStorage.setItem('savedEmail', email);
         }
 
         try {
@@ -140,14 +139,12 @@ function Login() {
                 />
             </form>
 
-            {/* 간편로그인 문구 */}
             <div className={styles.simpleLogin}>
                 <hr className={styles.separator} />
                 <span className={styles.simpleLoginText}>간편로그인</span>
                 <hr className={styles.separator} />
             </div>
 
-            {/* 소셜 로그인 버튼 */}
             {/* oauth 추가 예정 */}
             <div className={styles.socialLogin}>
                 <img 
