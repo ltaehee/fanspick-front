@@ -1,5 +1,5 @@
-import ProductCard from "../../components/product/ProductCard";
-import styles from "../../css/homepage.module.css";
+import ProductCard from "../../../components/product/ProductCard";
+import styles from "../../../css/homepage.module.css";
 import dummyImg1 from "/images/product/dog1.jpg";
 import dummyImg2 from "/images/product/dog2.jpg";
 import dummyImg3 from "/images/product/pet2.jpg";
@@ -14,34 +14,34 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    title: "그립톡 1",
+    title: "의류 1",
     price: "10,000원",
     imageUrl: dummyImg1,
   },
   {
     id: 2,
-    title: "그립톡 2",
+    title: "의류 2",
     price: "20,000원",
     imageUrl: dummyImg2,
   },
   {
     id: 3,
-    title: "그립톡 3",
+    title: "의류 3",
     price: "30,000원",
     imageUrl: dummyImg3,
   },
   {
     id: 4,
-    title: "그립톡 4",
+    title: "의류 4",
     price: "15,000원",
     imageUrl: dummyImg1,
   },
 ];
 
-const GriptokCategory = () => {
+const ClothingCategory = () => {
   return (
     <div className={styles.container}>
-      <h1>그립톡 카테고리</h1>
+      <h1>의류 카테고리</h1>
       <div className={styles.productListWrap}>
         {products.map((product) => (
           <ProductCard
@@ -56,4 +56,4 @@ const GriptokCategory = () => {
   );
 };
 
-export default GriptokCategory;
+export default ClothingCategory;

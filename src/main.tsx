@@ -7,14 +7,13 @@ import Singup from "./pages/Signup.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
-import Mypage from "./pages/mypage/Mypage.tsx";
-import MypageCart from "./pages/mypage/MypageCart.tsx";
-import MypageBookmark from "./pages/mypage/MypageBookmark.tsx";
-import StationeryCategory from "./pages/categories/StationeryCategory.tsx";
-import ProductDetail from "./pages/categories/ProductDetail.tsx";
-import GriptokCategory from "./pages/categories/GriptokCategory.tsx";
-import ClothingCategory from "./pages/categories/ClothingCategory.tsx";
-import CaseCategory from "./pages/categories/CaseCategory.tsx";
+import Mypage from "./pages/user/mypage/Mypage.tsx";
+import MypageCart from "./pages/user/mypage/MypageCart.tsx";
+import DollCategory from "./pages/user/categories/DollCategory.tsx";
+import DigitalCategory from "./pages/user/categories/DigitalCategory.tsx";
+import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
+import LifestyleCategory from "./pages/user/categories/LifestyleCategory.tsx";
+import Product from "./pages/user/categories/Product.tsx";
 
 const router = createBrowserRouter([
   {
@@ -43,28 +42,24 @@ const router = createBrowserRouter([
         element: <MypageCart />,
       },
       {
-        path: "/bookmark",
-        element: <MypageBookmark />,
+        path: "/doll-category",
+        element: <DollCategory />,
       },
       {
-        path: "/griptok-category",
-        element: <GriptokCategory />,
-      },
-      {
-        path: "/clothing-category",
-        element: <ClothingCategory />,
+        path: "/digital-category",
+        element: <DigitalCategory />,
       },
       {
         path: "/stationery-category",
         element: <StationeryCategory />,
       },
       {
-        path: "/case-category",
-        element: <CaseCategory />,
+        path: "/lifestyle-category",
+        element: <LifestyleCategory />,
       },
       {
         path: "/product",
-        element: <ProductDetail />,
+        element: <Product />,
       },
     ],
   },
