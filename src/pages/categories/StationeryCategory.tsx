@@ -14,25 +14,25 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    title: "인형 1",
+    title: "문구 1",
     price: "10,000원",
     imageUrl: dummyImg1,
   },
   {
     id: 2,
-    title: "인형 2",
+    title: "문구 2",
     price: "20,000원",
     imageUrl: dummyImg2,
   },
   {
     id: 3,
-    title: "인형 3",
+    title: "문구 3",
     price: "30,000원",
     imageUrl: dummyImg3,
   },
   {
     id: 4,
-    title: "인형 4",
+    title: "문구 4",
     price: "15,000원",
     imageUrl: dummyImg1,
   },

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "../../css/product/productDetail.module.css";
 
-const ProductCount = ({ initialCount = 1 }: { initialCount?: number }) => {
-  const [count, setCount] = useState(initialCount);
+const ProductCount = () => {
+  const [count, setCount] = useState(1);
 
   const increaseCount = () => setCount((prev) => prev + 1);
   const decreaseCount = () => setCount((prev) => (prev > 1 ? prev - 1 : prev));
