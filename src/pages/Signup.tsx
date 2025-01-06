@@ -144,6 +144,9 @@ function Signup() {
                 {/* 약관 동의 및 약관 보기 */}
                 <div className={styles.checkboxRow}>
                     <Input.Box className={styles.checkboxBox}>
+                        <Input.Label htmlFor="terms" className={styles.checkboxLabel}>
+                                약관에 동의합니다. <span>(필수)</span>
+                            </Input.Label>
                         <Input
                             type="checkbox"
                             id="terms"
@@ -151,9 +154,6 @@ function Signup() {
                             onChange={handleCheckboxChange}
                             className={styles.checkbox}
                         />
-                        <Input.Label htmlFor="terms" className={styles.checkboxLabel}>
-                            약관에 동의합니다. <span>(필수)</span>
-                        </Input.Label>
                     </Input.Box>
                     <span onClick={openModal} className={styles.termsLink}>
                         약관 보기
