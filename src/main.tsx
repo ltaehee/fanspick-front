@@ -14,7 +14,7 @@ import DollCategory from "./pages/categories/DollCategory.tsx";
 import DigitalCategory from "./pages/categories/DigitalCategory.tsx";
 import StationeryCategory from "./pages/categories/StationeryCategory.tsx";
 import LifestyleCategory from "./pages/categories/LifestyleCategory.tsx";
-import Product from "./pages/categories/Product.tsx";
+import ProductDetail from "./pages/categories/ProductDetail.tsx";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <MypageCart />,
       },
       {
-        path:'/bookmark',
+        path: "/bookmark",
         element: <MypageBookmark />,
       },
       {
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/product",
-        element: <Product />,
+        element: <ProductDetail />,
       },
     ],
   },
