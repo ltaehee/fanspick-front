@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import api from "../utils/api";
-import styles from "../css/header.module.css";
-import noticeIcon from "../../public/icons/notice.png";
-import cartIcon from "../../public/icons/cart_icon.png";
-import defaultProfile from "../../public/icons/user_icon.png";
-import fanspickLogo from "../../public/icons/footer_logo.png";
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import api from '../utils/api';
+import styles from '../css/header.module.css';
+import noticeIcon from '/icons/notice.png';
+import cartIcon from '/icons/cart_icon.png';
+import defaultProfile from '/icons/user_icon.png';
+import fanspickLogo from '/icons/footer_logo.png';
 
 interface User {
   id: string;
@@ -20,10 +20,10 @@ const Header = () => {
 
   const Menu = [
     { label: "홈", path: "/" },
-    { label: "인형", path: "/doll-category" },
-    { label: "디지털", path: "/digital-category" },
+    { label: "그립톡", path: "/griptok-category" },
+    { label: "의류", path: "/clothing-category" },
     { label: "문구", path: "/stationery-category" },
-    { label: "생활", path: "/lifestyle-category" },
+    { label: "케이스", path: "/case-category" },
   ];
 
   const fetchUser = async () => {

@@ -3,6 +3,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
+import Singup from "./pages/Signup.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
@@ -28,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/mypage",
         element: <Mypage />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Singup />,
       },
       {
         path: "/cart",
