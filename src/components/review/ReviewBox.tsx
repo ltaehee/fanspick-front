@@ -8,6 +8,7 @@ interface ReviewBoxProps {
   productName: string;
   productImg: string;
   reviewContent: string;
+  className?: string;
 }
 
 const ReviewBox: React.FC<ReviewBoxProps> = ({
@@ -16,6 +17,7 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
   productName,
   productImg,
   reviewContent,
+  className = "",
 }) => {
   const [rating, setRating] = useState(0);
 
@@ -23,9 +25,13 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
     setRating(index);
   };
   return (
-    <div className={styles.reviewBox}>
+    <div className={`${styles.reviewBox} ${className}`}>
       <div className={styles.profileBox}>
-        <img src={profileImg} alt="" className={styles.profileImg} />
+        <img
+          src={profileImg}
+          alt="프로필 이미지"
+          className={styles.profileImg}
+        />
         <div className={styles.profileInfoBox}>
           <p>{username}</p>
           <div className={styles.starBox}>
