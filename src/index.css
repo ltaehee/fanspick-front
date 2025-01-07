@@ -44,6 +44,12 @@ input {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none;
+}
 
 Label {
   font-weight: bold;
