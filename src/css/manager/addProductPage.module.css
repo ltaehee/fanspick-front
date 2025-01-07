@@ -97,10 +97,10 @@
 }
 .overlay {
   position: absolute;
-  top: 0;
+  top: 15px;
   left: 0;
-  width: 204px;
-  height: 204px;
+  width: 201px;
+  height: 203px;
   display: flex;
   justify-content: center;
   align-items: center;

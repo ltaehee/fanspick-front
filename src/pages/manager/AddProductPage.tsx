@@ -1,8 +1,9 @@
-import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import styles from "../../css/manager/addProductPage.module.css";
 import { Button, ImageUpload, Input } from "ys-project-ui";
 import { AxiosError } from "axios";
 import addImg from "/icons/addImg.png";
+import api from "../../utils/api";
 // import { api } from "../utils/api";
 
 interface CheckedCategory {
@@ -10,21 +11,22 @@ interface CheckedCategory {
   item: string;
 }
 
-const categories = [
-  { id: 1, item: "그립톡" },
-  { id: 2, item: "키링" },
-  { id: 3, item: "의류" },
-  { id: 4, item: "문구" },
-  { id: 5, item: "케이스" },
-];
+// const categories = [
+//   { id: 1, item: "그립톡" },
+//   { id: 2, item: "키링" },
+//   { id: 3, item: "의류" },
+//   { id: 4, item: "문구" },
+//   { id: 5, item: "케이스" },
+// ];
 
 const AddProductPage = () => {
+  const [categories, setCategories] = useState([]);
   const [productName, setproductName] = useState(""); // 상품이름
   const [productPrice, setproductPrice] = useState(""); // 상품가격
   const [productintroduce, setProductIntroduce] = useState(""); // 상품설명
   const [categoryCheckedList, setCategoryCheckedList] = useState<
     CheckedCategory[]
-  >([{ id: 0, item: "" }]);
+  >([]);
   const [imgUrl, setImgUrl] = useState<string>(""); // 상품이미지
   const [imgFile, setImgFile] = useState<File | null>(null); // 상품이미지파일
   const [detailImageFiles, setDetailImageFiles] = useState<File[]>([]); // 상세이미지 파일
@@ -32,7 +34,7 @@ const AddProductPage = () => {
   const imgRef = useRef<HTMLInputElement>(null);
   const imgDetailRef = useRef<HTMLInputElement>(null);
 
-  // console.log("상품이미지 ", imgUrl);
+  console.log("카테고리 ", categoryCheckedList);
   // console.log("상품상세이미지파일 ", detailImageFiles);
   // console.log("상품상세이미지 ", predetailViewUrls);
 
@@ -189,10 +191,7 @@ const AddProductPage = () => {
       alert("상품 설명을 등록해주세요");
       return false;
     }
-    if (
-      categoryCheckedList.length === 0 ||
-      categoryCheckedList.find((item) => item.id === 0)
-    ) {
+    if (categoryCheckedList.length === 0) {
       alert("카테고리를 등록해주세요");
       return false;
     }
@@ -215,7 +214,6 @@ const AddProductPage = () => {
         );
       }
       formData.append("category", JSON.stringify(categoryCheckedId));
-      formData.append("price", productPrice);
 
       // const response = await api.post("/product/add", formData);
       // console.log("response data ", response.data);
@@ -233,6 +231,22 @@ const AddProductPage = () => {
     }
   };
 
+  const getCategory = async () => {
+    try {
+      const response = await api.get("/manager/category");
+      if (response.status === 200) {
+        console.log("프론트 카테고리 가져오기 성공", response.data.data);
+        const category = response.data.data[0].name;
+        setCategories(category);
+        console.log(categories);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getCategory();
+  }, []);
   return (
     <>
       <div className={styles.body}>
@@ -319,21 +333,17 @@ const AddProductPage = () => {
             </div>
             <Input.Label>카테고리</Input.Label>
             <div className={styles.inputCategory}>
-              {categories.map((category) => (
-                <div key={category.id} className={styles.inputCategoryLabel}>
+              {categories.map((item, index) => (
+                <div key={index} className={styles.inputCategoryLabel}>
                   <Input
                     type="checkbox"
-                    id={category.item}
+                    id={item}
                     checked={categoryCheckedList.some(
-                      (prev) => prev.item === category.item
+                      (prev) => prev.item === item
                     )}
-                    onChange={(e) =>
-                      handleCheckedCategory(e, category.item, category.id)
-                    }
+                    onChange={(e) => handleCheckedCategory(e, item, index)}
                   />
-                  <Input.Label htmlFor={category.item}>
-                    {category.item}
-                  </Input.Label>
+                  <Input.Label htmlFor={item}>{item}</Input.Label>
                 </div>
               ))}
             </div>
