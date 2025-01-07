@@ -17,6 +17,7 @@ import CaseCategory from "./pages/user/categories/CaseCategory.tsx";
 import GriptokCategory from "./pages/user/categories/GriptokCategory.tsx";
 import ClothingCategory from "./pages/user/categories/ClothingCategory.tsx";
 import AddReviewPage from "./pages/user/review/AddReviewPage.tsx";
+import EditReviewPage from "./pages/user/review/EditReviewPage.tsx";
 import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path:'/add-review',
         element: <AddReviewPage />
+      },
+      {
+        path: "/edit-review",
+        element: <EditReviewPage />,
       },
       {
         path:'mypage-bookmark',

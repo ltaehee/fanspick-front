@@ -68,11 +68,6 @@
   margin-top: 30px;
 }
 
-.buyButton:hover {
-  /* background-color: #ffe300; */
-  /* color: black; */
-}
-
 .secondBtnWrap {
   display: flex;
   gap: 1rem;

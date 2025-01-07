@@ -4,46 +4,62 @@
 }
 
 .main {
-  padding: 121px 461px;
 }
 
 .buttonContainer {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .button {
-  margin: 5px;
   background-color: #ffffff;
   cursor: pointer;
+  border: 1px solid rgb(217, 217, 217);
 }
 
 .button:hover {
   background-color: #ffacac;
+  border: 1px solid transparent;
 }
 
 .addProduct {
-  max-width: 1024px;
-  padding-bottom: 40px;
-  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .addProductInfo {
   position: relative;
   width: 100%;
-  margin: 3px auto 20px auto;
 }
 
 .addProductPhoto {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
-
+/* 기본이미지 */
+.addProductPhotoPreviewImg {
+  width: 50px;
+  padding: 3rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 16px;
+}
+.addProductPhotoPreviewImg:hover {
+  border: 1px solid black;
+}
+/* 업로드시 이미지 */
 .addProductPhotoImg {
   width: 200px;
   height: 200px;
-  border: 1px solid black;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   cursor: pointer;
+  margin-top: 16px;
 }
 
 .addProductPhotoImg:hover {
@@ -52,12 +68,14 @@
 
 .addProductPhotoDiv {
   display: flex;
-  justify-content: center;
 }
 .addProductPhotoDetailDefaultImg {
   width: 200px;
   height: 200px;
   cursor: pointer;
+  margin-top: 11px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 .addProductPhotoDetailDefaultImg:hover {
   background-color: #727f88;
@@ -117,43 +135,42 @@
   color: white;
 }
 
-.addProductPhotoLabel {
-  color: #727f88;
-  font-size: 14px;
-  text-align: center;
-  margin-top: 12px;
-}
-
 .addProductPhotoInput {
   display: none;
 }
 
-.divider {
-  border: none;
-  height: 1px;
-  background-color: black;
-  width: 100%;
-  margin: 40px 0;
+.inputWrap {
+  display: flex;
+  gap: 2rem;
 }
 .input {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
 }
+.textarea {
+  margin-bottom: 1rem;
+}
+
 .inputCategory {
   display: flex;
-  flex-direction: column;
-  margin-top: 40px;
+  gap: 10px;
+  margin-top: 5px;
+}
+.inputCategoryLabel {
+  display: flex;
+  gap: 3px;
 }
 
 .input label {
   font-size: 16px;
+  margin: 16px 0 5px 0;
 }
 
 .buttonContainer {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin: 40px 0 16px 0;
 }
 .submitButton {
   background-color: #ffacac;
