@@ -6,6 +6,7 @@ import { passwordPattern, emailPattern } from '../../../consts/patterns';
 import DaumPostcode, { Address } from 'react-daum-postcode';
 import Modal from 'react-modal';
 import { Button, Input } from 'ys-project-ui';
+import MypageHeader from '../../../components/mypageHeader/MypageHeader';
 
 
 interface User {
@@ -112,7 +113,7 @@ const Mypage = () => {
     
     return(
         <div className={styles.total}>
-            <div className={styles.h1_box}>
+            {/* <div className={styles.h1_box}>
                 <h1 className={styles.h1}>마이페이지</h1>
             </div>
             <div className={styles.button_box}>
@@ -121,7 +122,8 @@ const Mypage = () => {
                 <Button className={styles.buttons} label='등록한 리뷰'/>
                 <Button className={styles.buttons} label='장바구니'/>
                 <Button className={styles.buttons} label='즐겨찾기'/>
-            </div>
+            </div> */}
+            <MypageHeader />
             <div className={styles.edit_box}>
                 <div className={styles.imgupload_box}>
                     <div className={styles.previewImg_box}>

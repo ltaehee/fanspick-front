@@ -2,8 +2,8 @@ import { ChangeEvent, createContext, Dispatch, FC, ReactNode, SetStateAction, us
 import axios from "axios";
 import ProductQuantity from "./ProductQuantity";
 import ProductCheckBox from "./ProductCheckBox";
-import styles from '../../css/productTable/productTableMenu.module.css';
-import { useNavigate } from "react-router-dom";
+import ProductDetail from "./ProductDetail";
+import ProductPrice from "./ProductPrice";
 
 interface TableMenu {
     className?: string;
@@ -12,6 +12,9 @@ interface TableMenu {
 
 interface TableMenuCompoundProps {
     Quantity: typeof ProductQuantity;
+    Detail: typeof ProductDetail;
+    Price: typeof ProductPrice;
+    CheckBox: typeof ProductCheckBox;
 }
 
 interface Product {
@@ -40,19 +43,18 @@ export const TableMenuContext = createContext<TableMenuContextProps>({
     handleDown: () => {},
     handleUp: () => {},
     handleCheckBoxChange: () => {},
-    handleDeleteItem: () => {}
-})
+    handleDeleteItem: () => {},
+});
 
 const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
     const {children, className} = props;
     const [productInCart,setProductInCart] = useState<Product[]>([]); //local에서 가져오는 장바구니에 담은 상품 
     const [isQuantity, setIsQuantity] = useState<number>(0);
     const [isSelected, setIsSelected] = useState<string[]>([]); // 장바구니에서 체크박스 선택한 아이템 배열
-    const navigate = useNavigate();
 
 
 
-    //장바구니 목록 가져오기
+    //아이템 목록 가져오기 ->localstorage에서 가져오는 걸로 수정하기
     const getProductData = async() => {  
         try{
             const response = await axios.get('/');
@@ -142,24 +144,15 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
 
     return(
         <TableMenuContext.Provider value={{isQuantity, setIsQuantity,handleDown, handleUp, isSelected, setIsSelected, handleCheckBoxChange, handleDeleteItem}}>
-            <div className={styles.content_wrap}>
-                {cart.map((product) => (
-                    <div key={product.id} className={styles.content}>
-                        
-                        
-                        <div className={styles.children}>
-                            {children}
-                        </div>
-                        <div className={styles.checkbox}>
-                            <ProductCheckBox productId={product.id}/>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            {children}
         </TableMenuContext.Provider>
     )
 }
 
 ProductTableMenu.Quantity = ProductQuantity;
+ProductTableMenu.Detail = ProductDetail;
+ProductTableMenu.Price = ProductPrice;
+ProductTableMenu.Quantity = ProductQuantity;
+ProductTableMenu.CheckBox = ProductCheckBox;
 
 export default ProductTableMenu;

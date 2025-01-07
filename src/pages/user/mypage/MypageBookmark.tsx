@@ -1,9 +1,10 @@
-import ProductQuantity from "../../../components/productTable/ProductQuantity";
+import MypageHeader from "../../../components/mypageHeader/MypageHeader";
+import styles from '../../../css/mypage/mypage.module.css';
 
 const MypageBookmark = () => {
     return(
-        <div>
-            <ProductQuantity />
+        <div className={styles.total}>
+            <MypageHeader />
         </div>
     )
 }
