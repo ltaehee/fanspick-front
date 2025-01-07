@@ -6,6 +6,7 @@ import { Button, Tabs } from "ys-project-ui";
 import { useState } from "react";
 import ProductCount from "../../../components/product/ProductCount";
 import ReviewBox from "../../../components/review/ReviewBox";
+import profileImg from "/icons/user_icon.png";
 
 const mockProduct = {
   id: 1,
@@ -16,6 +17,24 @@ const mockProduct = {
   imageUrl: dummyImg2,
   detailImage: dummyImg3,
 };
+
+const mockReviews = [
+  {
+    profileImg: profileImg,
+    username: "이 * 희",
+    productName: "강아지 그립톡",
+    productImg: dummyImg2,
+    reviewContent:
+      "그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!",
+  },
+  {
+    profileImg: profileImg,
+    username: "이 * 희",
+    productName: "고양이 그립톡",
+    productImg: dummyImg2,
+    reviewContent: "그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!",
+  },
+];
 
 const ProductDetail = () => {
   /* const { id } = useParams<{ id: string }>();
@@ -88,9 +107,18 @@ const ProductDetail = () => {
             alt="상품 상세 이미지"
           />
         </Tabs.Pannel>
-        <Tabs.Pannel className={styles.tabsPannel}>
+        <Tabs.Pannel>
           <div className={styles.reviewListWrap}>
-            <ReviewBox />
+            {mockReviews.map((review, index) => (
+              <ReviewBox
+                key={index}
+                profileImg={review.profileImg}
+                username={review.username}
+                productName={review.productName}
+                productImg={review.productImg}
+                reviewContent={review.reviewContent}
+              />
+            ))}
           </div>
         </Tabs.Pannel>
         <Tabs.Pannel className={styles.tabsPannel}>
