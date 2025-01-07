@@ -35,7 +35,7 @@ const MypageCart = () => {
                 </ProductTableHeader>
                 <ProductTableMenu >
                     <ProductDetail review='리뷰작성하기' onClick={() => navigate('/add-review')} productName='바나나'/>
-                    {/* <ProductTableMenu.Quantity /> */}
+                    <ProductTableMenu.Quantity quantity="수량"/>
                 </ProductTableMenu>
             </div>
             <div className={cartStyles.button_box}>
