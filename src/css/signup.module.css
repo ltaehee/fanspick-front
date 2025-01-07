@@ -79,3 +79,42 @@
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+
+.roleSelection {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 10px; 
+}
+
+.roleSelectionText {
+    font-size: 14px; 
+    color: #666; 
+    font-weight: bold; 
+}
+
+.separator {
+    flex: 1; 
+    border: none; 
+    height: 1px; 
+    background-color: #ddd; 
+}
+
+.roleBox {
+    display: flex;
+    align-items: center; 
+}
+
+.radio {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.roleBox label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    margin-right: 5px;
+}

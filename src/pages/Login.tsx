@@ -14,6 +14,10 @@ function Login() {
     const [user, setUser] = useState({
         email: '',
         password: '',
+        id: '',
+        name: '',
+        role: '',
+        profileImage: ''
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -63,8 +67,14 @@ function Login() {
             const response = await api.post('/oauth/login', { email, password });
 
             if (response.status === 200) {
-                alert('로그인 성공!');
-                navigate('/');
+                const userData = response.data.user;
+                setUser((prev) => ({
+                    ...prev,
+                    ...userData, 
+                }));
+                localStorage.setItem("user", JSON.stringify(userData)); 
+                console.log("로그인 성공, 사용자 데이터:", userData); 
+                navigate("/");
             }
         } catch (error) {
             console.error('로그인 실패:', error);
@@ -86,7 +96,7 @@ function Login() {
                     <Input
                         type="email"
                         name="email"
-                        value={user.email}
+                        value={user?.email || ''} 
                         onChange={handleInputChange}
                         className={styles.input}
                         placeholder="이메일을 입력해주세요"
@@ -117,19 +127,19 @@ function Login() {
 
                 {/* 이메일 저장 체크박스 추가 */}
                 <div className={styles.saveEmailRow}>
-                <Input.Box className={styles.inputBox}>
-                    <Input.Label htmlFor="saveEmail" className={styles.saveEmailLabel}>
-                        이메일 저장하기
-                    </Input.Label>
-                    <Input
-                        type="checkbox"
-                        id="saveEmail"
-                        className={styles.saveEmailCheckbox}
-                        checked={saveEmail}
-                        onChange={handleSaveEmailChange}
-                    />
-                </Input.Box>
-            </div>
+                    <Input.Box className={styles.inputBox}>
+                        <Input.Label htmlFor="saveEmail" className={styles.saveEmailLabel}>
+                            이메일 저장하기
+                        </Input.Label>
+                        <Input
+                            type="checkbox"
+                            id="saveEmail"
+                            className={styles.saveEmailCheckbox}
+                            checked={saveEmail || false} 
+                            onChange={handleSaveEmailChange}
+                        />
+                    </Input.Box>
+                </div>
 
                 <Button
                     type="button"
