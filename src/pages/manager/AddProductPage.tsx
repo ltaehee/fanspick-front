@@ -2,6 +2,7 @@ import { ChangeEvent, MouseEvent, useRef, useState } from "react";
 import styles from "../../css/manager/addProductPage.module.css";
 import { Button, ImageUpload, Input } from "ys-project-ui";
 import { AxiosError } from "axios";
+import addImg from "/icons/addImg.png";
 // import { api } from "../utils/api";
 
 interface CheckedCategory {
@@ -250,9 +251,10 @@ const AddProductPage = () => {
               {!imgUrl && (
                 <div className={styles.addProductPhotoDiv}>
                   <img
-                    className={styles.addProductPhotoImg}
-                    alt="기본 이미지 클릭해서 이미지 선택"
+                    className={styles.addProductPhotoPreviewImg}
+                    alt="기본 이미지"
                     onClick={handleClickDefaultImage}
+                    src={addImg}
                   />
                   <input
                     className={styles.addProductPhotoInput}
@@ -284,24 +286,25 @@ const AddProductPage = () => {
                 </div>
               )}
             </div>
-            <hr className={styles.divider}></hr>
-            <div className={styles.input}>
-              <label>상품이름</label>
-              <input
-                type="text"
-                placeholder="상품이름"
-                onChange={handleChangeName}
-                value={productName}
-              />
-            </div>
-            <div className={styles.input}>
-              <label>가격</label>
-              <input
-                type="text"
-                placeholder="가격"
-                onChange={handleChangePrice}
-                value={productPrice}
-              />
+            <div className={styles.inputWrap}>
+              <div className={styles.input}>
+                <label>상품이름</label>
+                <input
+                  type="text"
+                  placeholder="상품이름"
+                  onChange={handleChangeName}
+                  value={productName}
+                />
+              </div>
+              <div className={styles.input}>
+                <label>가격</label>
+                <input
+                  type="text"
+                  placeholder="가격"
+                  onChange={handleChangePrice}
+                  value={productPrice}
+                />
+              </div>
             </div>
             <div className={styles.input}>
               <label>상품설명</label>
@@ -311,12 +314,13 @@ const AddProductPage = () => {
                 rows={4}
                 onChange={handleChangeIntroduce}
                 value={productintroduce}
+                className={styles.textarea}
               />
             </div>
+            <Input.Label>카테고리</Input.Label>
             <div className={styles.inputCategory}>
-              <Input.Label>카테고리</Input.Label>
               {categories.map((category) => (
-                <div key={category.id}>
+                <div key={category.id} className={styles.inputCategoryLabel}>
                   <Input
                     type="checkbox"
                     id={category.item}
@@ -338,9 +342,10 @@ const AddProductPage = () => {
               {predetailViewUrls.length < 1 && (
                 <div className={styles.addProductPhotoDiv}>
                   <img
-                    className={styles.addProductPhotoDetailDefaultImg}
-                    alt="기본 이미지 클릭해서 이미지 선택"
+                    className={styles.addProductPhotoPreviewImg}
+                    alt="기본 이미지"
                     onClick={handleClickDefaultDetailImage}
+                    src={addImg}
                   />
                   <input
                     className={styles.addProductPhotoInput}
