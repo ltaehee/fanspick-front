@@ -104,6 +104,29 @@ const AddProductPage = () => {
         alert("숙소 이미지는 최대 3개까지 등록가능합니다.");
         return;
       }
+
+      filesArray.forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          // 파일을 읽은 후 실행할 코드를 정의
+          const image = new Image();
+          image.onload = () => {
+            const width = image.width;
+            // console.log(width);
+            if (width < 900) {
+              alert("이미지의 가로길이는 최소 900px 이상이어야 합니다. ");
+              setPreDetailViewUrls([]);
+              setDetailImageFiles([]);
+            }
+          };
+          if (e.target && typeof e.target.result === "string") {
+            image.src = e.target.result; // 이미지 객체가 파일 내용을 로드하게
+          }
+        };
+        reader.readAsDataURL(file); // 실제로 파일을 읽어 onload 실행
+      });
+
       setDetailImageFiles(newImageFiles);
 
       const newPreviewUrls = [...predetailViewUrls];
