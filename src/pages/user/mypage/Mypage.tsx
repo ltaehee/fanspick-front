@@ -5,6 +5,7 @@ import styles from '../../../css/mypage/mypage.module.css';
 import { passwordPattern, emailPattern } from '../../../consts/patterns';
 import DaumPostcode, { Address } from 'react-daum-postcode';
 import Modal from 'react-modal';
+import { Button, Input } from 'ys-project-ui';
 
 
 interface User {
@@ -115,11 +116,11 @@ const Mypage = () => {
                 <h1 className={styles.h1}>마이페이지</h1>
             </div>
             <div className={styles.button_box}>
-                <button className={styles.buttons}>프로필 수정</button>
-                <button className={styles.buttons}>주문내역</button>
-                <button className={styles.buttons}>등록한 리뷰</button>
-                <button className={styles.buttons}>장바구니</button>
-                <button className={styles.buttons}>즐겨찾기</button>
+                <Button className={styles.buttons} label='프로필 수정'/>
+                <Button className={styles.buttons} label='주문내역'/>
+                <Button className={styles.buttons} label='등록한 리뷰'/>
+                <Button className={styles.buttons} label='장바구니'/>
+                <Button className={styles.buttons} label='즐겨찾기'/>
             </div>
             <div className={styles.edit_box}>
                 <div className={styles.imgupload_box}>
@@ -128,45 +129,45 @@ const Mypage = () => {
                         <input type='file' ref={fileInputRef} onChange={handleChangeImg} className={styles.img_input}/>
                     </div>
                     <div className={styles.imgupload_button_box}>
-                        <button className={styles.imgupload_button} onClick={handleClickFile}>사진 업로드</button>
-                        <button className={styles.imgupload_button} onClick={handleDeleteImg}>사진 삭제</button>
+                        <Button className={styles.imgupload_button} onClick={handleClickFile} label='사진 업로드'/>
+                        <Button className={styles.imgupload_button} onClick={handleDeleteImg} label='사진 삭제'/>
                     </div>
                 </div>
                 <ul className={styles.ul}>
                     <li className={styles.li}>
                         <label>이름</label>
-                        <input placeholder='이름' name='name' value={user.name} onChange={handleChange} className={styles.ul_input}/>
+                        <Input placeholder='이름' name='name' value={user.name} onChange={handleChange} className={styles.ul_input}/>
                     </li>
                     <li className={styles.li}>
                         <label>이메일</label>
-                        <input placeholder='이메일' name='email' value={user.email} onChange={handleChange} className={styles.ul_input}/>
+                        <Input placeholder='이메일' name='email' value={user.email} onChange={handleChange} className={styles.ul_input}/>
                     </li>
                     <li className={styles.li}>
                         <label>비밀번호</label>
-                        <input placeholder='비밀번호' type='password' name='password' value={user.password} onChange={handleChange} className={styles.ul_input}/>
+                        <Input placeholder='비밀번호' type='password' name='password' value={user.password} onChange={handleChange} className={styles.ul_input}/>
                     </li>
                     <li className={styles.li}>
                         <label>주소</label>
                         <div className={styles.search_box}>
-                            <input className={styles.ul_input} placeholder='우편번호' name='zoneCode' value={address.zoneCode} onChange={handleChange} />
-                            <button className={styles.edit_button} onClick={handleClickOpen}>주소 검색</button>
+                            <Input className={styles.ul_input} placeholder='우편번호' name='zoneCode' value={address.zoneCode} onChange={handleChange} />
+                            <Button className={styles.edit_button} onClick={handleClickOpen} label='주소 검색'/>
                         </div>
                     </li>
                     <li className={styles.li}>
-                        <input className={styles.ul_input} placeholder='도로명 주소' name='roadAddress' value={address.roadAddress} onChange={handleChange}/>
+                        <Input className={styles.ul_input} placeholder='도로명 주소' name='roadAddress' value={address.roadAddress} onChange={handleChange}/>
                     </li>
                     <li className={styles.li}>
-                        <input className={styles.ul_input} placeholder='상세 주소' name='detailAddrss' value={address.detailAddress} onChange={handleChange}/>
+                        <Input className={styles.ul_input} placeholder='상세 주소' name='detailAddrss' value={address.detailAddress} onChange={handleChange}/>
                     </li>
                 </ul>
                 </div>
             <div className={styles.edit_button_box}>
-                <button onClick={handleSubmit} className={styles.edit_button}>회원정보 수정</button>
+                <Button onClick={handleSubmit} className={styles.edit_button} label='회원정보 수정'></Button>
             </div>
             {isOpen && (
                 <Modal isOpen={isOpen} onRequestClose={handleClickOpen} className={styles.modal}>
                     <DaumPostcode className={styles.daumpostcode} onComplete={handleDaumPost} autoClose/>
-                    <button onClick={handleClickOpen} className={styles.modal_button}>X</button>
+                    <Button onClick={handleClickOpen} className={styles.modal_button} label='X'></Button>
                 </Modal>
             )}
         </div>
