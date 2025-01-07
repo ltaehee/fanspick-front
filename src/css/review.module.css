@@ -1,4 +1,41 @@
 .reviewBox {
-  border: 2px solid blue;
   width: 100%;
+  border-bottom: 1px solid rgb(204, 204, 204);
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+.reviewBox:first-child {
+  padding-top: 0;
+}
+.profileBox {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.profileBox .profileImg {
+  width: 50px;
+}
+.profileInfoBox {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5px;
+}
+.starBox {
+  display: flex;
+}
+
+.productName {
+  padding: 7px 0;
+}
+
+.reviewImgBox {
+  display: flex;
+}
+.reviewImgBox img {
+  width: 100px;
+  border-radius: 10px;
+}
+
+.reviewContent {
+  padding-top: 7px;
 }
