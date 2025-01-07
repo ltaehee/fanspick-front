@@ -16,6 +16,7 @@ const ProductCheckBox = ({productId} : ProductCheckBoxProps) => {
     const handleClick = () => {
         handleDeleteItem(productId);
     }
+    
     return(
         <div className={styles. checkbox_wrap}>
             <input type="checkbox"
