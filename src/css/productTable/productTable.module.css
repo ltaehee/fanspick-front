@@ -93,3 +93,29 @@
 .checkbox {
     width: 90px;
 }
+
+.increase_wrap {
+    display: flex;
+    align-items: center;
+}
+
+.increase{
+    border: none;
+    background-color: #ffffff;
+    font-size: 16px;
+}
+
+.quantity_box {
+    display: flex;
+    align-items: center;
+}
+
+.deletebutton {
+    background-color: #ffffff;
+}
+
+.productcontent {
+    display: flex;
+    align-items: center;
+    width: 100px;
+}
