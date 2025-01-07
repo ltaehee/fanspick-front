@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui'; 
@@ -13,6 +13,7 @@ function Signup() {
         email: '',
         password: '',
         confirmPassword: '',
+        role: 'user',
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,13 +21,26 @@ function Signup() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            setUser(userData);
+        }
+    }, []);  
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUser((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setUser((prev) => ({ ...prev, role: value }));
+    };
+
     const handleSignup = async () => {
-        const { name, email, password, confirmPassword } = user;
+        const { name, email, password, confirmPassword, role } = user;
 
         if (!name.trim()) {
             alert('이름을 입력해주세요.');
@@ -58,6 +72,7 @@ function Signup() {
                 name,
                 email,
                 password,
+                role, 
                 termsAccepted: isTermsChecked,
             });
 
@@ -83,7 +98,6 @@ function Signup() {
         setIsTermsChecked((prev) => !prev);
     };
 
-
     return (
         <div className={styles.signupContainer}>
             <h1 className={styles.title}>회원가입</h1>
@@ -94,7 +108,7 @@ function Signup() {
                         <Input
                             type="text"
                             name="name"
-                            value={user.name}
+                            value={user.name || ""}
                             onChange={handleInputChange}
                             className={styles.input}
                             placeholder="이름을 입력해주세요"
@@ -142,12 +156,43 @@ function Signup() {
                     />
                 </Input.Box>
 
+                {/* 역할 선택 */}
+                <div className={styles.roleSelection}>
+                    <hr className={styles.separator} />
+                    <span className={styles.roleSelectionText}>회원 유형을 선택해주세요</span>
+                    <hr className={styles.separator} />
+                </div>
+                <div className={styles.roleSelection}>
+                    <Input.Box className={styles.roleBox}>
+                        <Input
+                            type="radio"
+                            name="role"
+                            value="user"
+                            checked={user.role === 'user'}
+                            onChange={handleRoleChange}
+                            className={styles.radio}
+                        />
+                        <Input.Label>사용자</Input.Label>
+                    </Input.Box>
+                    <Input.Box className={styles.roleBox}>
+                        <Input
+                            type="radio"
+                            name="role"
+                            value="manager"
+                            checked={user.role === 'manager'}
+                            onChange={handleRoleChange}
+                            className={styles.radio}
+                        />
+                        <Input.Label>사장님</Input.Label>
+                    </Input.Box>
+                </div>
+
                 {/* 약관 동의 및 약관 보기 */}
                 <div className={styles.checkboxRow}>
                     <Input.Box className={styles.checkboxBox}>
                         <Input.Label htmlFor="terms" className={styles.checkboxLabel}>
-                                약관에 동의합니다. <span>(필수)</span>
-                            </Input.Label>
+                            약관에 동의합니다. <span>(필수)</span>
+                        </Input.Label>
                         <Input
                             type="checkbox"
                             id="terms"
