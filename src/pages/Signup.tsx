@@ -80,9 +80,7 @@ function Signup() {
                 alert('회원가입 성공!');
                 navigate('/login');
             }
-        } catch (error) {
-            console.error('회원가입 실패:', error);
-        
+        } catch (error) { 
             if (axios.isAxiosError(error)) {
                 alert(error.response?.data?.message || '회원가입 실패. 다시 시도하세요.');
             } else {

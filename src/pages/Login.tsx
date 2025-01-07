@@ -9,6 +9,7 @@ import hidePasswordIcon from '/icons/hidePassword.png';
 import kakaoLoginIcon from '/icons/kakao_login.png';
 import googleLoginIcon from '/icons/google_login.png';
 import naverLoginIcon from '/icons/naver_login.png';
+import { useUserContext } from '../context/UserContext'; 
 
 function Login() {
     const [user, setUser] = useState({
@@ -23,6 +24,7 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [saveEmail, setSaveEmail] = useState(false);
 
+    const { updateUser } = useUserContext();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -68,16 +70,12 @@ function Login() {
 
             if (response.status === 200) {
                 const userData = response.data.user;
-                setUser((prev) => ({
-                    ...prev,
-                    ...userData, 
-                }));
+                updateUser(userData); 
                 localStorage.setItem("user", JSON.stringify(userData)); 
                 console.log("로그인 성공, 사용자 데이터:", userData); 
                 navigate("/");
             }
         } catch (error) {
-            console.error('로그인 실패:', error);
             if (axios.isAxiosError(error)) {
                 alert(error.response?.data?.message || '로그인 실패. 다시 시도하세요.');
             } else {
@@ -86,6 +84,10 @@ function Login() {
         }
     };
 
+    // 간편로그인
+    const handleClickOauth = (loginType: string) => {
+        window.location.href = `/api/oauth/${loginType}`;
+    };
 
     return (
         <div className={styles.loginContainer}>
@@ -161,19 +163,19 @@ function Login() {
                     src={googleLoginIcon} 
                     alt="Google Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('구글 로그인 클릭')} 
+                    onClick={() => handleClickOauth('google')} 
                 />
                 <img 
                     src={kakaoLoginIcon} 
                     alt="Kakao Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('카카오 로그인 클릭')} 
+                    onClick={() => handleClickOauth('kakao')} 
                 />
                 <img 
                     src={naverLoginIcon} 
                     alt="Naver Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('네이버 로그인 클릭')} 
+                    onClick={() => handleClickOauth('naver')} 
                 />
             </div>
 

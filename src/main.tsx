@@ -21,6 +21,7 @@ import EditReviewPage from "./pages/user/review/EditReviewPage.tsx";
 import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
+import UserProvider from "./context/UserContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -113,5 +114,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />
+  <UserProvider> 
+    <RouterProvider router={router} />
+  </UserProvider>
 );
