@@ -11,12 +11,12 @@ const MainPage = () => {
     <>
       <div className={styles.body}>
         <div className={styles.main}>
-          <h1>마이페이지</h1>
-          <div className={styles.buttonContainer}>
+          <h1 className={styles.h1}>상품 등록 전 아래 문구를 확인해주세요!!</h1>
+          {/* <div className={styles.buttonContainer}>
             <Button className={styles.button} label="프로필 수정"></Button>
             <Button className={styles.button} label="상품 등록"></Button>
             <Button className={styles.button} label="상품 조회"></Button>
-          </div>
+          </div> */}
         </div>
         <div className={styles.faqContainer}>
           <div className={styles.faqFAQ}>FAQ</div>
@@ -34,18 +34,6 @@ const MainPage = () => {
             </Tabs>
           </div>
 
-          <Popover.Trigger className={styles.trigger}>
-            주문내역은 어디서 확인 하나요?
-          </Popover.Trigger>
-          <Popover.Content position="bottom-center" className={styles.content}>
-            사용자로 로그인하셔야 확인됩니다.
-          </Popover.Content>
-          <Popover>
-            <Popover.Trigger>주문내역은 어디서 확인 하나요?</Popover.Trigger>
-            <Popover.Content position="bottom-center">
-              사용자로 로그인하셔야 확인됩니다.
-            </Popover.Content>
-          </Popover>
           {/* <Tabs>
             <Tabs.MenuList>
               <Tabs.Menu>주문내역은 어디서 확인 하나요?</Tabs.Menu>
