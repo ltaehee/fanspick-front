@@ -86,6 +86,26 @@ function Login() {
         }
     };
 
+     // 간편로그인
+    const handleClickOauth = (loginType: string) => {
+        window.location.href = `/api/oauth/${loginType}`;
+    };
+
+    // 구글 로그인
+    const handleGoogleLogin = () => {
+        handleClickOauth('google');
+    };
+
+    // 카카오 로그인
+    const handleKakaoLogin = () => {
+        handleClickOauth('kakao');
+    };
+
+    // 네이버 로그인
+    const handleNaverLogin = () => {
+        handleClickOauth('naver');
+    };
+
 
     return (
         <div className={styles.loginContainer}>
@@ -161,19 +181,19 @@ function Login() {
                     src={googleLoginIcon} 
                     alt="Google Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('구글 로그인 클릭')} 
+                    onClick={handleGoogleLogin} 
                 />
                 <img 
                     src={kakaoLoginIcon} 
                     alt="Kakao Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('카카오 로그인 클릭')} 
+                    onClick={handleKakaoLogin} 
                 />
                 <img 
                     src={naverLoginIcon} 
                     alt="Naver Login" 
                     className={styles.socialButton} 
-                    onClick={() => console.log('네이버 로그인 클릭')} 
+                    onClick={handleNaverLogin} 
                 />
             </div>
 
@@ -188,24 +208,3 @@ function Login() {
 }
 
 export default Login;
-
-
-    // // 간편로그인
-    // const handleClickOauth = (loginType: string) => {
-    //     window.location.href = `/api/oauth/${loginType}`;
-    // };
-
-    // // 구글 로그인
-    // const handleGoogleLogin = () => {
-    //     handleClickOauth('google');
-    // };
-
-    // // 카카오 로그인
-    // const handleKakaoLogin = () => {
-    //     handleClickOauth('kakao');
-    // };
-
-    // // 네이버 로그인
-    // const handleNaverLogin = () => {
-    //     handleClickOauth('naver');
-    // };
