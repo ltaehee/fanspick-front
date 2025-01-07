@@ -188,3 +188,24 @@ function Login() {
 }
 
 export default Login;
+
+
+    // // 간편로그인
+    // const handleClickOauth = (loginType: string) => {
+    //     window.location.href = `/api/oauth/${loginType}`;
+    // };
+
+    // // 구글 로그인
+    // const handleGoogleLogin = () => {
+    //     handleClickOauth('google');
+    // };
+
+    // // 카카오 로그인
+    // const handleKakaoLogin = () => {
+    //     handleClickOauth('kakao');
+    // };
+
+    // // 네이버 로그인
+    // const handleNaverLogin = () => {
+    //     handleClickOauth('naver');
+    // };
