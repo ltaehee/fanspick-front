@@ -25,7 +25,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
     (response) => {
-        return response.data;
+        return response;
     },
     (error: AxiosError) => {
         if (error.response) {
