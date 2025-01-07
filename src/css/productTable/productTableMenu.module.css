@@ -4,6 +4,10 @@
     gap: 30px;
 }
 
+.select_button {
+    
+}
+
 .content {
     display: flex;
     justify-content: space-between;
