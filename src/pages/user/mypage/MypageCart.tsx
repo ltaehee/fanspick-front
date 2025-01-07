@@ -1,19 +1,47 @@
 import { useState } from "react";
-import styles from '../../css/mypage/mypage.module.css';
+import styles from '../../../css/mypage/mypage.module.css';
 import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import tableStyles from '../../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from "../../../components/productTable/ProductTableHeader";
 import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
-import ProductCheckBox from "../../../components/productTable/ProductCheckBox";
+import { useNavigate } from "react-router-dom";
+import { Button,Pagination } from "ys-project-ui";
+import MypageHeader from "../../../components/mypageHeader/MypageHeader";
 
 const MypageCart = () => {
-    const [cart, setCart] = useState();
+    // const [cart, setCart] = useState();
+    const navigate = useNavigate();
+
+    const [cart, setCart] = useState([
+        {
+            id: "1",
+            name: "상품 A",
+            price: "10,000원",
+            image: "/images/productA.jpg",
+            quantity: '1'
+        },
+        {
+            id: "2",
+            name: "상품 B",
+            price: "20,000원",
+            image: "/images/productB.jpg",
+            quantity: '1'
+        },
+        {
+            id: "3",
+            name: "상품 C",
+            price: "30,000원",
+            image: "/images/productC.jpg",
+            quantity: '1'
+        },
+    ]);
 
     return(
         <div className={cartStyles.content_wrap}>
-            <div>
+            <MypageHeader />
+            <div className={cartStyles.Table_wrap}>
                 <ProductTableHeader className={tableStyles.Header_wrap}>
                     <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
                     <ProductTableHeaderMenu menu='판매 금액' className={tableStyles.Header_menu} />
@@ -21,11 +49,18 @@ const MypageCart = () => {
                     <ProductTableHeaderMenu menu='' className={tableStyles.Header_menu} />
                 </ProductTableHeader>
                 <ProductTableMenu >
-                    <ProductTableMenu.Quantity />
+                    {cart.map((product) => (
+                        <div key={product.id} className={tableStyles.content}>
+                            <ProductTableMenu.Detail review='리뷰작성하기' onClick={() => navigate('/add-review')} productName={product.name}/>
+                            <ProductTableMenu.Price price={product.price} />
+                            <ProductTableMenu.Quantity quantity={product.quantity}/>
+                            <ProductTableMenu.CheckBox productId={product.id} />
+                        </div>
+                    ))}
                 </ProductTableMenu>
             </div>
             <div className={cartStyles.button_box}>
-                <button className={cartStyles.button}>구매하기</button>
+                <Button className={cartStyles.button} label='구매하기' />
             </div>
             {/* {cart ? (
                 <div></div>
@@ -49,6 +84,11 @@ const MypageCart = () => {
                     </div>
                 </div>
             )} */}
+            {/* <Pagination itemLength={235} value={page} itemCountPerPage={10} onPageChange={handlePageChange}>
+                <Pagination.PageButtons />
+                <Pagination.Navigator />
+            </Pagination> */}
+
         </div>
     )
 }

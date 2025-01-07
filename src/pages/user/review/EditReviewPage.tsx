@@ -12,7 +12,7 @@ const mockProduct = {
   count: 1,
   imageUrl: dummyImg2,
 };
-const AddReviewPage = () => {
+const EditReviewPage = () => {
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
@@ -45,7 +45,7 @@ const AddReviewPage = () => {
   };
   return (
     <div className={styles.addReviewWrap}>
-      <h1 className={styles.h1}>리뷰등록</h1>
+      <h1 className={styles.h1}>리뷰수정</h1>
       <h3 className={styles.h3}>이상품 어떠셨나요?</h3>
       <div className={styles.productInfoBox}>
         <img
@@ -102,9 +102,9 @@ const AddReviewPage = () => {
           </div>
         )}
       </div>
-      <Button className={styles.addButton} label="리뷰 등록하기" />
+      <Button className={styles.addButton} label="리뷰 수정하기" />
     </div>
   );
 };
 
-export default AddReviewPage;
+export default EditReviewPage;

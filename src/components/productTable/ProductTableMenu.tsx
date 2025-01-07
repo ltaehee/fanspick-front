@@ -2,8 +2,8 @@ import { ChangeEvent, createContext, Dispatch, FC, ReactNode, SetStateAction, us
 import axios from "axios";
 import ProductQuantity from "./ProductQuantity";
 import ProductCheckBox from "./ProductCheckBox";
-import styles from '../../css/productTable/productTableMenu.module.css';
-import { useNavigate } from "react-router-dom";
+import ProductDetail from "./ProductDetail";
+import ProductPrice from "./ProductPrice";
 
 interface TableMenu {
     className?: string;
@@ -12,6 +12,9 @@ interface TableMenu {
 
 interface TableMenuCompoundProps {
     Quantity: typeof ProductQuantity;
+    Detail: typeof ProductDetail;
+    Price: typeof ProductPrice;
+    CheckBox: typeof ProductCheckBox;
 }
 
 interface Product {
@@ -22,12 +25,12 @@ interface Product {
 }
 
 interface TableMenuContextProps {
-    isQuantity: number;
+    isQuantity: number; //수량
     setIsQuantity: Dispatch<SetStateAction<number>>;
-    isSelected : Array<string>;
+    isSelected : Array<string>; //체크박스 선택한 아이템 배열
     setIsSelected: Dispatch<SetStateAction<Array<string>>>;
-    handleDown: () => void;
-    handleUp: () => void;
+    handleDown: () => void; // 수량 빼기
+    handleUp: () => void; // 수량 더하기
     handleCheckBoxChange: (e: ChangeEvent<HTMLInputElement> , productId: string)=> void;
     handleDeleteItem: (productId: string) => void;
 }
@@ -40,17 +43,19 @@ export const TableMenuContext = createContext<TableMenuContextProps>({
     handleDown: () => {},
     handleUp: () => {},
     handleCheckBoxChange: () => {},
-    handleDeleteItem: () => {}
-})
+    handleDeleteItem: () => {},
+});
 
 const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
     const {children, className} = props;
-    const [productInCart,setProductInCart] = useState<Product[]>([]);
+    const [productInCart,setProductInCart] = useState<Product[]>([]); //local에서 가져오는 장바구니에 담은 상품 
     const [isQuantity, setIsQuantity] = useState<number>(0);
-    const [isSelected, setIsSelected] = useState<string[]>([]);
-    const navigate = useNavigate();
+    const [isSelected, setIsSelected] = useState<string[]>([]); // 장바구니에서 체크박스 선택한 아이템 배열
 
-    const getProductData = async() => {  //장바구니 목록 가져오기
+
+
+    //아이템 목록 가져오기 ->localstorage에서 가져오는 걸로 수정하기
+    const getProductData = async() => {  
         try{
             const response = await axios.get('/');
             console.log(response.data);
@@ -86,12 +91,15 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
         console.log(response);
     }
 
+
+
     //체크박스 선택, 삭제
     const handleCheckBoxChange = (e: ChangeEvent<HTMLInputElement>,productId: string) => {
         const isChecked = e.target.checked;
         setIsSelected((prev) => isChecked ? [...prev, productId] : prev.filter((id) => id !== productId));
     }
 
+    //장바구니 아이템 전체 선택
     const handleSelectAll = () => {
         if(isSelected.length === cart.length) {
             setIsSelected([]);
@@ -100,11 +108,12 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
         }
     }
 
+    //장바구니에서 체크한 아이템 삭제
     const handleDeleteSelected = () => {
         setCart((prevcart) => prevcart.filter((product) => !isSelected.includes(product.id)));
     }
 
-    //장바구니 아이템 삭제 버튼
+    //장바구니 선택한 하나의 아이템 삭제 버튼
     const handleDeleteItem = (productId: string) => {
         setProductInCart((prev) => prev.filter((product) => product.id !== productId));
     }
@@ -135,32 +144,15 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
 
     return(
         <TableMenuContext.Provider value={{isQuantity, setIsQuantity,handleDown, handleUp, isSelected, setIsSelected, handleCheckBoxChange, handleDeleteItem}}>
-            <div className={styles.content_wrap}>
-                {cart.map((product) => (
-                    <div key={product.id} className={styles.content}>
-                        <div className={styles.detail}>
-                            <img src={product.image} className={styles.image}/>
-                            <div>
-                                <p>{product.name}</p>
-                                <a onClick={() => navigate('/')}>리뷰 작성하기</a>
-                            </div>
-                        </div>
-                        <div className={styles.price}>
-                            <p>{product.price}</p>
-                        </div>
-                        <div className={styles.children}>
-                            {children}
-                        </div>
-                        <div className={styles.checkbox}>
-                            <ProductCheckBox productId={product.id}/>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            {children}
         </TableMenuContext.Provider>
     )
 }
 
 ProductTableMenu.Quantity = ProductQuantity;
+ProductTableMenu.Detail = ProductDetail;
+ProductTableMenu.Price = ProductPrice;
+ProductTableMenu.Quantity = ProductQuantity;
+ProductTableMenu.CheckBox = ProductCheckBox;
 
 export default ProductTableMenu;

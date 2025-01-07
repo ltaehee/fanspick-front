@@ -1,3 +1,8 @@
+.Table_wrap {
+    margin-top: 50px;
+}
+
+
 .content_wrap {
     display: flex;
     justify-content: center;
