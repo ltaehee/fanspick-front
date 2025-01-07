@@ -7,6 +7,9 @@
 .reviewBox:first-child {
   padding-top: 0;
 }
+.reviewBox:last-child {
+  border-bottom: none;
+}
 .profileBox {
   display: flex;
   width: 100%;
