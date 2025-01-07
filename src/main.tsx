@@ -16,6 +16,7 @@ import AddProductPage from "./pages/manager/AddProductPage.tsx";
 import CaseCategory from "./pages/user/categories/CaseCategory.tsx";
 import GriptokCategory from "./pages/user/categories/GriptokCategory.tsx";
 import ClothingCategory from "./pages/user/categories/ClothingCategory.tsx";
+import AddReviewPage from "./pages/user/review/AddReviewPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
         path: "/product",
         element: <ProductDetail />,
       },
+      {
+        path:'/add-review',
+        element: <AddReviewPage />
+      }
     ],
   },
   {

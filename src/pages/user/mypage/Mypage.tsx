@@ -144,7 +144,7 @@ const Mypage = () => {
                     </li>
                     <li className={styles.li}>
                         <label>비밀번호</label>
-                        <Input placeholder='비밀번호' type='password' name='password' value={user.password} onChange={handleChange} className={styles.ul_input}/>
+                        <Input placeholder='비밀번호 확인' type='password' name='password' value={user.password} onChange={handleChange} className={styles.ul_input}/>
                     </li>
                     <li className={styles.li}>
                         <label>주소</label>

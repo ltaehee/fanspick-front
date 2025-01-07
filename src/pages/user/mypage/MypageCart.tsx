@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from '../../css/mypage/mypage.module.css';
+import styles from '../../../css/mypage/mypage.module.css';
 import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import tableStyles from '../../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
@@ -7,12 +7,25 @@ import ProductTableHeader from "../../../components/productTable/ProductTableHea
 import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
 import ProductCheckBox from "../../../components/productTable/ProductCheckBox";
+import ProductDetail from "../../../components/productTable/ProductDetail";
+import { useNavigate } from "react-router-dom";
 
 const MypageCart = () => {
     const [cart, setCart] = useState();
+    const navigate = useNavigate();
 
     return(
         <div className={cartStyles.content_wrap}>
+            <div className={styles.h1_box}>
+                        <h1 className={styles.h1}>마이페이지</h1>
+                    </div>
+                    <div className={styles.button_box}>
+                        <button className={styles.buttons}>프로필 수정</button>
+                        <button className={styles.buttons}>주문내역</button>
+                        <button className={styles.buttons}>등록한 리뷰</button>
+                        <button className={styles.buttons}>장바구니</button>
+                        <button className={styles.buttons}>즐겨찾기</button>
+                    </div>
             <div>
                 <ProductTableHeader className={tableStyles.Header_wrap}>
                     <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
@@ -21,7 +34,8 @@ const MypageCart = () => {
                     <ProductTableHeaderMenu menu='' className={tableStyles.Header_menu} />
                 </ProductTableHeader>
                 <ProductTableMenu >
-                    <ProductTableMenu.Quantity />
+                    <ProductDetail review='리뷰작성하기' onClick={() => navigate('/add-review')} productName='바나나'/>
+                    {/* <ProductTableMenu.Quantity /> */}
                 </ProductTableMenu>
             </div>
             <div className={cartStyles.button_box}>
