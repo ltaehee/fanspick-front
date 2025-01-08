@@ -6,7 +6,7 @@ import Singup from "./pages/Signup.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
-import Mypage from "./pages/user/mypage/Mypage.tsx";
+import Mypage from "./pages/Mypage.tsx";
 import MypageCart from "./pages/user/mypage/MypageCart.tsx";
 import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
 import ProductDetail from "./pages/user/categories/ProductDetail.tsx";
@@ -20,15 +20,18 @@ import EditReviewPage from "./pages/user/review/EditReviewPage.tsx";
 import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
-import UserProvider from "./context/UserContext.tsx";
-import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
+import UserProvider from "./context/UserContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <UserProvider> 
+        <Layout />
+      </UserProvider>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -116,20 +119,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <UserProvider> 
-    <RouterProvider router={router} />
-    <ToastContainer 
-      position="top-center"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop={true}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="colored"
-      toastClassName="custom-toast" 
-    />
-  </UserProvider>
+  <RouterProvider router={router} />
 );
