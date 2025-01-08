@@ -4,6 +4,7 @@ const userMenu = [
     { label: "의류", path: "/clothing-category" },
     { label: "문구", path: "/stationery-category" },
     { label: "케이스", path: "/case-category" },
+    { label: "FAQ", path: "/user-faq" },
 ];
 
 export default userMenu;
