@@ -6,6 +6,7 @@ import addImg from "/icons/addImg.png";
 import api from "../../utils/api";
 import AWS from "aws-sdk";
 import { File } from "aws-sdk/clients/codecommit";
+import { toast } from "react-toastify";
 
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
@@ -75,7 +76,7 @@ const AddProductPage = () => {
           const height = image.height;
           console.log(width, height);
           if (width !== height) {
-            alert("이미지의 크기는 가로 세로 길이가 같아야 합니다.");
+            toast.error("이미지의 크기는 가로 세로 길이가 같아야 합니다.");
             setImgUrl("");
             // setImgFile(null);
           } else {
@@ -127,16 +128,17 @@ const AddProductPage = () => {
     }
   };
 
+  /* 상품 상세 이미지 업로드(다중) */
   const handleAddDetailImages = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files).slice(0, 3);
+      const filesArray = Array.from(e.target.files).slice(0, 4);
 
       // 기존 이미지 파일에 새로운 파일추가
-      if (filesArray.length > 3) {
-        alert("숙소 이미지는 최대 3개까지 등록가능합니다.");
+      if (e.target.files.length > 3) {
+        toast.error("숙소 이미지는 최대 3개까지 등록가능합니다.");
         return;
       }
-
+      console.log("filesArray ", e.target.files);
       const validFiles: globalThis.File[] = [];
       let checkFiles = 0;
 
@@ -175,7 +177,7 @@ const AddProductPage = () => {
             const width = image.width;
             // console.log(width);
             if (width < 900) {
-              alert("이미지의 가로길이는 최소 900px 이상이어야 합니다. ");
+              toast.error("이미지의 가로길이는 최소 900px 이상이어야 합니다. ");
               setPreDetailViewUrls([]);
               // setDetailImageFiles([]);
             } else {
@@ -244,52 +246,51 @@ const AddProductPage = () => {
     e.preventDefault();
 
     if (imgUrl === null) {
-      alert("상품이미지를 등록해주세요");
+      toast.error("상품이미지를 등록해주세요");
       return false;
     }
     if (!productName) {
-      alert("상품 이름을 등록해주세요");
+      toast.error("상품 이름을 등록해주세요");
       return false;
     }
 
     if (!productPrice) {
-      alert("상품 가격을 등록해주세요");
+      toast.error("상품 가격을 등록해주세요");
       return false;
     }
     if (!productintroduce) {
-      alert("상품 설명을 등록해주세요");
+      toast.error("상품 설명을 등록해주세요");
       return false;
     }
     if (categoryCheckedList.length === 0) {
-      alert("카테고리를 등록해주세요");
+      toast.error("카테고리를 등록해주세요");
       return false;
     }
     if (predetailViewUrls.length === 0) {
-      alert("상품상세이미지를 등록해주세요");
+      toast.error("상품상세이미지를 등록해주세요");
       return false;
     }
 
     try {
       const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
-      console.log("categoryCheckedId ", JSON.stringify(categoryCheckedId));
-      const formData = new FormData();
-      formData.append("image", awsImgAddress);
-      formData.append("name", productName);
-      formData.append("price", productPrice);
-      formData.append("introduce", productintroduce);
-      if (awsDetailImgAddress) {
-        awsDetailImgAddress.forEach((awsDetailImgAddress) =>
-          formData.append("detailImage", awsDetailImgAddress)
-        );
+      const categoryIndex = categoryCheckedId[0];
+      console.log("categoryIndex ", categoryIndex);
+
+      const data = {
+        name: productName,
+        price: productPrice,
+        introduce: productintroduce,
+        categoryIndex: categoryIndex,
+        image: awsImgAddress,
+        detailImage: awsDetailImgAddress,
+      };
+      console.log("data ", data);
+      const response = await api.post("/manager/product", data);
+      console.log("response data ", response.data);
+
+      if (response.status === 200) {
+        toast.success("상품 등록이 완료되었습니다.");
       }
-      formData.append("category", JSON.stringify(categoryCheckedId));
-
-      // const response = await api.post("/product/add", formData);
-      // console.log("response data ", response.data);
-
-      // if (response.status === 200) {
-      //   alert("상품 등록이 완료되었습니다.");
-      // }
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 404) {
