@@ -6,6 +6,8 @@ import styles from '../css/signup.module.css';
 import Terms from '../components/Terms';
 import axios from 'axios'; 
 import api from '../utils/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Signup() {
     const [user, setUser] = useState({
@@ -43,27 +45,27 @@ function Signup() {
         const { name, email, password, confirmPassword, role } = user;
 
         if (!name.trim()) {
-            alert('이름을 입력해주세요.');
+            toast.error('이름을 입력해주세요.');
             return;
         }
 
         if (!emailPattern.test(email)) {
-            alert('올바른 이메일 형식을 입력해주세요.');
+            toast.error('올바른 이메일 형식을 입력해주세요.');
             return;
         }
 
         if (!passwordPattern.test(password)) {
-            alert('비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.');
+            toast.error('비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.');
             return;
         }
 
         if (password !== confirmPassword) {
-            alert('비밀번호가 일치하지 않습니다.');
+            toast.error('비밀번호가 일치하지 않습니다.');
             return;
         }
 
         if (!isTermsChecked) {
-            alert('약관에 동의하셔야 회원가입이 가능합니다.');
+            toast.error('약관에 동의하셔야 회원가입이 가능합니다.');
             return;
         }
 
@@ -77,14 +79,14 @@ function Signup() {
             });
 
             if (response.status === 201) {
-                alert('회원가입 성공!');
+                toast.success('회원가입 성공!');
                 navigate('/login');
             }
         } catch (error) { 
             if (axios.isAxiosError(error)) {
-                alert(error.response?.data?.message || '회원가입 실패. 다시 시도하세요.');
+                toast.error(error.response?.data?.message || '회원가입 실패. 다시 시도하세요.');
             } else {
-                alert('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
+                toast.warning('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
             }
         }
     };

@@ -58,7 +58,7 @@ const Header = () => {
                             <span className={styles.logoutText} onClick={logout}>
                                 logout
                             </span>
-                            <a onClick={() => navigate("/profile")}>
+                            <a onClick={() => navigate("/mypage")}>
                                 <img
                                     src={user.profileImage || defaultProfile}
                                     alt="Profile"

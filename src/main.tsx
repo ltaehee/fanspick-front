@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
@@ -22,6 +21,9 @@ import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
 import UserProvider from "./context/UserContext.tsx";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -116,5 +118,18 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <UserProvider> 
     <RouterProvider router={router} />
+    <ToastContainer 
+      position="top-center"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={true}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      toastClassName="custom-toast" 
+    />
   </UserProvider>
 );
