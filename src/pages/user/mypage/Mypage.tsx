@@ -1,5 +1,5 @@
 import userProfile from '/icons/user_icon.png';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from '../../../css/mypage/mypage.module.css';
 import { passwordPattern, emailPattern } from '../../../consts/patterns';
@@ -28,6 +28,19 @@ const Mypage = () => {
     const [user, setUser] = useState<User>({name:'', email:'', password:''});
     const [address, setAddress] = useState<AddressType>({roadAddress:'', zoneCode:'', jibunAddress:'', detailAddress:''});
     const [isOpen, setIsOpen] = useState(false);
+
+    const getProfile = async() => {
+        try {
+            const response = await axios('/api/user/profile');
+            console.log(response);
+        }catch(err) {
+            console.error('프로필 가져오기 실패', err);
+        }
+    }
+
+    useEffect(() => {
+        getProfile();
+    },[]);
 
     const handleChange = (e:ChangeEvent<HTMLInputElement>) => { //input 입력
         const {name, value} = e.target;
@@ -113,16 +126,6 @@ const Mypage = () => {
     
     return(
         <div className={styles.total}>
-            {/* <div className={styles.h1_box}>
-                <h1 className={styles.h1}>마이페이지</h1>
-            </div>
-            <div className={styles.button_box}>
-                <Button className={styles.buttons} label='프로필 수정'/>
-                <Button className={styles.buttons} label='주문내역'/>
-                <Button className={styles.buttons} label='등록한 리뷰'/>
-                <Button className={styles.buttons} label='장바구니'/>
-                <Button className={styles.buttons} label='즐겨찾기'/>
-            </div> */}
             <MypageHeader />
             <div className={styles.edit_box}>
                 <div className={styles.imgupload_box}>

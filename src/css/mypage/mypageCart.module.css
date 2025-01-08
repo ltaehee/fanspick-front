@@ -59,3 +59,17 @@
     color: #ffd700;
     width: 150px;
 }
+
+.bookmark_button {
+    border: none;
+    background-color: #000;
+    padding: 10px;
+    color: #ffd700;
+    width: 250px;
+}
+
+.checkbox_box{
+    display: flex;
+    align-items: center;
+    width: 30px;
+}

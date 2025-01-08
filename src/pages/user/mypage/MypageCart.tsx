@@ -6,7 +6,7 @@ import ProductTableHeader from "../../../components/productTable/ProductTableHea
 import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
 import { useNavigate } from "react-router-dom";
-import { Button,Pagination } from "ys-project-ui";
+import { Button } from "ys-project-ui";
 import MypageHeader from "../../../components/mypageHeader/MypageHeader";
 
 const MypageCart = () => {
@@ -112,12 +112,14 @@ const MypageCart = () => {
                         <ProductTableMenu >
                             {cart.map((product) => (
                                 <div key={product.id} className={tableStyles.content}>
-                                    <ProductTableMenu.CheckBox productId={product.id} isChecked={isChecked(product.id)} onChange={handleChangeCheckBox} />
+                                    <ProductTableMenu.CheckBox className={cartStyles.checkbox_box} productId={product.id} isChecked={isChecked(product.id)} onChange={handleChangeCheckBox} />
                                     <ProductTableMenu.Detail onClick={() => navigate('/add-review')} productName={product.name}/>
                                     <ProductTableMenu.Content content={product.price} />
+                                    <div className={tableStyles.quantity_wrap}>
                                     <ProductTableMenu.QuantityButton label='-' onClick={handleDown} id={product.id}/>
                                     <ProductTableMenu.Quantity quantity={product.quantity} />
                                     <ProductTableMenu.QuantityButton label='+' onClick={handleUp} id={product.id} />
+                                    </div>
                                     <ProductTableMenu.DeleteButton productId={product.id} onClick={handleDeleteItem} />
                                 </div>
                             ))}
