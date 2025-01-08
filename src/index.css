@@ -65,6 +65,6 @@ Label {
 .Toastify__close-button {
   position: absolute;
   left: 43%;
-  top: 50%; 
+  top: 55%; 
   transform: translateY(-50%); 
 }
