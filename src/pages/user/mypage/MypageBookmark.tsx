@@ -1,12 +1,17 @@
+import { Button } from "ys-project-ui";
 import MypageHeader from "../../../components/mypageHeader/MypageHeader";
-import styles from '../../../css/mypage/mypage.module.css';
-import QuantityButton from "../../../components/productTable/QuantityButton";
+import ProductTableHeader from "../../../components/productTable/ProductTableHeader";
+import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
+import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
+import cartStyles from '../../../css/mypage/mypageCart.module.css';
+import tableStyles from  '../../../css/productTable/productTable.module.css';
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const MypageBookmark = () => {
-    const [isQuantity,setIsQuantity] = useState(0);
+    const navigate = useNavigate();
     const [isSelected, setIsSelected] = useState<{ id: string; name: string; price: string; image: string; quantity: number }[]>([
         {
             id: "1",
@@ -93,10 +98,34 @@ const MypageBookmark = () => {
     }
 
     return(
-        <div className={styles.total}>
+        <div className={cartStyles.content_wrap}>
             <MypageHeader />
-
-            
+            <div className={cartStyles.Table_wrap}>
+                <ProductTableHeader className={tableStyles.Header_wrap}>
+                    <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
+                    <ProductTableHeaderMenu menu='판매 금액' className={tableStyles.Header_menu} />
+                    <ProductTableHeaderMenu menu='수량' className={tableStyles.Header_menu}/>
+                    <ProductTableHeaderMenu menu='' className={tableStyles.Header_menu} />
+                </ProductTableHeader>
+                <ProductTableMenu >
+                    {cart.map((product) => (
+                        <div key={product.id} className={tableStyles.content}>
+                            <ProductTableMenu.CheckBox className={cartStyles.checkbox_box} productId={product.id} isChecked={isChecked(product.id)} onChange={handleChangeCheckBox} />
+                            <ProductTableMenu.Detail onClick={() => navigate('/add-review')} productName={product.name}/>
+                            <ProductTableMenu.Content content={product.price} />
+                            <div className={tableStyles.quantity_wrap}>
+                            <ProductTableMenu.QuantityButton label='-' onClick={handleDown} id={product.id}/>
+                            <ProductTableMenu.Quantity quantity={product.quantity} />
+                            <ProductTableMenu.QuantityButton label='+' onClick={handleUp} id={product.id} />
+                            </div>
+                            <ProductTableMenu.DeleteButton productId={product.id} onClick={handleDeleteItem} />
+                        </div>
+                    ))}
+                </ProductTableMenu>
+            </div>
+            <div className={cartStyles.button_box}>
+                <Button className={cartStyles.bookmark_button} label='선택 상품 장바구니에 담기' />
+            </div>
         </div>
     )
 }
