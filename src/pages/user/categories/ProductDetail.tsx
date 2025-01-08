@@ -8,6 +8,8 @@ import ProductCount from "../../../components/product/ProductCount";
 import ReviewBox from "../../../components/review/ReviewBox";
 import profileImg from "/icons/user_icon.png";
 import api from "../../../utils/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PaymentData {
   pg: string;
@@ -18,7 +20,7 @@ interface PaymentData {
 }
 const mockProduct = {
   id: 1,
-  title: "상품12321",
+  title: "상품1232311",
   price: 100,
   description:
     "한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~",
@@ -96,7 +98,7 @@ const ProductDetail = () => {
         };
 
         try {
-          const response = await api.post("/payment/verify", paymentInfo, {
+          const response = await api.post("/payment", paymentInfo, {
             headers: {
               "Content-Type": "application/json",
             },
@@ -116,6 +118,13 @@ const ProductDetail = () => {
         alert(`결제 실패: ${rsp.error_msg}`);
       }
     });
+  };
+
+  const handleClickTest = () => {
+    toast.error("기능 준비중입니다.", {
+      autoClose: 2000,
+    });
+    return;
   };
 
   return (
@@ -141,7 +150,7 @@ const ProductDetail = () => {
             onClick={handlePayment}
           />
           <div className={styles.secondBtnWrap}>
-            <Button label="장바구니" />
+            <Button label="장바구니" onClick={handleClickTest} />
             <Button label="즐겨찾기" />
           </div>
         </div>
@@ -166,13 +175,6 @@ const ProductDetail = () => {
           >
             리뷰
           </Tabs.Menu>
-          <Tabs.Menu
-            className={`${styles.tabsMenu} ${
-              activeTab === 2 ? styles.active : ""
-            }`}
-          >
-            문의사항
-          </Tabs.Menu>
         </Tabs.MenuList>
         <Tabs.Pannel className={styles.tabsPannel}>
           <img
@@ -194,9 +196,6 @@ const ProductDetail = () => {
               />
             ))}
           </div>
-        </Tabs.Pannel>
-        <Tabs.Pannel className={styles.tabsPannel}>
-          문의사항은 임시로 넣어놨습니다~~
         </Tabs.Pannel>
       </Tabs>
     </div>
