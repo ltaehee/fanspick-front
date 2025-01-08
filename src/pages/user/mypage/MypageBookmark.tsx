@@ -87,7 +87,7 @@ const MypageBookmark = () => {
         });
     };
 
-    //장바구니 선택한 하나의 아이템 삭제 버튼
+    //아이템 삭제 버튼
     const handleDeleteItem = (productId: string) => {
         setCart((prev) => prev.filter((product) => product.id !== productId));
     }

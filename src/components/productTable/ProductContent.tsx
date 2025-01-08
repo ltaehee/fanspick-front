@@ -7,7 +7,7 @@ interface ProductPriceProps {
 
 const ProductContent = ({content, className} : ProductPriceProps) => {
     return(
-            <div className={styles.productcontent}>
+            <div className={className}>
                 <p className={styles.productcontent}>{content}</p>
             </div>
     )
