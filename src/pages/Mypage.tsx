@@ -18,7 +18,8 @@ const Mypage = () => {
         detailAddress: '' 
     });
 
-    const [imgFile, setImgFile] = useState<File>();
+    // 이미지 작업 중
+    const [, setImgFile] = useState<File>();
     const [previewImg, setPreviewImg] = useState<string>(userProfile);
     const [isOpen, setIsOpen] = useState(false);
     const { user: loggedInUser, updateUser } = useUserContext(); 
