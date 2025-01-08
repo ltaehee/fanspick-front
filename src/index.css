@@ -56,3 +56,10 @@ Label {
   font-size: 16px;
   text-align: left;
 }
+
+.Toastify__close-button {
+  position: absolute;
+  left: 43%;
+  top: 50%; 
+  transform: translateY(-50%); 
+}
