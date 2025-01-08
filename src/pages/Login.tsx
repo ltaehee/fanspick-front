@@ -10,6 +10,8 @@ import kakaoLoginIcon from '/icons/kakao_login.png';
 import googleLoginIcon from '/icons/google_login.png';
 import naverLoginIcon from '/icons/naver_login.png';
 import { useUserContext } from '../context/UserContext'; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
     const [user, setUser] = useState({
@@ -57,7 +59,7 @@ function Login() {
         const { email, password } = user;
 
         if (!email.trim() || !password.trim()) {
-            alert('이메일과 비밀번호를 입력해주세요.');
+            toast.error('이메일과 비밀번호를 입력해주세요.');
             return;
         }
 
@@ -72,14 +74,21 @@ function Login() {
                 const userData = response.data.user;
                 updateUser(userData); 
                 localStorage.setItem("user", JSON.stringify(userData)); 
-                console.log("로그인 성공, 사용자 데이터:", userData); 
-                navigate("/");
+                toast.info(`${userData.name}님 안녕하세요!`);
+                
+                if (userData.role === 'user') {
+                    navigate("/"); // 일반 사용자
+                } else if (userData.role === 'manager') {
+                    navigate("/main"); // 관리자
+                } else {
+                    toast.warning("알 수 없는 사용자입니다."); 
+                }
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                alert(error.response?.data?.message || '로그인 실패. 다시 시도하세요.');
+                toast.error(error.response?.data?.message || '로그인 실패. 다시 시도하세요.');
             } else {
-                alert('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
+                toast.warning('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
             }
         }
     };

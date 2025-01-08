@@ -29,6 +29,12 @@
     flex: 1;
 }
 
+.password_guide {
+    font-size: 10px;
+    text-align: left;
+    color: #666;
+}
+
 .checkboxRow {
     display: flex;
     align-items: center;

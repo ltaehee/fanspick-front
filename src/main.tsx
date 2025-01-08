@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import Login from "./pages/Login";
@@ -7,7 +6,7 @@ import Singup from "./pages/Signup.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Layout from "./components/Layout.tsx";
 import Test from "./pages/Test.tsx";
-import Mypage from "./pages/user/mypage/Mypage.tsx";
+import Mypage from "./pages/Mypage.tsx";
 import MypageCart from "./pages/user/mypage/MypageCart.tsx";
 import StationeryCategory from "./pages/user/categories/StationeryCategory.tsx";
 import ProductDetail from "./pages/user/categories/ProductDetail.tsx";
@@ -21,12 +20,19 @@ import EditReviewPage from "./pages/user/review/EditReviewPage.tsx";
 import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
+import 'react-toastify/dist/ReactToastify.css';
+import "./index.css";
 import UserProvider from "./context/UserContext.tsx";
+import UserFaq from "./pages/user/UserFaq.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <UserProvider> 
+        <Layout />
+      </UserProvider>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -52,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Singup />,
+      },
+      {
+        path: "/user-faq",
+        element: <UserFaq />,
       },
       {
         path: "/cart",
@@ -114,7 +124,5 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <UserProvider> 
-    <RouterProvider router={router} />
-  </UserProvider>
+  <RouterProvider router={router} />
 );

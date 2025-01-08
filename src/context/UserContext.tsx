@@ -1,16 +1,19 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
 import api from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
     id: string;
     name: string;
+    email: string;
     role?: string;
     profileImage?: string;
+    businessNumber?: string;
 }
 
 interface UserContextType {
     user: User | null;
-    updateUser: React.Dispatch<React.SetStateAction<User | null>>;
+    updateUser: Dispatch<SetStateAction<User | null>>; 
     logout: () => Promise<void>;
 }
 
@@ -19,6 +22,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -33,6 +37,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
             await api.post('/oauth/logout');
             setUser(null);
             localStorage.removeItem('user');
+            navigate("/");
         } catch (err) {
             console.error('로그아웃 실패:', err);
         }
