@@ -57,6 +57,11 @@ Label {
   text-align: left;
 }
 
+.Toastify__toast-container {
+  position: absolute;
+  top: 10%; 
+}
+
 .Toastify__close-button {
   position: absolute;
   left: 43%;
