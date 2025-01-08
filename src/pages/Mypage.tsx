@@ -1,5 +1,5 @@
 import userProfile from '/icons/user_icon.png';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/mypage/mypage.module.css';
 import { passwordPattern, emailPattern } from '../consts/patterns';
@@ -14,8 +14,6 @@ interface User {
     name: string;
     email: string;
     password: string;
-    role: string; 
-    businessNumber?: string;
 }
 
 interface AddressType {
@@ -28,30 +26,17 @@ interface AddressType {
 const Mypage = () => {
     const [imgFile, setImgFile] = useState<File>();
     const [previewImg, setPreviewImg] = useState<string>(userProfile);
-    const [user, setUser] = useState<User>({name:'', email:'', password:'', role: '', businessNumber: '' });
+    const [user, setUser] = useState<User>({name:'', email:'', password:''});
     const [address, setAddress] = useState<AddressType>({roadAddress:'', zoneCode:'', jibunAddress:'', detailAddress:''});
     const [isOpen, setIsOpen] = useState(false);
-    const { user: loggedInUser } = useUserContext(); 
 
-    useEffect(() => {
-        if (loggedInUser) {
-            setUser({
-                name: loggedInUser.name || '',
-                email: loggedInUser.email || '',
-                password: '',
-                role: loggedInUser.role || '',
-                businessNumber: loggedInUser.businessNumber || '',
-            });
-        }
-    }, [loggedInUser]);
-
-    const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e:ChangeEvent<HTMLInputElement>) => { //input 입력
         const {name, value} = e.target;
         setUser({...user, [name]:value});
         setAddress({...address, [name]: value});
     }
 
-    const fileInputRef = useRef<HTMLInputElement>(null);  
+    const fileInputRef = useRef<HTMLInputElement>(null);  //이미지 선택
     const handleClickFile = () => {
         fileInputRef?.current?.click();
     }
@@ -60,12 +45,12 @@ const Mypage = () => {
         if(e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setImgFile(file);
-            const previewUrl = URL.createObjectURL(file); 
+            const previewUrl = URL.createObjectURL(file); //이미지 경로
             setPreviewImg(previewUrl);
         }
     }
 
-    const handleDeleteImg = () => {  
+    const handleDeleteImg = () => {  // 이미지 삭제
         setImgFile(undefined); 
         setPreviewImg(userProfile);
     }
@@ -105,16 +90,10 @@ const Mypage = () => {
 
         formData.append('name', user.name);
         formData.append('email', user.email);
-
-        if (user.role === 'user') {
-            formData.append('roadAddress', address.roadAddress);
-            formData.append('zoneCode', address.zoneCode);
-            formData.append('jibunAddress', address.jibunAddress);
-            formData.append('detailAddress', address.detailAddress);
-        } else if (user.role === 'manager') {
-            formData.append('businessNumber', user.businessNumber || ''); 
-        }
-
+        formData.append('roadAddress', address.roadAddress);
+        formData.append('zoneCode', address.zoneCode);
+        formData.append('jibunAddress', address.jibunAddress);
+        formData.append('detailAddress', address.detailAddress);
         if(imgFile) {
             formData.append('profileImage', imgFile);
         }
@@ -161,56 +140,22 @@ const Mypage = () => {
                         <Input placeholder='비밀번호 확인' type='password' name='password' value={user.password} onChange={handleChange} className={styles.ul_input}/>
                     </li>
                     <li className={styles.li}>
-                        {user.role === 'user' ? (
-                            <>
-                                <label>주소</label>
-                                <div className={styles.search_box}>
-                                    <Input
-                                        className={styles.ul_input}
-                                        placeholder='우편번호'
-                                        name='zoneCode'
-                                        value={address.zoneCode}
-                                        onChange={handleChange}
-                                    />
-                                    <Button className={styles.edit_button} onClick={handleClickOpen} label='주소 검색' />
-                                </div>
-                                <Input
-                                    className={styles.ul_input}
-                                    placeholder='도로명 주소'
-                                    name='roadAddress'
-                                    value={address.roadAddress}
-                                    onChange={handleChange}
-                                />
-                                <Input
-                                    className={styles.ul_input}
-                                    placeholder='상세 주소'
-                                    name='detailAddress'
-                                    value={address.detailAddress}
-                                    onChange={handleChange}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <label>사업자번호</label>
-                                <Input
-                                    placeholder='사업자번호 입력'
-                                    name='businessNumber'
-                                    value={user.businessNumber} 
-                                    onChange={handleChange}
-                                    className={styles.ul_input}
-                                />
-                            </>
-                        )}
+                        <label>주소</label>
+                        <div className={styles.search_box}>
+                            <Input className={styles.ul_input} placeholder='우편번호' name='zoneCode' value={address.zoneCode} onChange={handleChange} />
+                            <Button className={styles.edit_button} onClick={handleClickOpen} label='주소 검색'/>
+                        </div>
+                    </li>
+                    <li className={styles.li}>
+                        <Input className={styles.ul_input} placeholder='도로명 주소' name='roadAddress' value={address.roadAddress} onChange={handleChange}/>
+                    </li>
+                    <li className={styles.li}>
+                        <Input className={styles.ul_input} placeholder='상세 주소' name='detailAddrss' value={address.detailAddress} onChange={handleChange}/>
                     </li>
                 </ul>
                 </div>
             <div className={styles.edit_button_box}>
-                <Button
-                    onClick={handleSubmit}
-                    className={styles.edit_button}
-                    label='회원정보 수정'
-                    style={{ backgroundColor: user.role === 'manager' ? '#ffacac' : '#ffd700' }}
-                />
+                <Button onClick={handleSubmit} className={styles.edit_button} label='회원정보 수정'></Button>
             </div>
             {isOpen && (
                 <Modal isOpen={isOpen} onRequestClose={handleClickOpen} className={styles.modal}>
