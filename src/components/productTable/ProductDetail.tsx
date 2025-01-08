@@ -5,7 +5,8 @@ interface ProductDetailProps {
     image?: string;
     onClick?: () => void;
     productName: string;
-    review: string;
+    review?: string;
+    className ?: string;
 }
 
 const ProductDetail: FC<ProductDetailProps> = (props) => {
@@ -13,9 +14,9 @@ const ProductDetail: FC<ProductDetailProps> = (props) => {
 
     return (
         <div className={styles.detail}>
-            <img src={image} className={styles.image}/>
+            <a onClick={onClick}><img src={image} className={styles.image}/></a>
             <div>
-                <p>{productName}</p>
+                <a onClick={onClick}>{productName}</a>
                 <a onClick={onClick}>{review}</a>
             </div>
         </div>

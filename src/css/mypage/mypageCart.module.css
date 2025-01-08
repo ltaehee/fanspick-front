@@ -18,6 +18,7 @@
     align-items: center;
     padding-top: 80px;
     gap: 10px;
+    height: 280px;
 }
 
 .alertImg{
@@ -42,6 +43,7 @@
     color: #FFE300;
     border: none;
     border-radius: 5px;
+    width: 200px;
 }
 
 .button_box{

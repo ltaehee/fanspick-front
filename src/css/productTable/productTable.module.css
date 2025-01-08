@@ -62,6 +62,7 @@
     /* justify-content: space-between;
     width: 100%; */
     padding: 10px 20px;
+    height: 70px;
 }
 
 .detail {
@@ -88,8 +89,46 @@
     width: 200px;
     display: flex;
     justify-content: center;
+    
 }
 
 .checkbox {
     width: 90px;
+}
+
+.increase_wrap {
+    display: flex;
+    align-items: center;
+}
+
+.increase{
+    border: none;
+    background-color: #ffffff;
+    font-size: 16px;
+    height: 70px;
+}
+
+.quantity_box {
+    display: flex;
+    align-items: center;
+}
+
+.deletebutton {
+    background-color: #ffffff;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.productcontent {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    height: 70px;
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    height: 70px;
 }

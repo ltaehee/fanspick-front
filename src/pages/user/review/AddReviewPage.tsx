@@ -16,7 +16,7 @@ const AddReviewPage = () => {
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
-  const [hotelPhotos, setHotelPhotos] = useState<File[]>([]);
+  const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
 
   const handleClick = (index: number) => {
     setRating(index);
@@ -30,19 +30,22 @@ const AddReviewPage = () => {
     const fileArray = Array.from(files).slice(0, 3);
     const previewArray = fileArray.map((file) => URL.createObjectURL(file));
 
-    setHotelPhotos(fileArray);
+    setReviewPhotos(fileArray);
     setPreviewImg(previewArray);
   };
 
   /* 이미지 삭제 하기 */
   const handleImageDelete = (index: number) => {
     setPreviewImg((prev) => prev.filter((_, i) => i !== index));
-    setHotelPhotos((prev) => prev.filter((_, i) => i !== index));
+    setReviewPhotos((prev) => prev.filter((_, i) => i !== index));
   };
   // 버튼 클릭 시 input 요소 클릭
   const handleImageUpload = () => {
     inputFileRef.current?.click();
   };
+
+  //리뷰 등록하기 버튼
+  const handleClickAddReview = () => {};
   return (
     <div className={styles.addReviewWrap}>
       <h1 className={styles.h1}>리뷰등록</h1>
@@ -102,7 +105,11 @@ const AddReviewPage = () => {
           </div>
         )}
       </div>
-      <Button className={styles.addButton} label="리뷰 등록하기" />
+      <Button
+        onClick={handleClickAddReview}
+        className={styles.addButton}
+        label="리뷰 등록하기"
+      />
     </div>
   );
 };
