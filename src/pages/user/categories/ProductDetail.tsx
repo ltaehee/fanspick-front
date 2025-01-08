@@ -19,7 +19,7 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 1,
+  id: 7,
   title: "상품1232311",
   price: 100,
   description:
@@ -120,11 +120,45 @@ const ProductDetail = () => {
     });
   };
 
-  const handleClickTest = () => {
-    toast.error("기능 준비중입니다.", {
-      autoClose: 2000,
+  /* 장바구니 로컬 스토리지 저장 */
+  const handleAddCart = () => {
+    const cartItems = JSON.parse(localStorage.getItem("favorites") || "[]");
+    let isAlreadyCart = false;
+
+    cartItems.forEach((item: any) => {
+      if (item.id === mockProduct.id) {
+        isAlreadyCart = true;
+      }
     });
-    return;
+
+    if (!isAlreadyCart) {
+      const updatedFavorites = [...cartItems, mockProduct];
+      localStorage.setItem("cart", JSON.stringify(updatedFavorites));
+      console.log("장바구니 상품 데이터", updatedFavorites);
+      toast.success("장바구니에 추가되었습니다.");
+    } else {
+      toast.warning("이미 장바구니에 있는 상품입니다.");
+    }
+  };
+  /* 즐겨찾기 로컬 스토리지 저장 */
+  const handleAddFavorites = () => {
+    const favoriteItems = JSON.parse(localStorage.getItem("favorites") || "[]");
+    let isAlreadyFavorite = false;
+
+    favoriteItems.forEach((item: any) => {
+      if (item.id === mockProduct.id) {
+        isAlreadyFavorite = true;
+      }
+    });
+
+    if (!isAlreadyFavorite) {
+      const updatedFavorites = [...favoriteItems, mockProduct];
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      console.log("즐겨찾기 상품 데이터", updatedFavorites);
+      toast.success("즐겨찾기에 추가되었습니다.");
+    } else {
+      toast.warning("이미 즐겨찾기에 있는 상품입니다.");
+    }
   };
 
   return (
@@ -150,8 +184,8 @@ const ProductDetail = () => {
             onClick={handlePayment}
           />
           <div className={styles.secondBtnWrap}>
-            <Button label="장바구니" onClick={handleClickTest} />
-            <Button label="즐겨찾기" />
+            <Button label="장바구니" onClick={handleAddCart} />
+            <Button label="즐겨찾기" onClick={handleAddFavorites} />
           </div>
         </div>
       </div>
