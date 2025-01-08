@@ -19,7 +19,7 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 7,
+  id: 4,
   title: "상품1232311",
   price: 100,
   description:
@@ -122,9 +122,17 @@ const ProductDetail = () => {
 
   /* 장바구니 로컬 스토리지 저장 */
   const handleAddCart = () => {
-    const cartItems = JSON.parse(localStorage.getItem("favorites") || "[]");
-    let isAlreadyCart = false;
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user?.id;
+    if (!userId) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+    // 사용자별 장바구니 키 생성
+    const cartKey = `cart_${userId}`;
+    const cartItems = JSON.parse(localStorage.getItem(cartKey) || "[]");
 
+    let isAlreadyCart = false;
     cartItems.forEach((item: any) => {
       if (item.id === mockProduct.id) {
         isAlreadyCart = true;
@@ -133,18 +141,30 @@ const ProductDetail = () => {
 
     if (!isAlreadyCart) {
       const updatedFavorites = [...cartItems, mockProduct];
-      localStorage.setItem("cart", JSON.stringify(updatedFavorites));
+      localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
       console.log("장바구니 상품 데이터", updatedFavorites);
       toast.success("장바구니에 추가되었습니다.");
     } else {
       toast.warning("이미 장바구니에 있는 상품입니다.");
     }
   };
+
   /* 즐겨찾기 로컬 스토리지 저장 */
   const handleAddFavorites = () => {
-    const favoriteItems = JSON.parse(localStorage.getItem("favorites") || "[]");
-    let isAlreadyFavorite = false;
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user?.id;
+    if (!userId) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
 
+    // 사용자별 즐겨찾기 키 생성
+    const favoritesKey = `favorite_${userId}`;
+    const favoriteItems = JSON.parse(
+      localStorage.getItem(favoritesKey) || "[]"
+    );
+
+    let isAlreadyFavorite = false;
     favoriteItems.forEach((item: any) => {
       if (item.id === mockProduct.id) {
         isAlreadyFavorite = true;
@@ -153,7 +173,7 @@ const ProductDetail = () => {
 
     if (!isAlreadyFavorite) {
       const updatedFavorites = [...favoriteItems, mockProduct];
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       console.log("즐겨찾기 상품 데이터", updatedFavorites);
       toast.success("즐겨찾기에 추가되었습니다.");
     } else {
