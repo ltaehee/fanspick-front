@@ -1,5 +1,5 @@
 import { Button } from "ys-project-ui";
-import MypageHeader from "../../../components/mypageHeader/MypageHeader";
+import MypageHeader from "../../../components/categories/MypageCategories";
 import ProductTableHeader from "../../../components/productTable/ProductTableHeader";
 import ProductTableHeaderMenu from "../../../components/productTable/ProductTableHeaderMenu";
 import ProductTableMenu from "../../../components/productTable/ProductTableMenu";

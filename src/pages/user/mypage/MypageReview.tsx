@@ -1,5 +1,5 @@
 import styles from '../../../css/mypage/mypage.module.css';
-import MypageHeader from '../../../components/mypageHeader/MypageHeader';
+import MypageHeader from '../../../components/categories/MypageCategories';
 
 const MypageReview = () => {
     return(

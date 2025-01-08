@@ -1,5 +1,5 @@
 import orderStyles from '../../../css/mypage/mypageOrder.module.css';
-import MypageHeader from '../../../components/mypageHeader/MypageHeader';
+import MypageHeader from '../../../components/categories/MypageCategories';
 import tableStyles from '../../../css/productTable/productTable.module.css';
 import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import ProductTableMenu from '../../../components/productTable/ProductTableMenu';

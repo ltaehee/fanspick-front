@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import styles from "../../css/manager/addProductPage.module.css";
-import { Button, ImageUpload, Input } from "ys-project-ui";
+import { Button, Input } from "ys-project-ui";
 import { AxiosError } from "axios";
 import addImg from "/icons/addImg.png";
 import api from "../../utils/api";
