@@ -4,20 +4,17 @@ import { Button, ImageUpload, Input } from "ys-project-ui";
 import { AxiosError } from "axios";
 import addImg from "/icons/addImg.png";
 import api from "../../utils/api";
-// import { api } from "../utils/api";
+import AWS from "aws-sdk";
+import { File } from "aws-sdk/clients/codecommit";
+
+const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
+const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
+const REGION = import.meta.env.VITE_REGION;
 
 interface CheckedCategory {
   id: number;
   item: string;
 }
-
-// const categories = [
-//   { id: 1, item: "그립톡" },
-//   { id: 2, item: "키링" },
-//   { id: 3, item: "의류" },
-//   { id: 4, item: "문구" },
-//   { id: 5, item: "케이스" },
-// ];
 
 const AddProductPage = () => {
   const [categories, setCategories] = useState([]);
@@ -28,15 +25,25 @@ const AddProductPage = () => {
     CheckedCategory[]
   >([]);
   const [imgUrl, setImgUrl] = useState<string>(""); // 상품이미지
-  const [imgFile, setImgFile] = useState<File | null>(null); // 상품이미지파일
-  const [detailImageFiles, setDetailImageFiles] = useState<File[]>([]); // 상세이미지 파일
+  const [awsImgAddress, setAwsImgAddress] = useState(""); // 상품이미지 저장된 S3 주소
+  const [awsDetailImgAddress, setAwsDetailImgAddress] = useState<string[]>([]); // 상품상세이미지 저장된 S3 주소
   const [predetailViewUrls, setPreDetailViewUrls] = useState<string[]>([]); // 상세이미지 미리보기 url
   const imgRef = useRef<HTMLInputElement>(null);
   const imgDetailRef = useRef<HTMLInputElement>(null);
 
-  console.log("카테고리 ", categoryCheckedList);
-  // console.log("상품상세이미지파일 ", detailImageFiles);
+  // console.log("imgUrl ", imgUrl);
+  console.log("awsDetailImgAddress ", awsDetailImgAddress);
   // console.log("상품상세이미지 ", predetailViewUrls);
+
+  // AWS S3 설정
+  const configAws = () => {
+    AWS.config.update({
+      accessKeyId: ACCESS_KEY_ID, // IAM 사용자 엑세스 키 변경
+      secretAccessKey: SECRET_ACCESS_KEY, // IAM 엑세스 시크릿키 변경
+      region: REGION,
+    });
+    return new AWS.S3();
+  };
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setproductName(e.target.value);
@@ -49,13 +56,14 @@ const AddProductPage = () => {
   const handleChangeIntroduce = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setProductIntroduce(e.target.value);
   };
+
   const handleClickFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
 
       const url = URL.createObjectURL(file);
       setImgUrl(url);
-      setImgFile(file);
+      // setImgFile(file);
 
       const reader = new FileReader();
 
@@ -69,7 +77,9 @@ const AddProductPage = () => {
           if (width !== height) {
             alert("이미지의 크기는 가로 세로 길이가 같아야 합니다.");
             setImgUrl("");
-            setImgFile(null);
+            // setImgFile(null);
+          } else {
+            uploadToS3(file);
           }
         };
         if (e.target && typeof e.target.result === "string") {
@@ -77,6 +87,26 @@ const AddProductPage = () => {
         }
       };
       reader.readAsDataURL(file); // 실제로 파일을 읽어 onload 실행
+
+      const uploadToS3 = async (file: globalThis.File) => {
+        try {
+          const s3 = configAws();
+
+          // 업로드할 파일 정보 설정
+          const uploadParams = {
+            Bucket: "fanspick",
+            Key: `product/${file.name}`,
+            Body: file,
+          };
+
+          // S3에 파일 업로드
+          const data = await s3.upload(uploadParams).promise();
+          console.log("AWS S3 상품메인이미지 업로드 성공 ", data);
+          setAwsImgAddress(data.Location);
+        } catch (err) {
+          console.error("AWS S3 업로드 실패 : ", err);
+        }
+      };
     }
   };
 
@@ -99,14 +129,41 @@ const AddProductPage = () => {
 
   const handleAddDetailImages = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files).slice(0, 5);
+      const filesArray = Array.from(e.target.files).slice(0, 3);
 
       // 기존 이미지 파일에 새로운 파일추가
-      const newImageFiles = [...detailImageFiles, ...filesArray];
-      if (newImageFiles.length > 3) {
+      if (filesArray.length > 3) {
         alert("숙소 이미지는 최대 3개까지 등록가능합니다.");
         return;
       }
+
+      const validFiles: globalThis.File[] = [];
+      let checkFiles = 0;
+
+      const uploadToS3 = async (files: globalThis.File[]) => {
+        try {
+          const s3 = configAws();
+
+          const uploadFiles = files.map((file) => {
+            // 업로드할 파일 정보 설정
+            const uploadParams = {
+              Bucket: "fanspick",
+              Key: `productDetail/${file.name}`,
+              Body: file,
+            };
+            // S3에 파일 업로드
+            return s3.upload(uploadParams).promise();
+          });
+
+          const results = await Promise.all(uploadFiles);
+          console.log("AWS S3 업로드 성공 ", results);
+          const detailImgLocation = results.map((item) => item.Location);
+          console.log("AWS S3 상세이미지 ", detailImgLocation);
+          setAwsDetailImgAddress(detailImgLocation);
+        } catch (err) {
+          console.error("AWS S3 업로드 실패 : ", err);
+        }
+      };
 
       filesArray.forEach((file) => {
         const reader = new FileReader();
@@ -120,9 +177,20 @@ const AddProductPage = () => {
             if (width < 900) {
               alert("이미지의 가로길이는 최소 900px 이상이어야 합니다. ");
               setPreDetailViewUrls([]);
-              setDetailImageFiles([]);
+              // setDetailImageFiles([]);
+            } else {
+              validFiles.push(file);
+            }
+            checkFiles++;
+
+            // 모든 파일 검증이 끝난 후 업로드
+            if (checkFiles === filesArray.length) {
+              if (validFiles.length === filesArray.length) {
+                uploadToS3(filesArray);
+              }
             }
           };
+
           if (e.target && typeof e.target.result === "string") {
             image.src = e.target.result; // 이미지 객체가 파일 내용을 로드하게
           }
@@ -130,7 +198,7 @@ const AddProductPage = () => {
         reader.readAsDataURL(file); // 실제로 파일을 읽어 onload 실행
       });
 
-      setDetailImageFiles(newImageFiles);
+      // setDetailImageFiles(newImageFiles);
 
       const newPreviewUrls = [...predetailViewUrls];
 
@@ -138,9 +206,10 @@ const AddProductPage = () => {
         const image = window.URL.createObjectURL(file);
         // 생성된 미리보기URL을 임시 배열에 추가
         newPreviewUrls.push(image);
-        if (newPreviewUrls.length === newImageFiles.length) {
-          setPreDetailViewUrls(newPreviewUrls);
-        }
+        setPreDetailViewUrls(newPreviewUrls);
+        // if (newPreviewUrls.length === newImageFiles.length) {
+        //   setPreDetailViewUrls(newPreviewUrls);
+        // }
       });
     }
   };
@@ -157,13 +226,13 @@ const AddProductPage = () => {
   };
   const handleDeleteImage = () => {
     setImgUrl("");
-    setImgFile(null);
+    // setImgFile(null);
   };
   const handleDeleteDetailImage = (index: number) => {
-    const newImageFiles = detailImageFiles.filter(
+    const newImageFiles = awsDetailImgAddress.filter(
       (_, fileIndex) => fileIndex !== index
     );
-    setDetailImageFiles(newImageFiles);
+    setAwsDetailImgAddress(newImageFiles);
 
     const newPreviewUrls = predetailViewUrls.filter(
       (_, urlIndex) => urlIndex !== index
@@ -174,7 +243,7 @@ const AddProductPage = () => {
   const handleClickSubmitButton = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (imgFile === null) {
+    if (imgUrl === null) {
       alert("상품이미지를 등록해주세요");
       return false;
     }
@@ -195,7 +264,7 @@ const AddProductPage = () => {
       alert("카테고리를 등록해주세요");
       return false;
     }
-    if (detailImageFiles.length === 0) {
+    if (predetailViewUrls.length === 0) {
       alert("상품상세이미지를 등록해주세요");
       return false;
     }
@@ -204,13 +273,13 @@ const AddProductPage = () => {
       const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
       console.log("categoryCheckedId ", JSON.stringify(categoryCheckedId));
       const formData = new FormData();
-      formData.append("imageFile", imgFile);
+      formData.append("image", awsImgAddress);
       formData.append("name", productName);
       formData.append("price", productPrice);
       formData.append("introduce", productintroduce);
-      if (detailImageFiles) {
-        detailImageFiles.forEach((detailImageFiles) =>
-          formData.append("detailImage", detailImageFiles)
+      if (awsDetailImgAddress) {
+        awsDetailImgAddress.forEach((awsDetailImgAddress) =>
+          formData.append("detailImage", awsDetailImgAddress)
         );
       }
       formData.append("category", JSON.stringify(categoryCheckedId));
@@ -235,10 +304,9 @@ const AddProductPage = () => {
     try {
       const response = await api.get("/manager/category");
       if (response.status === 200) {
-        console.log("프론트 카테고리 가져오기 성공", response.data.data);
+        // console.log("프론트 카테고리 가져오기 성공", response.data.data);
         const category = response.data.data[0].name;
         setCategories(category);
-        console.log(categories);
       }
     } catch (err) {
       console.log(err);
