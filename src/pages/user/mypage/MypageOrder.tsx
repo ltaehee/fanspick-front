@@ -5,6 +5,8 @@ import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import ProductTableMenu from '../../../components/productTable/ProductTableMenu';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
 const MypageOrder = () => {
@@ -28,6 +30,21 @@ const MypageOrder = () => {
         },
     ];
 
+    const [orderList, setOrderList] = useState([]);
+
+    const handleOrderList = async() => {
+        try{
+            const response = await axios('/api/order/list');
+            setOrderList(response.data.orderlist);
+        }catch(err) {
+            console.error('주문 내역 조회 실패', err);
+        }
+    }
+
+    useEffect(() => {
+        handleOrderList();
+    },[]);
+
     const handleReview = () => {
         navigate('/add-review');
     };
@@ -35,12 +52,11 @@ const MypageOrder = () => {
     
     return (
         <div className={cartStyles.content_wrap}>
-            {order ? (
+            <MypageHeader />
+            {orderList ? (
                 <div>
-                    <MypageHeader />
                     <div className={orderStyles.Table_wrap}>
                         <ProductTableMenu >
-                            
                             {order.map((product) => (
                                 <div className={orderStyles.order_wrap}>
                                     <div className={orderStyles.day}>
@@ -51,9 +67,9 @@ const MypageOrder = () => {
                                             <ProductTableMenu.Detail onClick={() => navigate('/')} productName={product.name}/> 
                                             <ProductTableMenu.Content content={product.price} />
                                             <div className={tableStyles.quantity_wrap}>
-                                            <ProductTableMenu.Quantity quantity={product.quantity} />
+                                                <ProductTableMenu.Quantity quantity={product.quantity} />
                                             </div>
-                                        <Button label='리뷰 등록하기' onClick={handleReview} className={orderStyles.review_button}/>
+                                            <Button label='리뷰 등록하기' onClick={handleReview} className={orderStyles.review_button}/>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +79,7 @@ const MypageOrder = () => {
                 </div>
             ) : (
             <div>
-
+                <MypageHeader />
             </div>
             ) 
             }

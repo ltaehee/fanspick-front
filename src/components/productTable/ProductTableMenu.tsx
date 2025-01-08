@@ -30,12 +30,12 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
 }
 
 ProductTableMenu.Detail = ProductDetail;
-ProductTableMenu.DeleteButton = DeleteButton;
 ProductTableMenu.Content = ProductContent;
 ProductTableMenu.Quantity = Quantity;
 
 ProductTableMenu.QuantityButton = QuantityButton;
 ProductTableMenu.CheckBox = CheckBox;
+ProductTableMenu.DeleteButton = DeleteButton;
 
 
 export default ProductTableMenu;
