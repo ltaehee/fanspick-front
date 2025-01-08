@@ -20,16 +20,17 @@ import EditReviewPage from "./pages/user/review/EditReviewPage.tsx";
 import MypageBookmark from "./pages/user/mypage/MypageBookmark.tsx";
 import MypageOrder from "./pages/user/mypage/MypageOrder.tsx";
 import MypageReview from "./pages/user/mypage/MypageReview.tsx";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import UserProvider from "./context/UserContext.tsx";
 import UserFaq from "./pages/user/UserFaq.tsx";
+import OrderPage from "./pages/user/OrderPage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <UserProvider> 
+      <UserProvider>
         <Layout />
       </UserProvider>
     ),
@@ -88,25 +89,29 @@ const router = createBrowserRouter([
         element: <ProductDetail />,
       },
       {
-        path:'/add-review',
-        element: <AddReviewPage />
+        path: "/add-review",
+        element: <AddReviewPage />,
       },
       {
         path: "/edit-review",
         element: <EditReviewPage />,
       },
       {
-        path:'mypage-bookmark',
-        element: <MypageBookmark />
+        path: "mypage-bookmark",
+        element: <MypageBookmark />,
       },
       {
-        path:'mypage-order',
-        element: <MypageOrder />
+        path: "mypage-order",
+        element: <MypageOrder />,
       },
       {
-        path:'mypage-review',
-        element: <MypageReview />
-      }
+        path: "mypage-review",
+        element: <MypageReview />,
+      },
+      {
+        path: "/order",
+        element: <OrderPage />,
+      },
     ],
   },
   {
