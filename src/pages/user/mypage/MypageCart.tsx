@@ -7,7 +7,7 @@ import ProductTableHeaderMenu from "../../../components/productTable/ProductTabl
 import ProductTableMenu from "../../../components/productTable/ProductTableMenu";
 import { useNavigate } from "react-router-dom";
 import { Button,Pagination } from "ys-project-ui";
-import MypageHeader from "../../../components/mypageHeader/MypageHeader";
+import MypageHeader from "../../../components/categories/MypageCategories";
 
 const MypageCart = () => {
     // const [cart, setCart] = useState();

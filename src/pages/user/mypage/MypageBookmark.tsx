@@ -1,4 +1,4 @@
-import MypageHeader from "../../../components/mypageHeader/MypageHeader";
+import MypageHeader from "../../../components/categories/MypageCategories";
 import styles from '../../../css/mypage/mypage.module.css';
 import QuantityButton from "../../../components/productTable/QuantityButton";
 import { useState } from "react";

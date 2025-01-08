@@ -6,7 +6,7 @@ import { passwordPattern, emailPattern } from '../consts/patterns';
 import DaumPostcode, { Address } from 'react-daum-postcode';
 import Modal from 'react-modal';
 import { Button, Input } from 'ys-project-ui';
-import MypageHeader from '../components/mypageHeader/MypageHeader';
+import MypageCategories from '../components/categories/MypageCategories';
 import { useUserContext } from '../context/UserContext';
 
 
@@ -135,7 +135,7 @@ const Mypage = () => {
     
     return(
         <div className={styles.total}>
-            <MypageHeader />
+            <MypageCategories />
             <div className={styles.edit_box}>
                 <div className={styles.imgupload_box}>
                     <div className={styles.previewImg_box}>
