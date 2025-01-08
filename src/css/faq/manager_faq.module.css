@@ -1,0 +1,89 @@
+.faqContainer {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 30px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.259);
+}
+
+.faq {
+    font-size: 32px;
+    font-weight: bold;
+    color: #222;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.h2 {
+    font-size: 20px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 15px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px; 
+}
+
+.menu.active {
+    background-color: #ffacac;
+    color: #000000;
+    font-weight: bold;
+}
+
+.icon {
+    width: 16px; 
+    height: 16px;
+    margin-left: 10px;
+}
+
+.pannel {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.6;
+    display: none; 
+}
+
+.pannel.active {
+    display: block;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.signupButton,
+.loginButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; 
+    text-align: center;
+    flex: 1;
+    background-color: #ffffff; 
+    border: 1px solid #ffacac;
+}
+
+.signupButton:hover, .loginButton:hover  {
+    background-color: #ffacac; 
+}

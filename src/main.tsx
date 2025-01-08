@@ -23,6 +23,7 @@ import MypageReview from "./pages/user/mypage/MypageReview.tsx";
 import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
 import UserProvider from "./context/UserContext.tsx";
+import UserFaq from "./pages/user/UserFaq.tsx";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Singup />,
+      },
+      {
+        path: "/user-faq",
+        element: <UserFaq />,
       },
       {
         path: "/cart",
