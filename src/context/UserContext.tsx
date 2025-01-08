@@ -2,6 +2,14 @@ import { createContext, useContext, useState, useEffect, ReactNode, Dispatch, Se
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
+interface Address {
+    roadAddress: string;
+    zoneCode: string;
+    jibunAddress: string;
+    detailAddress: string;
+}
+
+
 interface User {
     id: string;
     name: string;
@@ -9,6 +17,7 @@ interface User {
     role?: string;
     profileImage?: string;
     businessNumber?: string;
+    address?: Address;
 }
 
 interface UserContextType {
