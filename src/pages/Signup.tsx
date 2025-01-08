@@ -143,6 +143,8 @@ function Signup() {
                     />
                 </Input.Box>
 
+                <p className={styles.password_guide}>비밀번호는 비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.</p>
+
                 <Input.Box className={styles.inputRow}>
                     <Input.Label className={styles.inputLabel}>비밀번호 확인</Input.Label>
                     <Input

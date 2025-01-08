@@ -5,8 +5,8 @@ import noticeIcon from '/icons/notice.png';
 import cartIcon from '/icons/cart_icon.png';
 import defaultProfile from '/icons/user_icon.png';
 import fanspickLogo from '/icons/user_header_logo.png';
-import userMenu from '../consts/userMenu';
-import managerMenu from '../consts/managerMenu';
+import userMenu from '../consts/user/userHeader';
+import managerMenu from '../consts/manager/managerHeader';
 
 const Header = () => {
     const { user, logout } = useUserContext(); 

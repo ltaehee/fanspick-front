@@ -2,17 +2,22 @@ import { FC } from "react";
 import { Button } from "ys-project-ui";
 import styles from '../../css/mypage/mypage.module.css';
 import { useNavigate, useLocation } from "react-router-dom";
+import { useUserContext } from "../../context/UserContext";
+import userCategories from "../../consts/user/userCategories";
 
 interface Header {
     className?: string;
 }
 
-const MypageHeader : FC<Header> = (props) => {
-    const {className} = props;
+const MypageHeader: FC<Header> = (props) => {
+    const { className } = props;
     const navigate = useNavigate();
     const location = useLocation();
-    const isActive = (path: string)  => location.pathname === path; // 현재경로와 path가 같으면 true, 다르면 false
+    const { user } = useUserContext();
+
+    const isActive = (path: string) => location.pathname === path; 
     
+    const categories = user?.role === 'user' ? userCategories : [];
 
     return (
         <div className={className}>
@@ -20,15 +25,17 @@ const MypageHeader : FC<Header> = (props) => {
                 <h1 className={styles.h1}>마이페이지</h1>
             </div>
             <div className={styles.button_box}>
-                <Button className={`${styles.buttons} ${isActive('/mypage') ? styles.active : ''}`} label='프로필 수정' onClick={() => navigate('/mypage')}/>
-                <Button className={`${styles.buttons} ${isActive('/mypage-order') ? styles.active : ''}`}  label='주문내역' onClick={() => navigate('/mypage-order')}/>
-                <Button className={`${styles.buttons} ${isActive('/mypage-review') ? styles.active : ''}`} label='등록한 리뷰' onClick={() => navigate('/mypage-review')}/>
-                <Button className={`${styles.buttons} ${isActive('/cart') ? styles.active : ''}`} label='장바구니' onClick={() => navigate('/cart')}/>
-                <Button className={`${styles.buttons} ${isActive('/mypage-bookmark') ? styles.active : ''}`} label='즐겨찾기' onClick={() => navigate('/mypage-bookmark')}/>
+                {categories.map((category) => (
+                    <Button
+                        key={category.path}
+                        className={`${styles.buttons} ${isActive(category.path) ? styles.active : ''}`}
+                        label={category.label}
+                        onClick={() => navigate(category.path)}
+                    />
+                ))}
             </div>
         </div>
-        
-    )
-}
+    );
+};
 
 export default MypageHeader;

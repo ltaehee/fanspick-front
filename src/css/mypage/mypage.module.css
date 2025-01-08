@@ -26,25 +26,25 @@
 .buttons{
     width: 200px;
     height: 40px;
-    border: solid 2px #FFE300;
+    border: solid 2px #ffd700;
     background-color: #ffffff;
     cursor: pointer;
     font-size: 17px;
 }
 
 .buttons:hover{
-    background-color: #FFE300;
+    background-color: #ffd700;
 }
 
 .active {
-    background-color: #FFE300;
+    background-color: #ffd700;
 }
 
 .edit_box {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 50px;
+    /* margin-top: 50px; */
 }
 
 .imgupload_box{
@@ -130,7 +130,7 @@
 .edit_button {
     padding: 10px;
     border: none;
-    background-color: #FFE300;
+    background-color: #ffd700;
     font-size: 17px;
 }
 
