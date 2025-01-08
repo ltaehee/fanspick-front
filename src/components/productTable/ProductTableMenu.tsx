@@ -4,6 +4,7 @@ import QuantityButton from "./QuantityButton";
 import CheckBox from "./CheckBox";
 import DeleteButton from "./DeleteButton";
 import ProductContent from "./ProductContent";
+import Quantity from "./Quantity";
 
 interface TableMenu {
     className?: string;
@@ -15,7 +16,8 @@ interface TableMenuCompoundProps {
     Detail: typeof ProductDetail;
     CheckBox: typeof CheckBox;
     DeleteButton: typeof DeleteButton;
-    Content: typeof ProductContent; //수량, 배송현황, 가격
+    Content: typeof ProductContent; // 배송현황, 가격
+    Quantity : typeof Quantity;
 }
 
 const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
@@ -30,6 +32,7 @@ const ProductTableMenu: FC<TableMenu> & TableMenuCompoundProps = (props) => {
 ProductTableMenu.Detail = ProductDetail;
 ProductTableMenu.DeleteButton = DeleteButton;
 ProductTableMenu.Content = ProductContent;
+ProductTableMenu.Quantity = Quantity;
 
 ProductTableMenu.QuantityButton = QuantityButton;
 ProductTableMenu.CheckBox = CheckBox;

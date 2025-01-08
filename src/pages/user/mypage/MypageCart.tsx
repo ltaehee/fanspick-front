@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styles from '../../../css/mypage/mypage.module.css';
 import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import tableStyles from '../../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
@@ -117,7 +116,7 @@ const MypageCart = () => {
                                     <ProductTableMenu.Detail onClick={() => navigate('/add-review')} productName={product.name}/>
                                     <ProductTableMenu.Content content={product.price} />
                                     <ProductTableMenu.QuantityButton label='-' onClick={handleDown} id={product.id}/>
-                                    <ProductTableMenu.Content content={product.quantity} />
+                                    <ProductTableMenu.Quantity quantity={product.quantity} />
                                     <ProductTableMenu.QuantityButton label='+' onClick={handleUp} id={product.id} />
                                     <ProductTableMenu.DeleteButton productId={product.id} onClick={handleDeleteItem} />
                                 </div>
