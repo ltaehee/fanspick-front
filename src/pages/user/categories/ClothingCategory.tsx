@@ -1,6 +1,6 @@
-import ProductCard from "../../../components/product/ProductCard";
-import styles from "../../../css/homepage.module.css";
-import { products } from "../../HomePage";
+import ProductCard from '../../../components/product/ProductCard';
+import styles from '../../../css/homepage.module.css';
+import { products } from '../../HomePage';
 
 const ClothingCategory = () => {
   return (
