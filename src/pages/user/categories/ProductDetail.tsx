@@ -11,9 +11,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from '../../../context/UserContext';
 
-export const mockProduct = {
+interface PaymentData {
+  pg: string;
+  pay_method: string;
+  merchant_uid: string;
+  name: string;
+  amount: number;
+}
+const mockProduct = {
   id: 4,
-  title: '상품1232311',
+  title: "상품1232311",
   price: 100,
   description:
     '한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~',
@@ -115,6 +122,8 @@ const ProductDetail = () => {
       toast.warning('이미 즐겨찾기에 있는 상품입니다.');
     }
   };
+
+  
 
   return (
     <div className={styles.container}>
