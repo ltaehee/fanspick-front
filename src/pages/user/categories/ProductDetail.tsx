@@ -19,8 +19,8 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 4,
-  title: "상품1232311",
+  id: 5,
+  title: '상품1232311',
   price: 100,
   description:
     '한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~',
@@ -73,17 +73,13 @@ const ProductDetail = () => {
     const cartKey = `cart_${userId}`;
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
-    let isAlreadyCart = false;
-    cartItems.forEach((item: any) => {
-      if (item.id === mockProduct.id) {
-        isAlreadyCart = true;
-      }
-    });
+    const isAlreadyCart = cartItems.some(
+      (item: any) => item.id === mockProduct.id,
+    );
 
     if (!isAlreadyCart) {
       const updatedFavorites = [...cartItems, mockProduct];
       localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
-      console.log('장바구니 상품 데이터', updatedFavorites);
       toast.success('장바구니에 추가되었습니다.');
     } else {
       toast.warning('이미 장바구니에 있는 상품입니다.');
@@ -104,26 +100,18 @@ const ProductDetail = () => {
       localStorage.getItem(favoritesKey) || '[]',
     );
 
-    console.log('가져온 즐겨찾기 상품 데이터:', favoriteItems);
-
-    let isAlreadyFavorite = false;
-    favoriteItems.forEach((item: any) => {
-      if (item.id === mockProduct.id) {
-        isAlreadyFavorite = true;
-      }
-    });
+    const isAlreadyFavorite = favoriteItems.some(
+      (item: any) => item.id === mockProduct.id,
+    );
 
     if (!isAlreadyFavorite) {
       const updatedFavorites = [...favoriteItems, mockProduct];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
-      console.log('즐겨찾기 상품 데이터', updatedFavorites);
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {
       toast.warning('이미 즐겨찾기에 있는 상품입니다.');
     }
   };
-
-  
 
   return (
     <div className={styles.container}>

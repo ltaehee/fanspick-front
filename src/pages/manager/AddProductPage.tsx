@@ -3,11 +3,13 @@ import styles from '../../css/manager/addProductPage.module.css';
 import { Button, Input } from 'ys-project-ui';
 import { AxiosError } from 'axios';
 import addImg from '/icons/addImg.png';
+import xImg from '/icons/xImg.png';
 import api from '../../utils/api';
 import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-/* 등록버튼 네비게이션, 더블클릭막기, 상세이미지 width 300px 이면 깨짐이슈 */
+/* 등록버튼 네비게이션ㅇ, 더블클릭막기ㅇ, 상세이미지 width 300px 이면 깨짐이슈, 이미지 등록 삭제 버튼추가ㅇ*/
 
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
@@ -32,9 +34,10 @@ const AddProductPage = () => {
   const [predetailViewUrls, setPreDetailViewUrls] = useState<string[]>([]); // 상세이미지 미리보기 url
   const imgRef = useRef<HTMLInputElement>(null);
   const imgDetailRef = useRef<HTMLInputElement>(null);
-
+  const navigator = useNavigate();
   // console.log("imgUrl ", imgUrl);
   console.log('awsDetailImgAddress ', awsDetailImgAddress);
+  console.log('awsImgAddress ', awsImgAddress);
   // console.log("상품상세이미지 ", predetailViewUrls);
 
   // AWS S3 설정
@@ -229,7 +232,7 @@ const AddProductPage = () => {
   };
   const handleDeleteImage = () => {
     setImgUrl('');
-    // setImgFile(null);
+    setAwsImgAddress('');
   };
   const handleDeleteDetailImage = (index: number) => {
     const newImageFiles = awsDetailImgAddress.filter(
@@ -246,36 +249,36 @@ const AddProductPage = () => {
   const handleClickSubmitButton = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (imgUrl === null) {
+    if (awsImgAddress === '') {
       toast.error('상품이미지를 등록해주세요');
-      return false;
+      return;
     }
     if (!productName) {
       toast.error('상품 이름을 등록해주세요');
-      return false;
+      return;
     }
 
     if (!productPrice) {
       toast.error('상품 가격을 등록해주세요');
-      return false;
+      return;
     }
     if (!productintroduce) {
       toast.error('상품 설명을 등록해주세요');
-      return false;
+      return;
     }
     if (categoryCheckedList.length === 0) {
       toast.error('카테고리를 등록해주세요');
-      return false;
+      return;
     }
     if (predetailViewUrls.length === 0) {
       toast.error('상품상세이미지를 등록해주세요');
-      return false;
+      return;
     }
 
     try {
       const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
       const categoryIndex = categoryCheckedId[0];
-      console.log('categoryIndex ', categoryIndex);
+      // console.log("categoryIndex ", categoryIndex);
 
       const data = {
         name: productName,
@@ -288,14 +291,16 @@ const AddProductPage = () => {
       console.log('data ', data);
       const response = await api.post('/manager/product', data);
       console.log('response data ', response.data);
+      console.log('response status ', response.status);
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success('상품 등록이 완료되었습니다.');
+        navigator('/select-product');
       }
     } catch (error) {
       const err = error as AxiosError;
-      if (err.response?.status === 404) {
-        console.log('상품 등록을 실패했습니다. 다시 시도해 주세요. ', err);
+      if (err.response?.status === 400) {
+        console.log('입력이 안된 필드값이 있습니다. 다시 시도해 주세요. ', err);
       } else if (err.response?.status === 500) {
         console.log('internal error ', err);
       }
@@ -317,21 +322,17 @@ const AddProductPage = () => {
   useEffect(() => {
     getCategory();
   }, []);
+
   return (
     <>
       <div className={styles.body}>
         <div className={styles.main}>
           <h1>상품등록</h1>
-          <div className={styles.buttonContainer}>
-            <Button className={styles.button} label="프로필 수정"></Button>
-            <Button className={styles.button} label="상품 등록"></Button>
-            <Button className={styles.button} label="상품 조회"></Button>
-          </div>
         </div>
         <div className={styles.addProduct}>
           <section className={styles.addProductInfo}>
             <div className={styles.addProductPhoto}>
-              <label>상품이미지</label>
+              <Input.Label>상품이미지</Input.Label>
               {!imgUrl && (
                 <div className={styles.addProductPhotoDiv}>
                   <img
@@ -339,6 +340,14 @@ const AddProductPage = () => {
                     alt="기본 이미지"
                     onClick={handleClickDefaultImage}
                     src={addImg}
+                  />
+                  <input
+                    className={styles.addProductPhotoInput}
+                    type="file"
+                    id="productImg"
+                    accept="image/*"
+                    onChange={handleClickFile}
+                    ref={imgRef}
                   />
                   <input
                     className={styles.addProductPhotoInput}
@@ -360,6 +369,7 @@ const AddProductPage = () => {
                       alt=""
                       onClick={handleClickDefaultImage}
                     />
+                    <img src={xImg} alt="" className={styles.xImg} />
                     <div
                       className={styles.overlay}
                       onClick={() => handleDeleteImage()}
@@ -372,7 +382,7 @@ const AddProductPage = () => {
             </div>
             <div className={styles.inputWrap}>
               <div className={styles.input}>
-                <label>상품이름</label>
+                <Input.Label>상품이름</Input.Label>
                 <input
                   type="text"
                   placeholder="상품이름"
@@ -381,7 +391,7 @@ const AddProductPage = () => {
                 />
               </div>
               <div className={styles.input}>
-                <label>가격</label>
+                <Input.Label>가격</Input.Label>
                 <input
                   type="text"
                   placeholder="가격"
@@ -391,7 +401,7 @@ const AddProductPage = () => {
               </div>
             </div>
             <div className={styles.input}>
-              <label>상품설명</label>
+              <Input.Label>상품설명</Input.Label>
               <textarea
                 typeof="text"
                 placeholder="상품설명"
@@ -418,7 +428,7 @@ const AddProductPage = () => {
               ))}
             </div>
             <div className={styles.input}>
-              <label>상품상세이미지</label>
+              <label>상품상세이미지 (최대3개)</label>
               {predetailViewUrls.length < 1 && (
                 <div className={styles.addProductPhotoDiv}>
                   <img
@@ -440,7 +450,7 @@ const AddProductPage = () => {
               )}
               <div className={styles.addProductDetailImgContainer}>
                 {predetailViewUrls.map((url, i) => (
-                  <div key={i}>
+                  <div key={i} className={styles.imageContainer}>
                     <img
                       className={styles.addProductPhotoDetailImg}
                       src={url}
@@ -450,7 +460,7 @@ const AddProductPage = () => {
                       className={styles.overlayDetail}
                       onClick={() => handleDeleteDetailImage(i)}
                     >
-                      <p className={styles.deleteImg}>삭제</p>
+                      <p className={styles.deleteDetailImg}>삭제</p>
                     </div>
                   </div>
                 ))}
