@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'ys-project-ui'; 
-import axios from 'axios'; 
 import api from '../utils/api';
 import styles from '../css/login.module.css'; 
 import showPasswordIcon from '/icons/showPassword.png';
@@ -26,7 +25,7 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [saveEmail, setSaveEmail] = useState(false);
 
-    const { updateUser } = useUserContext();
+    const { updateUser, updateToken } = useUserContext();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -72,8 +71,13 @@ function Login() {
 
             if (response.status === 200) {
                 const userData = response.data.user;
+                const token = response.data.token; 
+
+                localStorage.setItem('user', JSON.stringify(userData));
+                localStorage.setItem('token', token);
+
                 updateUser(userData); 
-                localStorage.setItem("user", JSON.stringify(userData)); 
+                updateToken(token); 
                 toast.info(`${userData.name}님 안녕하세요!`);
                 
                 if (userData.role === 'user') {
@@ -85,11 +89,7 @@ function Login() {
                 }
             }
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                toast.error(error.response?.data?.message || '로그인 실패. 다시 시도하세요.');
-            } else {
-                toast.warning('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
-            }
+            toast.error('로그인 실패. 다시 시도하세요.');
         }
     };
 
