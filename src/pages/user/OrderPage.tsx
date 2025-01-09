@@ -104,7 +104,7 @@ const OrderPage = () => {
     <>
       <div className={orderstyles.orderPageWrap}>
         <div className={orderstyles.productInfoWrap}>
-          <ProductTableHeader className={tableStyles.Header_wrap}>
+          <ProductTableHeader className={orderstyles.Header_wrap}>
             <ProductTableHeader.Menu
               menu="상품정보"
               className={tableStyles.Header_menu_first}
@@ -117,14 +117,10 @@ const OrderPage = () => {
               menu="수량"
               className={tableStyles.Header_menu}
             />
-            <ProductTableHeader.Menu
-              menu=""
-              className={tableStyles.Header_menu}
-            />
           </ProductTableHeader>
           <ProductTableMenu>
             {product.map((product) => (
-              <div key={product.id} className={tableStyles.content}>
+              <div key={product.id} className={orderstyles.content}>
                 <ProductTableMenu.Detail
                   productName={product.name}
                   image={product.image}

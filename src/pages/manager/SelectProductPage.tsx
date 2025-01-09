@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import api from '../../utils/api';
-import styles from '../../css/manager/selectProductPage.module.css';
+import api from '@utils/api';
+import styles from '@css/manager/selectProductPage.module.css';
 
 /* 상품이미지 클릭하면 상품상세페이지로 네비 넣기 */
 interface ProductProps {
@@ -24,7 +24,7 @@ const SelectProductPage = () => {
   const getAllProduct = async () => {
     try {
       const response = await api.get('/manager/get-all-product');
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
       }
