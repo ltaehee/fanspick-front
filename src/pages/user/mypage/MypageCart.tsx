@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import cartStyles from '../../../css/mypage/mypageCart.module.css';
-import tableStyles from '../../../css/productTable/productTable.module.css';
+import cartStyles from '@css/mypage/mypageCart.module.css';
+import tableStyles from '@css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
-import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
-import ProductTableMenu from '../../../components/productTable/ProductTableMenu';
+import ProductTableHeader from '@components/productTable/ProductTableHeader';
+import ProductTableMenu from '@components/productTable/ProductTableMenu';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
-import MypageHeader from '../../../components/categories/MypageCategories';
-import { useUserContext } from '../../../context/UserContext';
+import MypageHeader from '@components/categories/MypageCategories';
+import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
-import trash from '../../../../public/icons/trash.png';
+import trash from '@public/icons/trash.png';
 
 interface Cart {
   id: string;

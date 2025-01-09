@@ -1,24 +1,26 @@
 import { FC } from 'react';
-import styles from '../../css/productTable/productTableMenu.module.css';
+import styles from '@css/productTable/productTableMenu.module.css';
 
 interface ProductDetailProps {
-    image?: string;
-    onClick?: () => void;
-    productName: string;
-    className ?: string;
+  image?: string;
+  onClick?: () => void;
+  productName: string;
+  className?: string;
 }
 
 const ProductDetail: FC<ProductDetailProps> = (props) => {
-    const {image, onClick, productName} = props;
+  const { image, onClick, productName } = props;
 
-    return (
-        <div className={styles.detail}>
-            <a onClick={onClick}><img src={image} className={styles.image}/></a>
-            <div>
-                <a onClick={onClick}>{productName}</a>
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className={styles.detail}>
+      <a onClick={onClick}>
+        <img src={image} className={styles.image} />
+      </a>
+      <div>
+        <a onClick={onClick}>{productName}</a>
+      </div>
+    </div>
+  );
+};
 
 export default ProductDetail;

@@ -1,17 +1,17 @@
 import { Button } from 'ys-project-ui';
-import MypageHeader from '../../../components/categories/MypageCategories';
-import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
-import ProductTableHeaderMenu from '../../../components/productTable/ProductTableHeaderMenu';
-import ProductTableMenu from '../../../components/productTable/ProductTableMenu';
-import cartStyles from '../../../css/mypage/mypageCart.module.css';
-import tableStyles from '../../../css/productTable/productTable.module.css';
+import MypageHeader from '@components/categories/MypageCategories';
+import ProductTableHeader from '@components/productTable/ProductTableHeader';
+import ProductTableHeaderMenu from '@components/productTable/ProductTableHeaderMenu';
+import ProductTableMenu from '@components/productTable/ProductTableMenu';
+import cartStyles from '@css/mypage/mypageCart.module.css';
+import tableStyles from '@css/productTable/productTable.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import noticeImg from '/icons/alert-circle.png';
 import { toast } from 'react-toastify';
-import { useUserContext } from '../../../context/UserContext';
-import trash from '../../../../public/icons/trash.png';
-import cart from '../../../../public/icons/cart_icon.png';
+import { useUserContext } from '@context/UserContext';
+import trash from '/icons/trash.png';
+import cart from '/icons/cart_icon.png';
 
 interface Bookmark {
   id: string;
@@ -60,10 +60,6 @@ const MypageBookmark = () => {
       }
     });
   };
-
-  useEffect(() => {
-    console.log('선택된 항목', isSelected);
-  }, []);
 
   //아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
