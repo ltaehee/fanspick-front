@@ -7,35 +7,34 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import noticeImg from '/icons/alert-circle.png';
+
+interface Product {
+    productId: {
+        _id: string;
+        name:string;
+    };
+    quantity: number;
+    price: number;
+}
+
+interface Order {
+    _id:string;
+    createdAt: string;
+    products: Product[];
+}
 
 
 const MypageOrder = () => {
     const navigate = useNavigate();
-    const order = [
-        {
-            id: "1",
-            name: "상품 A",
-            price: "10,000원",
-            image: "/images/productA.jpg",
-            quantity: 1,
-            day: "2022/03/28",
-        },
-        {
-            id: "2",
-            name: "상품 B",
-            price: "20,000원",
-            image: "/images/productB.jpg",
-            quantity: 1,
-            day: "2022/03/28"
-        },
-    ];
 
-    const [orderList, setOrderList] = useState([]);
+    const [orderList, setOrderList] = useState<Order[]>([]);
 
     const handleOrderList = async() => {
         try{
-            const response = await axios('/api/order/list');
-            setOrderList(response.data.orderlist);
+            const response = await axios.get<{orderList: Order[]}>('/api/purchase/order/list');
+            console.log(response.data);
+            setOrderList(response.data.orderList);
         }catch(err) {
             console.error('주문 내역 조회 실패', err);
         }
@@ -46,25 +45,26 @@ const MypageOrder = () => {
     },[]);
 
     const handleReview = () => {
-        navigate('/add-review');
+        navigate(`/add-review`);
     };
     
     
     return (
         <div className={cartStyles.content_wrap}>
             <MypageHeader />
-            {orderList ? (
+            {orderList.length !==0 ? (
                 <div>
                     <div className={orderStyles.Table_wrap}>
                         <ProductTableMenu >
-                            {order.map((product) => (
-                                <div className={orderStyles.order_wrap}>
+                            {orderList.map((order) => (
+                                <div key={order._id} className={orderStyles.order_wrap}>
                                     <div className={orderStyles.day}>
-                                    {product.day}
+                                        {new Date(order.createdAt).toLocaleDateString()} 
                                     </div>
-                                    <div key={product.id} className={orderStyles.content}>
+                                    {order.products.map((product) => (
+                                        <div key={product.productId._id} className={orderStyles.content}>
                                         <div className={orderStyles.table_wrap}>
-                                            <ProductTableMenu.Detail onClick={() => navigate('/')} productName={product.name}/> 
+                                            <ProductTableMenu.Detail onClick={() => navigate('/')} productName={product.productId.name} /> 
                                             <ProductTableMenu.Content content={product.price} />
                                             <div className={tableStyles.quantity_wrap}>
                                                 <ProductTableMenu.Quantity quantity={product.quantity} />
@@ -72,6 +72,8 @@ const MypageOrder = () => {
                                             <Button label='리뷰 등록하기' onClick={handleReview} className={orderStyles.review_button}/>
                                         </div>
                                     </div>
+                                    ))}
+                                    
                                 </div>
                             ))}
                         </ProductTableMenu>
@@ -79,7 +81,10 @@ const MypageOrder = () => {
                 </div>
             ) : (
             <div>
-                <MypageHeader />
+                <div className={cartStyles.none_wrap}>
+                    <img src={noticeImg} className={cartStyles.alertImg}/>
+                    <p className={cartStyles.p1}>주문 내역이 없습니다.</p>
+                </div>
             </div>
             ) 
             }
