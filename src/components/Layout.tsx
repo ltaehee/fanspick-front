@@ -18,7 +18,6 @@ const Layout = () => {
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
-        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

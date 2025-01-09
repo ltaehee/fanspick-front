@@ -61,7 +61,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             navigate("/");
-            toast.success("로그아웃되었습닌다.");
+            toast.success("로그아웃 되었습니다.");
         } catch (err) {
             console.error('로그아웃 실패:', err);
         }
