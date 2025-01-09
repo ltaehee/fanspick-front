@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styles from '@css/manager/addProductPage.module.css';
 import { Button, Input } from 'ys-project-ui';
 import { AxiosError } from 'axios';
@@ -8,6 +15,7 @@ import api from '@utils/api';
 import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../context/UserContext';
 
 /* 등록버튼 네비게이션ㅇ, 더블클릭막기ㅇ, 상세이미지 width 300px 이면 깨짐이슈, 이미지 등록 삭제 버튼추가ㅇ*/
 
@@ -21,7 +29,8 @@ interface CheckedCategory {
 }
 
 const AddProductPage = () => {
-  const [categories, setCategories] = useState([]);
+  const [managerId, setManagerId] = useState('');
+  const [categories, setCategories] = useState([]); // db에서 가져온 카테고리
   const [productName, setproductName] = useState(''); // 상품이름
   const [productPrice, setproductPrice] = useState(''); // 상품가격
   const [productintroduce, setProductIntroduce] = useState(''); // 상품설명
@@ -35,9 +44,16 @@ const AddProductPage = () => {
   const imgRef = useRef<HTMLInputElement>(null);
   const imgDetailRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
-  // console.log("imgUrl ", imgUrl);
+  const { user } = useUserContext();
+  console.log('managerId ', managerId);
   console.log('awsDetailImgAddress ', awsDetailImgAddress);
-  console.log('awsImgAddress ', awsImgAddress);
+
+  useMemo(() => {
+    if (user) {
+      setManagerId(user.id);
+    }
+  }, [user]);
+
   // console.log("상품상세이미지 ", predetailViewUrls);
 
   // AWS S3 설정
@@ -281,6 +297,7 @@ const AddProductPage = () => {
       // console.log("categoryIndex ", categoryIndex);
 
       const data = {
+        userId: managerId,
         name: productName,
         price: productPrice,
         introduce: productintroduce,
