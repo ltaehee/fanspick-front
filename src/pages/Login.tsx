@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from 'ys-project-ui';
-import api from '../utils/api';
-import styles from '../css/login.module.css';
+import api from '@utils/api';
+import styles from '@css/login.module.css';
 import showPasswordIcon from '/icons/showPassword.png';
 import hidePasswordIcon from '/icons/hidePassword.png';
 import kakaoLoginIcon from '/icons/kakao_login.png';
 import googleLoginIcon from '/icons/google_login.png';
 import naverLoginIcon from '/icons/naver_login.png';
-import { useUserContext } from '../context/UserContext';
+import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
