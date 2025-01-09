@@ -26,6 +26,7 @@ import UserProvider from './context/UserContext.tsx';
 import UserFaq from './pages/user/UserFaq.tsx';
 import OrderPage from './pages/user/OrderPage.tsx';
 import SelectProductPage from './pages/manager/SelectProductPage.tsx';
+import FixAndDeleteProductPage from './pages/manager/FixAndDeleteProductPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: '/select-product',
         element: <SelectProductPage />,
+      },
+      {
+        path: '/fix-product',
+        element: <FixAndDeleteProductPage />,
       },
       {
         path: '/login',
