@@ -31,27 +31,27 @@ const MypageCart = () => {
     
 
     const [cart, setCart] = useState<{ id: string; name: string; price: string; image: string; quantity: number }[]>([
-        {
-            id: "1",
-            name: "상품 A",
-            price: "10,000원",
-            image: "/images/productA.jpg",
-            quantity: 1
-        },
-        {
-            id: "2",
-            name: "상품 B",
-            price: "20,000원",
-            image: "/images/productB.jpg",
-            quantity: 1
-        },
-        {
-            id: "3",
-            name: "상품 C",
-            price: "30,000원",
-            image: "/images/productC.jpg",
-            quantity: 1
-        },
+        // {
+        //     id: "1",
+        //     name: "상품 A",
+        //     price: "10,000원",
+        //     image: "/images/productA.jpg",
+        //     quantity: 1
+        // },
+        // {
+        //     id: "2",
+        //     name: "상품 B",
+        //     price: "20,000원",
+        //     image: "/images/productB.jpg",
+        //     quantity: 1
+        // },
+        // {
+        //     id: "3",
+        //     name: "상품 C",
+        //     price: "30,000원",
+        //     image: "/images/productC.jpg",
+        //     quantity: 1
+        // },
     ]);
 
     //수량 빼기
@@ -99,9 +99,10 @@ const MypageCart = () => {
 
     return(
         <div className={cartStyles.content_wrap}>
-            {cart ? (
+            <MypageHeader />
+            {cart.length !== 0 ? (
                 <div>
-                    <MypageHeader />
+                    
                     <div className={cartStyles.Table_wrap}>
                         <ProductTableHeader className={tableStyles.Header_wrap}>
                             <ProductTableHeaderMenu menu='상품정보' className={tableStyles.Header_menu_first}/>
@@ -126,17 +127,16 @@ const MypageCart = () => {
                         </ProductTableMenu>
                     </div>
                     <div className={cartStyles.button_box}>
-                        <Button className={cartStyles.button} label='구매하기' />
+                        <Button className={cartStyles.button} label='구매하기' onClick={() => navigate('/')}/>
                     </div>
                 </div>
             ) : (
                 <div>
-                    <MypageHeader />
                     <div className={cartStyles.none_wrap}>
                         <img src={noticeImg} className={cartStyles.alertImg}/>
                         <p className={cartStyles.p1}>장바구니에 담긴 상품이 없습니다.</p>
                         <p className={cartStyles.p2}>마음에 드는 상품을 담아보세요!</p>
-                        <Button label='계속 쇼핑하기' onClick={() => navigate('/')}/>
+                        <Button label='상품 담으러 가기' onClick={() => navigate('/')}/>
                     </div>
                 </div>
             )}
