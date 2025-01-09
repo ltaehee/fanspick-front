@@ -8,6 +8,8 @@ import ProductCount from "../../../components/product/ProductCount";
 import ReviewBox from "../../../components/review/ReviewBox";
 import profileImg from "/icons/user_icon.png";
 import api from "../../../utils/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PaymentData {
   pg: string;
@@ -17,8 +19,8 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 1,
-  title: "상품12321",
+  id: 4,
+  title: "상품1232311",
   price: 100,
   description:
     "한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~",
@@ -96,7 +98,7 @@ const ProductDetail = () => {
         };
 
         try {
-          const response = await api.post("/payment/verify", paymentInfo, {
+          const response = await api.post("/payment", paymentInfo, {
             headers: {
               "Content-Type": "application/json",
             },
@@ -116,6 +118,67 @@ const ProductDetail = () => {
         alert(`결제 실패: ${rsp.error_msg}`);
       }
     });
+  };
+
+  /* 장바구니 로컬 스토리지 저장 */
+  const handleAddCart = () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user?.id;
+    if (!userId) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+    // 사용자별 장바구니 키 생성
+    const cartKey = `cart_${userId}`;
+    const cartItems = JSON.parse(localStorage.getItem(cartKey) || "[]");
+
+    let isAlreadyCart = false;
+    cartItems.forEach((item: any) => {
+      if (item.id === mockProduct.id) {
+        isAlreadyCart = true;
+      }
+    });
+
+    if (!isAlreadyCart) {
+      const updatedFavorites = [...cartItems, mockProduct];
+      localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
+      console.log("장바구니 상품 데이터", updatedFavorites);
+      toast.success("장바구니에 추가되었습니다.");
+    } else {
+      toast.warning("이미 장바구니에 있는 상품입니다.");
+    }
+  };
+
+  /* 즐겨찾기 로컬 스토리지 저장 */
+  const handleAddFavorites = () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userId = user?.id;
+    if (!userId) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+
+    // 사용자별 즐겨찾기 키 생성
+    const favoritesKey = `favorite_${userId}`;
+    const favoriteItems = JSON.parse(
+      localStorage.getItem(favoritesKey) || "[]"
+    );
+
+    let isAlreadyFavorite = false;
+    favoriteItems.forEach((item: any) => {
+      if (item.id === mockProduct.id) {
+        isAlreadyFavorite = true;
+      }
+    });
+
+    if (!isAlreadyFavorite) {
+      const updatedFavorites = [...favoriteItems, mockProduct];
+      localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
+      console.log("즐겨찾기 상품 데이터", updatedFavorites);
+      toast.success("즐겨찾기에 추가되었습니다.");
+    } else {
+      toast.warning("이미 즐겨찾기에 있는 상품입니다.");
+    }
   };
 
   return (
@@ -141,8 +204,8 @@ const ProductDetail = () => {
             onClick={handlePayment}
           />
           <div className={styles.secondBtnWrap}>
-            <Button label="장바구니" />
-            <Button label="즐겨찾기" />
+            <Button label="장바구니" onClick={handleAddCart} />
+            <Button label="즐겨찾기" onClick={handleAddFavorites} />
           </div>
         </div>
       </div>
@@ -166,13 +229,6 @@ const ProductDetail = () => {
           >
             리뷰
           </Tabs.Menu>
-          <Tabs.Menu
-            className={`${styles.tabsMenu} ${
-              activeTab === 2 ? styles.active : ""
-            }`}
-          >
-            문의사항
-          </Tabs.Menu>
         </Tabs.MenuList>
         <Tabs.Pannel className={styles.tabsPannel}>
           <img
@@ -194,9 +250,6 @@ const ProductDetail = () => {
               />
             ))}
           </div>
-        </Tabs.Pannel>
-        <Tabs.Pannel className={styles.tabsPannel}>
-          문의사항은 임시로 넣어놨습니다~~
         </Tabs.Pannel>
       </Tabs>
     </div>
