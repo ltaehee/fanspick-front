@@ -1,17 +1,42 @@
-import ProductCard from "../../../components/product/ProductCard";
-import styles from "../../../css/homepage.module.css";
-import { products } from "../../HomePage";
+import { useEffect, useState } from 'react';
+import ProductCard from '../../../components/product/ProductCard';
+import styles from '../../../css/homepage.module.css';
+import { ProductProps } from '../../HomePage';
+import api from '../../../utils/api';
 
 const StationeryCategory = () => {
+  const [products, setProducts] = useState<ProductProps[]>([]);
+
+  const getAllProducts = async () => {
+    try {
+      const response = await api.get('/manager/getAllProduct');
+      if (response.status === 201) {
+        setProducts(response.data.product);
+      }
+    } catch (err) {
+      console.error('상품 가져오기 실패:', err);
+    }
+  };
+
+  // 카테고리 필터링 (필요한 카테고리만)
+  const caseCategoryProducts = products.filter((product) =>
+    product.category?.name.includes('의류'),
+  );
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   return (
     <div className={styles.container}>
       <h1>문구 카테고리</h1>
       <div className={styles.productListWrap}>
-        {products.map((product) => (
+        {caseCategoryProducts.map((product) => (
           <ProductCard
-            id={product.id}
-            imageUrl={product.imageUrl}
-            title={product.title}
+            key={product._id}
+            _id={product._id}
+            image={product.image}
+            name={product.name}
             price={product.price}
           />
         ))}

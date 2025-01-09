@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import api from '@utils/api';
 import styles from '@css/manager/selectProductPage.module.css';
+import { useUserContext } from '../../context/UserContext';
 
 /* 상품이미지 클릭하면 상품상세페이지로 네비 넣기 */
 interface ProductProps {
+  userId: string;
   _id: string;
   name: string;
   price: string;
@@ -17,7 +19,16 @@ interface ProductProps {
 
 const SelectProductPage = () => {
   const [getProduct, setGetProduct] = useState<ProductProps[]>([]);
-  console.log('getProduct ', getProduct);
+  const [userId, setUserId] = useState('');
+
+  const { user } = useUserContext();
+  console.log('userId ', userId);
+
+  useMemo(() => {
+    if (user) {
+      setUserId(user.id);
+    }
+  }, [user]);
 
   const handleClickCard = () => {};
 
@@ -41,21 +52,23 @@ const SelectProductPage = () => {
     <div className={styles.container}>
       <h1>상품 조회</h1>
       <div className={styles.productList}>
-        {getProduct.map((product, index) => (
-          <div
-            key={index}
-            onClick={handleClickCard}
-            className={styles.productCard}
-          >
-            <img
-              src={product.image}
-              alt="상품이미지"
-              className={styles.productImage}
-            />
-            <h3>{product.name}</h3>
-            <p>{product.price}원</p>
-          </div>
-        ))}
+        {getProduct
+          .filter((product) => product.userId === userId)
+          .map((product, index) => (
+            <div
+              key={index}
+              onClick={handleClickCard}
+              className={styles.productCard}
+            >
+              <img
+                src={product.image}
+                alt="상품이미지"
+                className={styles.productImage}
+              />
+              <h3>{product.name}</h3>
+              <p>{product.price}원</p>
+            </div>
+          ))}
       </div>
     </div>
   );
