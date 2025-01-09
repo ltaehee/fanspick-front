@@ -23,7 +23,7 @@ const SelectProductPage = () => {
 
   const getAllProduct = async () => {
     try {
-      const response = await api.get('/manager/getAllProduct');
+      const response = await api.get('/manager/get-all-product');
       if (response.status === 201) {
         console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
