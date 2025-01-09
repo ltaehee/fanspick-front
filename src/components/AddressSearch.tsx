@@ -1,7 +1,6 @@
 import React from 'react';
 import DaumPostcode, { Address } from 'react-daum-postcode';
-import Modal from 'react-modal';
-import { Button } from 'ys-project-ui';
+import { Modal } from 'ys-project-ui';
 import styles from '../css/mypage/addressSearch.module.css';
 import { useUserContext } from '../context/UserContext';
 
@@ -15,9 +14,23 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ isOpen, onClose, onComple
     const { user } = useUserContext(); 
 
     return (
-        <Modal isOpen={isOpen} onRequestClose={onClose} className={styles.modal}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            minWidth={400}
+            minHeight={300}
+            padding={20}
+            borderRadius={10}
+            className={styles.modal}
+        >
             <DaumPostcode className={styles.daumpostcode} onComplete={onComplete} />
-            <Button onClick={onClose} className={styles.modal_button} label="닫기" style={{backgroundColor: user?.role === "manager" ? "#ffacac" : "#ffd700"}}/>
+            <Modal.Button
+                onClick={onClose}
+                className={styles.modal_button}
+                style={{ backgroundColor: user?.role === 'manager' ? '#ffacac' : '#ffd700' }}
+                >
+                닫기
+            </Modal.Button>
         </Modal>
     );
 };
