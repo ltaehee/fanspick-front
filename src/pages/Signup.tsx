@@ -4,7 +4,7 @@ import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui';
 import styles from '../css/signup.module.css';
 import Terms from '@components/Terms';
-import api from '../utils/api';
+import api from '@utils/api';
 import { toast } from 'react-toastify';
 
 function Signup() {
@@ -18,7 +18,6 @@ function Signup() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,14 +28,8 @@ function Signup() {
     }
   }, []);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleRoleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setUser((prev) => ({ ...prev, role: value }));
+  const handleChange = (field: string) => (e: ChangeEvent<HTMLInputElement>) => {
+    setUser((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
   const handleSignup = async () => {
@@ -89,7 +82,6 @@ function Signup() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const handleCheckboxChange = () => {
     setIsTermsChecked((prev) => !prev);
   };
@@ -105,7 +97,7 @@ function Signup() {
               type="text"
               name="name"
               value={user.name || ''}
-              onChange={handleInputChange}
+              onChange={handleChange('name')}
               className={styles.input}
               placeholder="이름을 입력해주세요"
               required
@@ -118,7 +110,7 @@ function Signup() {
               type="email"
               name="email"
               value={user.email}
-              onChange={handleInputChange}
+              onChange={handleChange('email')}
               className={styles.input}
               placeholder="이메일을 입력해주세요"
               required
@@ -132,7 +124,7 @@ function Signup() {
             type="password"
             name="password"
             value={user.password}
-            onChange={handleInputChange}
+            onChange={handleChange('password')}
             className={styles.input}
             placeholder="비밀번호를 입력해주세요"
             required
@@ -140,8 +132,7 @@ function Signup() {
         </Input.Box>
 
         <p className={styles.password_guide}>
-          비밀번호는 비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야
-          합니다.
+          비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.
         </p>
 
         <Input.Box className={styles.inputRow}>
@@ -150,7 +141,7 @@ function Signup() {
             type="password"
             name="confirmPassword"
             value={user.confirmPassword}
-            onChange={handleInputChange}
+            onChange={handleChange('confirmPassword')}
             className={styles.input}
             placeholder="비밀번호를 다시 입력해주세요"
             required
@@ -172,7 +163,7 @@ function Signup() {
               name="role"
               value="user"
               checked={user.role === 'user'}
-              onChange={handleRoleChange}
+              onChange={handleChange('role')}
               className={styles.radio}
             />
             <Input.Label>사용자</Input.Label>
@@ -183,7 +174,7 @@ function Signup() {
               name="role"
               value="manager"
               checked={user.role === 'manager'}
-              onChange={handleRoleChange}
+              onChange={handleChange('role')}
               className={styles.radio}
             />
             <Input.Label>사장님</Input.Label>
