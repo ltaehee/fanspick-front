@@ -1,8 +1,8 @@
-import { Outlet } from "react-router-dom";
-import Footer from "../components/Footer";
-import "../index.css";
-import Header from "./Header";
-import { ToastContainer } from "react-toastify";
+import { Outlet } from 'react-router-dom';
+import Footer from '../components/Footer';
+import '../index.css';
+import Header from './Header';
+import { ToastContainer } from 'react-toastify';
 
 const Layout = () => {
   return (
@@ -14,7 +14,7 @@ const Layout = () => {
         </div>
         <Footer />
       </div>
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
@@ -25,7 +25,7 @@ const Layout = () => {
         draggable
         pauseOnHover
         theme="colored"
-        toastClassName="custom-toast" 
+        toastClassName="custom-toast"
       />
     </>
   );
