@@ -1,29 +1,22 @@
-import { useParams } from "react-router-dom";
-import styles from "../../../css/product/productDetail.module.css";
-import dummyImg2 from "/images/product/dog2.jpg";
-import dummyImg3 from "/images/product/dogDetail1.png";
-import { Button, Tabs } from "ys-project-ui";
-import { useEffect, useState } from "react";
-import ProductCount from "../../../components/product/ProductCount";
-import ReviewBox from "../../../components/review/ReviewBox";
-import profileImg from "/icons/user_icon.png";
-import api from "../../../utils/api";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from '../../../css/product/productDetail.module.css';
+import dummyImg2 from '/images/product/dog2.jpg';
+import dummyImg3 from '/images/product/dogDetail1.png';
+import { Button, Tabs } from 'ys-project-ui';
+import { useState } from 'react';
+import ProductCount from '../../../components/product/ProductCount';
+import ReviewBox from '../../../components/review/ReviewBox';
+import profileImg from '/icons/user_icon.png';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useUserContext } from '../../../context/UserContext';
 
-interface PaymentData {
-  pg: string;
-  pay_method: string;
-  merchant_uid: string;
-  name: string;
-  amount: number;
-}
 export const mockProduct = {
   id: 4,
-  title: "상품1232311",
+  title: '상품1232311',
   price: 100,
   description:
-    "한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~",
+    '한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~',
   imageUrl: dummyImg2,
   detailImage: dummyImg3,
 };
@@ -31,18 +24,18 @@ export const mockProduct = {
 const mockReviews = [
   {
     profileImg: profileImg,
-    username: "이 * 희",
-    productName: "강아지 그립톡",
+    username: '이 * 희',
+    productName: '강아지 그립톡',
     productImg: dummyImg2,
     reviewContent:
-      "그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!",
+      '그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
   },
   {
     profileImg: profileImg,
-    username: "이 * 희",
-    productName: "고양이 그립톡",
+    username: '이 * 희',
+    productName: '고양이 그립톡',
     productImg: dummyImg2,
-    reviewContent: "그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!",
+    reviewContent: '그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
   },
 ];
 
@@ -54,83 +47,24 @@ const ProductDetail = () => {
   if (!product) {
     return <div>상품 정보를 찾을 수 없습니다.</div>;
   } */
+
   const [activeTab, setActiveTab] = useState(0);
   const onChangeTab = (index: number) => {
     setActiveTab(index);
   };
-
-  /* 결제 시스템 구현 테스트 */
-
-  useEffect(() => {
-    if (window.IMP) {
-      const { IMP } = window;
-      IMP.init("imp21152357"); // 아임포트 가맹점 식별코드
-      console.log("IMP 객체 초기화 완료:", IMP);
-    } else {
-      console.error("아임포트 SDK 로드 실패");
-    }
-  }, []);
-
-  const handlePayment = () => {
-    if (!window.IMP) {
-      console.error("IMP 객체가 초기화되지 않았습니다.");
-      return;
-    }
-
-    const { IMP } = window;
-
-    // 결제 요청 정보 설정
-    const paymentData: PaymentData = {
-      pg: "kakaopay", // 결제 시스템 (ex: html5_inicis, kcp 등)
-      pay_method: "card", // 결제 방법 (카드 결제 등)
-      merchant_uid: `mid_${new Date().getTime()}`, // 고유 결제 ID
-      name: mockProduct.title, // 상품명
-      amount: mockProduct.price, // 결제 금액
-    };
-
-    // 결제창 요청
-    IMP.request_pay(paymentData, async (rsp: any) => {
-      if (rsp.success) {
-        // 결제 성공 시, 서버에 결제 정보를 보냄
-        const paymentInfo = {
-          imp_uid: rsp.imp_uid,
-          merchant_uid: rsp.merchant_uid,
-        };
-
-        try {
-          const response = await api.post("/payment", paymentInfo, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          const data = response.data;
-          if (data.success) {
-            alert("결제가 완료되었습니다.");
-          } else {
-            alert("결제 확인 실패");
-          }
-        } catch (error) {
-          console.error("서버와의 통신 오류", error);
-          alert("서버와의 통신 오류");
-        }
-      } else {
-        alert(`결제 실패: ${rsp.error_msg}`);
-      }
-    });
-  };
+  const navigate = useNavigate();
+  const { user } = useUserContext();
 
   /* 장바구니 로컬 스토리지 저장 */
   const handleAddCart = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const userId = user?.id;
     if (!userId) {
-      toast.error("로그인이 필요합니다.");
+      toast.error('로그인이 필요합니다.');
       return;
     }
     // 사용자별 장바구니 키 생성
     const cartKey = `cart_${userId}`;
-    const cartItems = JSON.parse(localStorage.getItem(cartKey) || "[]");
+    const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
     let isAlreadyCart = false;
     cartItems.forEach((item: any) => {
@@ -142,27 +76,28 @@ const ProductDetail = () => {
     if (!isAlreadyCart) {
       const updatedFavorites = [...cartItems, mockProduct];
       localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
-      console.log("장바구니 상품 데이터", updatedFavorites);
-      toast.success("장바구니에 추가되었습니다.");
+      console.log('장바구니 상품 데이터', updatedFavorites);
+      toast.success('장바구니에 추가되었습니다.');
     } else {
-      toast.warning("이미 장바구니에 있는 상품입니다.");
+      toast.warning('이미 장바구니에 있는 상품입니다.');
     }
   };
 
   /* 즐겨찾기 로컬 스토리지 저장 */
   const handleAddFavorites = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const userId = user?.id;
     if (!userId) {
-      toast.error("로그인이 필요합니다.");
+      toast.error('로그인이 필요합니다.');
       return;
     }
 
     // 사용자별 즐겨찾기 키 생성
     const favoritesKey = `favorite_${userId}`;
     const favoriteItems = JSON.parse(
-      localStorage.getItem(favoritesKey) || "[]"
+      localStorage.getItem(favoritesKey) || '[]',
     );
+
+    console.log('가져온 즐겨찾기 상품 데이터:', favoriteItems);
 
     let isAlreadyFavorite = false;
     favoriteItems.forEach((item: any) => {
@@ -174,10 +109,10 @@ const ProductDetail = () => {
     if (!isAlreadyFavorite) {
       const updatedFavorites = [...favoriteItems, mockProduct];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
-      console.log("즐겨찾기 상품 데이터", updatedFavorites);
-      toast.success("즐겨찾기에 추가되었습니다.");
+      console.log('즐겨찾기 상품 데이터', updatedFavorites);
+      toast.success('즐겨찾기에 추가되었습니다.');
     } else {
-      toast.warning("이미 즐겨찾기에 있는 상품입니다.");
+      toast.warning('이미 즐겨찾기에 있는 상품입니다.');
     }
   };
 
@@ -201,7 +136,7 @@ const ProductDetail = () => {
           <Button
             label="구매하기"
             className={styles.buyButton}
-            onClick={handlePayment}
+            onClick={() => navigate('/order')}
           />
           <div className={styles.secondBtnWrap}>
             <Button label="장바구니" onClick={handleAddCart} />
@@ -217,14 +152,14 @@ const ProductDetail = () => {
         <Tabs.MenuList className={styles.tabsMenuList}>
           <Tabs.Menu
             className={`${styles.tabsMenu} ${
-              activeTab === 0 ? styles.active : ""
+              activeTab === 0 ? styles.active : ''
             }`}
           >
             설명
           </Tabs.Menu>
           <Tabs.Menu
             className={`${styles.tabsMenu} ${
-              activeTab === 1 ? styles.active : ""
+              activeTab === 1 ? styles.active : ''
             }`}
           >
             리뷰
