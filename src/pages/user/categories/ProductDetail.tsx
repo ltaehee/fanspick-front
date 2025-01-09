@@ -19,7 +19,7 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 4,
+  id: 11,
   title: "상품1232311",
   price: 100,
   description:
@@ -180,6 +180,8 @@ const ProductDetail = () => {
       toast.warning("이미 즐겨찾기에 있는 상품입니다.");
     }
   };
+
+  
 
   return (
     <div className={styles.container}>

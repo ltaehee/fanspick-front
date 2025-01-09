@@ -72,8 +72,10 @@ function Login() {
 
             if (response.status === 200) {
                 const userData = response.data.user;
+                const token = response.data.token;
                 updateUser(userData); 
-                localStorage.setItem("user", JSON.stringify(userData)); 
+                localStorage.setItem("user", JSON.stringify(userData));
+                localStorage.setItem("token", token);
                 toast.info(`${userData.name}님 안녕하세요!`);
                 
                 if (userData.role === 'user') {
