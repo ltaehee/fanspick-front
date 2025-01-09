@@ -1,9 +1,15 @@
 import { FC } from 'react';
 import { Button } from 'ys-project-ui';
-import styles from '../../css/mypage/mypage.module.css';
+import styles from '@css/mypage/mypage.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUserContext } from '../../context/UserContext';
-import userCategories from '../../consts/user/userCategories';
+import { useUserContext } from '@context/UserContext';
+import userCategories from '@consts/user/userCategories';
+
+interface Category {
+  path: string;
+  label: string;
+}
+
 
 interface Header {
   className?: string;
@@ -17,7 +23,7 @@ const MypageHeader: FC<Header> = (props) => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const categories = user?.role === 'user' ? userCategories : [];
+  const categories: Category[] = user?.role === 'user' ? userCategories : [];
 
   return (
     <div className={className}>

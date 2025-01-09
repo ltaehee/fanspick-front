@@ -1,10 +1,9 @@
 import userProfile from '/icons/user_icon.png';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import styles from '../css/mypage/mypage.module.css';
+import styles from '@css/mypage/mypage.module.css';
 import { Button, Input } from 'ys-project-ui';
-import MypageCategories from '../components/categories/MypageCategories';
-import { useUserContext } from '../context/UserContext';
+import MypageCategories from '@components/categories/MypageCategories';
+import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AWS from 'aws-sdk';
@@ -13,7 +12,8 @@ import {
   businessNumberPattern,
   emailPattern,
   passwordPattern,
-} from '../consts/patterns';
+} from '@consts/patterns';
+import api from '@utils/api';
 
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
@@ -177,7 +177,7 @@ const Mypage = () => {
     };
 
     try {
-      const response = await axios.put('/api/oauth/profile-update', userData, {
+      const response = await api.put('/oauth/profile-update', userData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

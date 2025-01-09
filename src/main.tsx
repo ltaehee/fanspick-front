@@ -21,12 +21,12 @@ import {
   ProductDetail,
   StationeryCategory,
   Mypage,
-  Test,
   Layout,
   HomePage,
   Singup,
   Login,
   ErrorPage,
+  FixAndDeleteProductPage,
 } from './utils/index.ts';
 
 const router = createBrowserRouter([
@@ -58,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: '/select-product',
         element: <SelectProductPage />,
+      },
+      {
+        path: '/fix-product',
+        element: <FixAndDeleteProductPage />,
       },
       {
         path: '/login',
@@ -120,14 +124,6 @@ const router = createBrowserRouter([
         element: <OrderPage />,
       },
     ],
-  },
-  {
-    path: '/test',
-    element: <Test />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
   },
   {
     path: '*',

@@ -31,6 +31,22 @@ export default defineConfig({
         find: '@pages',
         replacement: path.resolve(dirname, 'src/pages'),
       },
+      {
+        find: '@utils',
+        replacement: path.resolve(dirname, 'src/utils'),
+      },
+      {
+        find: '@consts',
+        replacement: path.resolve(dirname, 'src/consts'),
+      },
+      {
+        find: '@context',
+        replacement: path.resolve(dirname, 'src/context'),
+      },
+      {
+        find: '@css',
+        replacement: path.resolve(dirname, 'src/css'),
+      },
     ],
   },
   define: {

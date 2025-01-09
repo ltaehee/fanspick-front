@@ -1,8 +1,8 @@
 import { Input, Button } from 'ys-project-ui';
-import styles from '../../css/manager/fixAndDeleteProductPage.module.css';
+import styles from '@css/manager/fixAndDeleteProductPage.module.css';
 import addImg from '/icons/addImg.png';
 import xImg from '/icons/xImg.png';
-import api from '../../utils/api';
+import api from '@utils/api';
 import AWS from 'aws-sdk';
 
 const FixAndDeleteProductPage = () => {
