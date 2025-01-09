@@ -1,15 +1,53 @@
-import { FC, SVGProps, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-type SVGIconProps = FC<SVGProps<SVGSVGElement>>;
+interface FavoritesBtnProps {
+  productId: number;
+  className: string;
+}
 
-const FavoritesBtn: SVGIconProps = (props) => {
-  const { className } = props;
+const FavoritesBtn: FC<FavoritesBtnProps> = ({ className, productId }) => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const userId = user?.id;
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  // 사용자별 즐겨찾기 키 생성
+  const favoritesKey = `favorite_${userId}`;
+
+  // 초기값 설정 시 로컬 스토리지 확인
+  const initialFavorite = () => {
+    if (!userId) return false;
+    const favorites = JSON.parse(localStorage.getItem(favoritesKey) || "[]");
+    return favorites.includes(productId); // 해당 제품이 즐겨찾기에 포함되어 있는지 확인
+  };
+
+  const [isFavorite, setIsFavorite] = useState(initialFavorite);
+
+  useEffect(() => {
+    // 유저가 바뀌거나, productId가 바뀌었을 때 로컬 스토리지를 다시 확인
+    setIsFavorite(initialFavorite());
+  }, [productId, userId]);
 
   // 좋아요 상태 토글 함수
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation(); /* 버튼 눌러도 페이지 이동안하게 */
+    if (!userId) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+    const favorites = JSON.parse(localStorage.getItem(favoritesKey) || "[]");
+    if (isFavorite) {
+      // 즐겨찾기에서 제거
+      const updatedFavorites = favorites.filter(
+        (id: number) => id !== productId
+      );
+      localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
+      toast.success("즐겨찾기에서 제거되었습니다.");
+    } else {
+      // 즐겨찾기에 추가
+      const updatedFavorites = [...favorites, productId];
+      localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
+      toast.success("즐겨찾기에 추가되었습니다.");
+    }
     setIsFavorite(!isFavorite);
   };
 
