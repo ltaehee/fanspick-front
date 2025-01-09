@@ -2,13 +2,25 @@ import userProfile from '/icons/user_icon.png';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/mypage/mypage.module.css';
-import DaumPostcode, { Address } from 'react-daum-postcode';
-import Modal from 'react-modal';
+// import DaumPostcode, { Address } from 'react-daum-postcode';
+// import Modal from 'react-modal';
 import { Button, Input } from 'ys-project-ui';
 import MypageCategories from '../components/categories/MypageCategories';
 import { useUserContext } from '../context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AWS from "aws-sdk";
+import AddressSearch from '../components/AddressSearch';
+
+const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
+const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
+const REGION = import.meta.env.VITE_REGION;
+
+interface Address {
+    roadAddress: string;
+    jibunAddress: string;
+    zonecode: string;
+}
 
 const Mypage = () => {
     const [address, setAddress] = useState({
@@ -18,18 +30,33 @@ const Mypage = () => {
         detailAddress: '' 
     });
 
-    // 이미지 작업 중
-    const [, setImgFile] = useState<File>();
     const [previewImg, setPreviewImg] = useState<string>(userProfile);
-    const [isOpen, setIsOpen] = useState(false);
-    const { user: loggedInUser, updateUser } = useUserContext(); 
+    const [awsImgAddress, setAwsImgAddress] = useState(""); // 저장된 S3 주소
 
     const [updatedUser, setUpdatedUser] = useState({
         name: '',
         email: '',
         password: '',
-        role: ''
+        role: '',
+        profileImage: '',
+        businessNumber: '', 
     });
+
+
+    const [isOpen, setIsOpen] = useState(false);
+    const { user: loggedInUser, token, updateUser } = useUserContext();
+
+
+    // AWS S3 설정
+     const configAws = () => {
+    AWS.config.update({
+        accessKeyId: ACCESS_KEY_ID, // IAM 사용자 엑세스 키 변경
+        secretAccessKey: SECRET_ACCESS_KEY, // IAM 엑세스 시크릿키 변경
+        region: REGION,
+    });
+        return new AWS.S3();
+    };
+
 
     useEffect(() => {
         if (loggedInUser) {
@@ -37,15 +64,28 @@ const Mypage = () => {
                 name: loggedInUser.name || '',
                 email: loggedInUser.email || '',
                 password: '',
-                role: loggedInUser.role || ''
+                role: loggedInUser.role || '',
+                profileImage: loggedInUser.profileImage || '',
+                businessNumber: loggedInUser.businessNumber || '',
             });
+            setAddress(loggedInUser.address || {
+                roadAddress: '',
+                zoneCode: '',
+                jibunAddress: '',
+                detailAddress: ''
+            });
+    
+            setPreviewImg(loggedInUser.profileImage || userProfile);
         }
     }, [loggedInUser]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUpdatedUser({ ...updatedUser, [name]: value });
-        setAddress({ ...address, [name]: value });
+        if (["roadAddress", "zoneCode", "jibunAddress", "detailAddress"].includes(name)) {
+            setAddress((prev) => ({ ...prev, [name]: value }));
+        } else {
+            setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+        }
     };
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -53,30 +93,47 @@ const Mypage = () => {
         fileInputRef?.current?.click();
     };
 
+    const uploadToS3 = async (file: File) => {
+        try {
+            const s3 = configAws();
+            const uploadParams = {
+                Bucket: "fanspick",
+                Key: `profile/${file.name}`,
+                Body: file,
+            };
+            const data = await s3.upload(uploadParams).promise();
+            setAwsImgAddress(data.Location); // 업로드된 URL 저장
+        } catch (error) {
+            toast.error("이미지 업로드에 실패했습니다.");
+        }
+    };
+
     const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
-            setImgFile(file);
             const previewUrl = URL.createObjectURL(file);
             setPreviewImg(previewUrl);
+            uploadToS3(file); // 이미지 업로드
         }
     };
 
     const handleDeleteImg = () => {
-        setImgFile(undefined);
-        setPreviewImg(userProfile);
+        setPreviewImg(userProfile); 
+        setAwsImgAddress(""); // S3 URL 초기화
+        setUpdatedUser((prev) => ({
+            ...prev,
+            profileImage: userProfile,
+        }));
     };
-
-    const handleClickOpen = () => {
-        setIsOpen(!isOpen);
-    };
+    
 
     const handleDaumPost = (data: Address) => {
         setAddress((prev) => ({
             ...prev,
             roadAddress: data.roadAddress,
             jibunAddress: data.jibunAddress,
-            zoneCode: data.zonecode
+            zoneCode: data.zonecode,
+            detailAddress: prev.detailAddress || '', 
         }));
         setIsOpen(false);
     };
@@ -98,22 +155,25 @@ const Mypage = () => {
         }
 
         const userData = {
-            name: updatedUser.name,
-            email: updatedUser.email,
-            password: updatedUser.password,
-            address: {
-                roadAddress: address.roadAddress,
-                zoneCode: address.zoneCode,
-                jibunAddress: address.jibunAddress,
-                detailAddress: address.detailAddress
-            }
+            ...updatedUser,
+            profileImage: awsImgAddress || updatedUser.profileImage, // S3 URL 사용
+            address,
         };
 
+
         try {
-            const response = await axios.put('/user/profile/update', userData);
+            const response = await axios.put('/api/oauth/profile-update', userData, {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
+            });
             if (response.status === 200) {
                 toast.success('회원정보 수정 성공');
-                updateUser(response.data.user); 
+                const updatedUserData = response.data.user;
+
+                // UserContext 상태와 로컬 스토리지 업데이트
+                updateUser(updatedUserData);
+                localStorage.setItem('user', JSON.stringify(updatedUserData));
             }
         } catch (error) {
             toast.error('회원정보 수정 실패. 다시 시도해주세요.');
@@ -157,23 +217,38 @@ const Mypage = () => {
                         <label>비밀번호</label>
                         <Input placeholder="비밀번호 확인" type="password" name="password" value={updatedUser.password} onChange={handleChange} className={styles.ul_input} />
                     </li>
+                    {/* 사업자번호 (매니저만 표시) */}
+                    {updatedUser.role === 'manager' && (
+                        <li className={styles.li}>
+                            <label>사업자번호</label>
+                            <Input placeholder="사업자번호" name="businessNumber" value={updatedUser.businessNumber} onChange={handleChange} className={styles.ul_input} />
+                        </li>
+                    )}
+
                     <li className={styles.li}>
                         <label>주소</label>
                         <div className={styles.search_box}>
-                            <Input className={styles.ul_input} placeholder="우편번호" name="zoneCode" value={address.zoneCode} onChange={handleChange} />
+                            <Input
+                                className={styles.ul_input}
+                                placeholder="우편번호"
+                                name="zoneCode"
+                                value={address.zoneCode || ''}
+                                onChange={handleChange}
+                            />
                             <Button
                                 className={styles.edit_button}
-                                onClick={handleClickOpen}
+                                onClick={() => setIsOpen(true)}
                                 label="주소 검색"
                                 style={{ backgroundColor: updatedUser.role === 'manager' ? '#ffacac' : '#ffd700' }}
                             />
                         </div>
+                        <AddressSearch isOpen={isOpen} onClose={() => setIsOpen(false)} onComplete={handleDaumPost} />
                     </li>
                     <li className={styles.li}>
-                        <Input className={styles.ul_input} placeholder="도로명 주소" name="roadAddress" value={address.roadAddress} onChange={handleChange} />
+                        <Input className={styles.ul_input} placeholder="도로명 주소" name="roadAddress" value={address.roadAddress || ''} onChange={handleChange} />
                     </li>
                     <li className={styles.li}>
-                        <Input className={styles.ul_input} placeholder="상세 주소" name="detailAddress" value={address.detailAddress} onChange={handleChange} />
+                        <Input className={styles.ul_input} placeholder="상세 주소" name="detailAddress" value={address.detailAddress || ''} onChange={handleChange} />
                     </li>
                 </ul>
             </div>
@@ -185,12 +260,6 @@ const Mypage = () => {
                         style={{ backgroundColor: updatedUser.role === 'manager' ? '#ffacac' : undefined }}
                     />
             </div>
-            {isOpen && (
-                <Modal isOpen={isOpen} onRequestClose={handleClickOpen} className={styles.modal}>
-                    <DaumPostcode className={styles.daumpostcode} onComplete={handleDaumPost} autoClose />
-                    <Button onClick={handleClickOpen} className={styles.modal_button} label="X" />
-                </Modal>
-            )}
         </div>
     );
 };

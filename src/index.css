@@ -58,7 +58,7 @@ Label {
 }
 
 .Toastify__toast-container {
-  position: absolute;
+  position: fixed;
   top: 10%; 
 }
 

@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext'; 
 import styles from '../css/header.module.css';
-// import noticeIcon from '/icons/notice.png';
 import cartIcon from '/icons/cart_icon.png';
 import defaultProfile from '/icons/user_icon.png';
 import fanspickLogo from '/icons/user_header_logo.png';
@@ -11,8 +10,6 @@ import managerMenu from '../consts/manager/managerHeader';
 const Header = () => {
     const { user, logout } = useUserContext(); 
     const navigate = useNavigate();
-
-    console.log("현재 유저 상태:", user); 
 
     // 메뉴 렌더링
     const renderMenu = () => {
@@ -67,13 +64,6 @@ const Header = () => {
                             </a>
                             {user.role !== "manager" && (
                                 <>
-                                    {/* <a href="#notifications">
-                                        <img
-                                            src={noticeIcon}
-                                            alt="Notifications"
-                                            className={styles.icon}
-                                        />
-                                    </a> */}
                                     <a href="#cart">
                                         <img
                                             src={cartIcon}
@@ -92,13 +82,6 @@ const Header = () => {
                             >
                                 Login
                             </span>
-                            {/* <a href="#notifications">
-                                <img
-                                    src={noticeIcon}
-                                    alt="Notifications"
-                                    className={styles.icon}
-                                />
-                            </a> */}
                             <a href="#cart">
                                 <img
                                     src={cartIcon}
