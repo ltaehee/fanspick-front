@@ -28,6 +28,7 @@ const MypageCart = () => {
             quantity: 1
         },
     ]);
+
     
 
     const [cart, setCart] = useState<{ id: string; name: string; price: string; image: string; quantity: number }[]>([

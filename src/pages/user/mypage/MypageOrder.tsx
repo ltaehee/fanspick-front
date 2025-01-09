@@ -8,6 +8,8 @@ import { Button } from 'ys-project-ui';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import noticeImg from '/icons/alert-circle.png';
+import { useUserContext } from '../../../context/UserContext';
+import { Address } from 'react-daum-postcode';
 
 interface Product {
     productId: {
@@ -25,16 +27,27 @@ interface Order {
 }
 
 
+
 const MypageOrder = () => {
+    const { user } = useUserContext(); 
+    const token = localStorage.getItem('token');
+    console.log('token', token);
+
     const navigate = useNavigate();
 
     const [orderList, setOrderList] = useState<Order[]>([]);
 
     const handleOrderList = async() => {
         try{
-            const response = await axios.get<{orderList: Order[]}>('/api/purchase/order/list');
-            console.log(response.data);
-            setOrderList(response.data.orderList);
+            if(user) {
+                const response = await axios.get<{orderList: Order[]}>('/api/purchase/order/list', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,  // 헤더에 토큰을 포함
+                    }
+                });
+                console.log(response);
+                setOrderList(response.data.orderList);
+            }
         }catch(err) {
             console.error('주문 내역 조회 실패', err);
         }
