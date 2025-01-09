@@ -1,5 +1,4 @@
-import styles from '../../css/productTable/productTable.module.css';
-import trash from '../../../public/icons/trash.png';
+import styles from '@css/productTable/productTable.module.css';
 
 interface deleteProps {
   onClick: (id: string) => void;

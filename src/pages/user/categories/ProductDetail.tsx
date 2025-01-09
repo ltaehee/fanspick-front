@@ -19,7 +19,7 @@ interface PaymentData {
   amount: number;
 }
 const mockProduct = {
-  id: 11,
+  id: 1,
   title: '상품1232311',
   price: 100,
   description:
