@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import cartStyles from '../../../css/mypage/mypageCart.module.css';
 import tableStyles from '../../../css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
@@ -7,44 +7,44 @@ import ProductTableMenu from '../../../components/productTable/ProductTableMenu'
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
 import MypageHeader from '../../../components/categories/MypageCategories';
+import { useUserContext } from '../../../context/UserContext';
+import { toast } from 'react-toastify';
+import trash from '../../../../public/icons/trash.png';
+
+interface Cart {
+  id: string;
+  title: string;
+  price: string;
+  image: string;
+  quantity: number;
+}
 
 const MypageCart = () => {
-  // const [cart, setCart] = useState();
   const navigate = useNavigate();
-  const [isSelected, setIsSelected] = useState<
-    {
-      id: string;
-      name: string;
-      price: string;
-      image: string;
-      quantity: number;
-    }[]
-  >([
-    {
-      id: '1',
-      name: '상품 A',
-      price: '10,000원',
-      image: '/images/productA.jpg',
-      quantity: 1,
-    },
-    {
-      id: '2',
-      name: '상품 B',
-      price: '20,000원',
-      image: '/images/productB.jpg',
-      quantity: 1,
-    },
-  ]);
+  const [isSelected, setIsSelected] = useState<Cart[]>([]);
+  const [cart, setCart] = useState<Cart[]>([]);
+  const { user } = useUserContext();
 
-  const [cart, setCart] = useState<
-    {
-      id: string;
-      name: string;
-      price: string;
-      image: string;
-      quantity: number;
-    }[]
-  >([]);
+  const userId = user?.id;
+  if (!userId) {
+    toast.error('로그인이 필요합니다.');
+    return;
+  }
+
+  //장바구니 내역 가져오기
+  const localCart = JSON.parse(localStorage.getItem(`cart_${userId}`) || '[]');
+
+  useEffect(() => {
+    if (localCart) {
+      setCart(localCart);
+    }
+  }, []);
+
+  //장바구니 내역 전체 삭제하기
+  const deleteCart = () => {
+    setCart([]);
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
+  };
 
   //수량 빼기
   const handleDown = (id: string) => {
@@ -97,6 +97,11 @@ const MypageCart = () => {
       {cart.length !== 0 ? (
         <div>
           <div className={cartStyles.Table_wrap}>
+            <Button
+              onClick={deleteCart}
+              className={cartStyles.total_delete}
+              label="전체 삭제"
+            />
             <ProductTableHeader className={tableStyles.Header_wrap}>
               <ProductTableHeader.Menu
                 menu="상품정보"
@@ -126,7 +131,7 @@ const MypageCart = () => {
                   />
                   <ProductTableMenu.Detail
                     onClick={() => navigate('/add-review')}
-                    productName={product.name}
+                    productName={product.title}
                   />
                   <ProductTableMenu.Content content={product.price} />
                   <div className={tableStyles.quantity_wrap}>
@@ -145,6 +150,7 @@ const MypageCart = () => {
                   <ProductTableMenu.DeleteButton
                     productId={product.id}
                     onClick={handleDeleteItem}
+                    image={trash}
                   />
                 </div>
               ))}
