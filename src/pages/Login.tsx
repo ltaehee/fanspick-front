@@ -46,12 +46,16 @@ function Login() {
   };
 
   const handleSaveEmailChange = () => {
-    setSaveEmail((prev) => !prev);
-    if (!saveEmail) {
-      localStorage.setItem('savedEmail', user.email);
-    } else {
-      localStorage.removeItem('savedEmail');
-    }
+    setSaveEmail((prev) => {
+      const newSaveEmail = !prev;
+      if (newSaveEmail) {
+        localStorage.setItem('savedEmail', user.email);
+      }
+      if (!newSaveEmail) {
+        localStorage.removeItem('savedEmail');
+      }
+      return newSaveEmail;
+    });
   };
 
   const handleLogin = async () => {

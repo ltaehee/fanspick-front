@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui';
 import styles from '../css/signup.module.css';
-import Terms from '../components/Terms';
-import axios from 'axios';
+import Terms from '@components/Terms';
 import api from '../utils/api';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function Signup() {
   const [user, setUser] = useState({
@@ -85,13 +83,7 @@ function Signup() {
         navigate('/login');
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(
-          error.response?.data?.message || '회원가입 실패. 다시 시도하세요.',
-        );
-      } else {
-        toast.warning('알 수 없는 오류가 발생했습니다. 다시 시도하세요.');
-      }
+      toast.error('회원정보 가입 실패. 다시 시도해주세요.');
     }
   };
 

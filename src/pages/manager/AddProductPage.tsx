@@ -5,7 +5,6 @@ import { AxiosError } from 'axios';
 import addImg from '/icons/addImg.png';
 import api from '../../utils/api';
 import AWS from 'aws-sdk';
-import { File } from 'aws-sdk/clients/codecommit';
 import { toast } from 'react-toastify';
 
 /* 등록버튼 네비게이션, 더블클릭막기, 상세이미지 width 300px 이면 깨짐이슈 */

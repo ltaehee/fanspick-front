@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import styles from '../css/terms.module.css';
 
-const Terms: FC = () => {
+const Terms = () => {
   return (
     <div className={styles.termsContainer}>
       <h1 className={styles.h1}>FansPick 이용 약관</h1>
