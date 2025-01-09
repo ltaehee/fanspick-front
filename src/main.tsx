@@ -25,6 +25,7 @@ import "./index.css";
 import UserProvider from "./context/UserContext.tsx";
 import UserFaq from "./pages/user/UserFaq.tsx";
 import OrderPage from "./pages/user/OrderPage.tsx";
+import SelectProductPage from "./pages/manager/SelectProductPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/add-product",
         element: <AddProductPage />,
+      },
+      {
+        path: "/select-product",
+        element: <SelectProductPage />,
       },
       {
         path: "/login",
