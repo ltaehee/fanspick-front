@@ -1,10 +1,10 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
-import styles from '../../css/manager/addProductPage.module.css';
+import styles from '@css/manager/addProductPage.module.css';
 import { Button, Input } from 'ys-project-ui';
 import { AxiosError } from 'axios';
 import addImg from '/icons/addImg.png';
 import xImg from '/icons/xImg.png';
-import api from '../../utils/api';
+import api from '@utils/api';
 import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
