@@ -15,7 +15,7 @@ export { default as AddProductPage } from '../pages/manager/AddProductPage';
 export { default as CaseCategory } from '../pages/user/categories/CaseCategory';
 export { default as GriptokCategory } from '../pages/user/categories/GriptokCategory';
 export { default as ClothingCategory } from '../pages/user/categories/ClothingCategory';
-export { default as AddReviewPage } from '../pages/user/review/EditReviewPage';
+export { default as AddReviewPage } from '../pages/user/review/AddReviewPage';
 export { default as EditReviewPage } from '../pages/user/review/EditReviewPage';
 export { default as UserProvider } from '../context/UserContext';
 export { default as UserFaq } from '../pages/user/UserFaq';
