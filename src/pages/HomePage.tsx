@@ -1,8 +1,8 @@
-import styles from "../css/homepage.module.css";
-import ProductCard from "../components/product/ProductCard";
-import dummyImg1 from "/images/product/dog1.jpg";
-import dummyImg2 from "/images/product/dog2.jpg";
-import dummyImg3 from "/images/product/pet2.jpg";
+import styles from '../css/homepage.module.css';
+import ProductCard from '../components/product/ProductCard';
+import dummyImg1 from '/images/product/dog1.jpg';
+import dummyImg2 from '/images/product/dog2.jpg';
+import dummyImg3 from '/images/product/pet2.jpg';
 
 interface Product {
   id: number;
@@ -14,38 +14,38 @@ interface Product {
 export const products: Product[] = [
   {
     id: 1,
-    title: "상품 1",
-    price: "10,000원",
+    title: '상품 1',
+    price: '10,000원',
     imageUrl: dummyImg1,
   },
   {
     id: 2,
-    title: "상품 2",
-    price: "20,000원",
+    title: '상품 2',
+    price: '20,000원',
     imageUrl: dummyImg2,
   },
   {
     id: 3,
-    title: "상품 3",
-    price: "30,000원",
+    title: '상품 3',
+    price: '30,000원',
     imageUrl: dummyImg3,
   },
   {
     id: 4,
-    title: "상품 4",
-    price: "15,000원",
+    title: '상품 4',
+    price: '15,000원',
     imageUrl: dummyImg1,
   },
   {
     id: 5,
-    title: "상품 4",
-    price: "15,000원",
+    title: '상품 4',
+    price: '15,000원',
     imageUrl: dummyImg2,
   },
   {
     id: 6,
-    title: "상품 4",
-    price: "15,000원",
+    title: '상품 4',
+    price: '15,000원',
     imageUrl: dummyImg3,
   },
 ];
