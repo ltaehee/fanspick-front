@@ -9,8 +9,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import noticeImg from '/icons/alert-circle.png';
 import { toast } from 'react-toastify';
+import { useUserContext } from '../../../context/UserContext';
+import trash from '../../../../public/icons/trash.png';
+import cart from '../../../../public/icons/cart_icon.png';
 
-interface bookmark {
+interface Bookmark {
   id: string;
   title: string;
   price: string;
@@ -19,11 +22,11 @@ interface bookmark {
 
 const MypageBookmark = () => {
   const navigate = useNavigate();
-  const [isSelected, setIsSelected] = useState<bookmark[]>([]);
-  const [isFavorite, setIsFavorite] = useState<bookmark[]>([]);
+  const [isSelected, setIsSelected] = useState<Bookmark[]>([]);
+  const [isFavorite, setIsFavorite] = useState<Bookmark[]>([]);
 
   //유저 정보 가져오기
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const { user } = useUserContext();
   const userId = user?.id;
   if (!userId) {
     toast.error('로그인이 필요합니다.');
@@ -64,35 +67,19 @@ const MypageBookmark = () => {
 
   //아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
-    const handleRealDelete = () => {
-      setIsFavorite((prev) => {
-        const updatedFavorites = prev.filter(
-          (product) => product.id !== productId,
-        ); //삭제하려는 아이템의 아이디를 지움
-        if (userId) {
-          localStorage.setItem(
-            `favorite_${userId}`,
-            JSON.stringify(updatedFavorites),
-          );
-        }
-        return updatedFavorites;
-        toast.success('삭제가 완료 되었습니다.');
-      });
-    };
-
-    const handleCancel = () => {
-      toast.dismiss();
-    };
-
-    toast(
-      <div>
-        <p>즐겨찾기 목록에서 삭제하시겠습니까?</p>
-        <div>
-          <Button onClick={handleRealDelete} label="네" />
-          <Button onClick={handleCancel} label="아니오" />
-        </div>
-      </div>,
-    );
+    setIsFavorite((prev) => {
+      const updatedFavorites = prev.filter(
+        (product) => product.id !== productId,
+      ); //삭제하려는 아이템의 아이디를 지움
+      if (userId) {
+        localStorage.setItem(
+          `favorite_${userId}`,
+          JSON.stringify(updatedFavorites),
+        );
+      }
+      toast.success('삭제가 완료 되었습니다.');
+      return updatedFavorites;
+    });
   };
 
   // 선택한 항목 장바구니에 추가
@@ -103,13 +90,24 @@ const MypageBookmark = () => {
     toast.success('장바구니에 추가되었습니다.');
   };
 
+  //장바구니 내역 전체 삭제하기
+  const deleteCart = () => {
+    setIsFavorite([]);
+    localStorage.setItem(`favorite_${userId}`, JSON.stringify(cart));
+  };
+
   return (
     <div className={cartStyles.content_wrap}>
       {isFavorite.length !== 0 ? (
         <div>
           <MypageHeader />
           <div className={cartStyles.Table_wrap}>
-            <ProductTableHeader className={tableStyles.Header_wrap}>
+            <Button
+              onClick={deleteCart}
+              className={cartStyles.total_delete}
+              label="전체 삭제"
+            />
+            <ProductTableHeader className={tableStyles.bookmark_wrap}>
               <ProductTableHeaderMenu
                 menu="상품정보"
                 className={tableStyles.Header_menu_first}
@@ -125,7 +123,7 @@ const MypageBookmark = () => {
             </ProductTableHeader>
             <ProductTableMenu>
               {isFavorite.map((product) => (
-                <div key={product.id} className={tableStyles.content}>
+                <div key={product.id} className={tableStyles.bookmark_content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
                     productId={product.id}
@@ -137,21 +135,26 @@ const MypageBookmark = () => {
                     productName={product.title}
                   />
                   <ProductTableMenu.Content content={product.price} />
-                  <div className={tableStyles.quantity_wrap}></div>
-                  <ProductTableMenu.DeleteButton
-                    productId={product.id}
-                    onClick={handleDeleteItem}
-                  />
+                  <div className={cartStyles.bookmark_buttons_wrap}>
+                    <Button
+                      className={cartStyles.bookmark_button}
+                      label="장바구니에 담기"
+                      onClick={handleAddCart}
+                    />
+                    <ProductTableMenu.DeleteButton
+                      productId={product.id}
+                      onClick={handleAddCart}
+                      image={cart}
+                    />
+                    <ProductTableMenu.DeleteButton
+                      productId={product.id}
+                      onClick={handleDeleteItem}
+                      image={trash}
+                    />
+                  </div>
                 </div>
               ))}
             </ProductTableMenu>
-          </div>
-          <div className={cartStyles.button_box}>
-            <Button
-              className={cartStyles.bookmark_button}
-              label="장바구니에 담기"
-              onClick={handleAddCart}
-            />
           </div>
         </div>
       ) : (

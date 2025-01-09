@@ -38,3 +38,20 @@
   background-color: #ffd700;
   color: black;
 }
+
+.Header_wrap {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  align-items: center;
+  border-bottom: solid 1px #838383;
+  padding: 0 20px;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 70px;
+}
