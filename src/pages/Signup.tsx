@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { passwordPattern, emailPattern } from '../consts/patterns';
 import { Input, Button, Modal } from 'ys-project-ui';
 import styles from '../css/signup.module.css';
-import Terms from '../components/Terms';
+import Terms from '@components/Terms';
 import axios from 'axios';
 import api from '../utils/api';
 import { toast } from 'react-toastify';
