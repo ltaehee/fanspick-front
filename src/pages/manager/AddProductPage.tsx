@@ -8,6 +8,8 @@ import AWS from "aws-sdk";
 import { File } from "aws-sdk/clients/codecommit";
 import { toast } from "react-toastify";
 
+/* 등록버튼 네비게이션, 더블클릭막기, 상세이미지 width 300px 이면 깨짐이슈 */
+
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
 const REGION = import.meta.env.VITE_REGION;
@@ -176,8 +178,8 @@ const AddProductPage = () => {
           image.onload = () => {
             const width = image.width;
             // console.log(width);
-            if (width < 900) {
-              toast.error("이미지의 가로길이는 최소 900px 이상이어야 합니다. ");
+            if (width < 300) {
+              toast.error("이미지의 가로길이는 최소 300px 이상이어야 합니다. ");
               setPreDetailViewUrls([]);
               // setDetailImageFiles([]);
             } else {
