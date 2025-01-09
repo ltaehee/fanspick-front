@@ -21,3 +21,4 @@ export { default as UserProvider } from '../context/UserContext';
 export { default as UserFaq } from '../pages/user/UserFaq';
 export { default as OrderPage } from '../pages/user/OrderPage';
 export { default as SelectProductPage } from '../pages/manager/SelectProductPage';
+export { default as FixAndDeleteProductPage } from '../pages/manager/FixAndDeleteProductPage';

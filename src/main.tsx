@@ -26,6 +26,7 @@ import {
   Singup,
   Login,
   ErrorPage,
+  FixAndDeleteProductPage,
 } from './utils/index.ts';
 
 const router = createBrowserRouter([
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: '/select-product',
         element: <SelectProductPage />,
+      },
+      {
+        path: '/fix-product',
+        element: <FixAndDeleteProductPage />,
       },
       {
         path: '/login',
