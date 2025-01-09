@@ -21,7 +21,6 @@ import {
   ProductDetail,
   StationeryCategory,
   Mypage,
-  Test,
   Layout,
   HomePage,
   Singup,
@@ -120,10 +119,6 @@ const router = createBrowserRouter([
         element: <OrderPage />,
       },
     ],
-  },
-  {
-    path: '/test',
-    element: <Test />,
   },
   {
     path: '/login',

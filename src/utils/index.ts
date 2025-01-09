@@ -7,7 +7,6 @@ export { default as Singup } from '../pages/Signup';
 export { default as Login } from '../pages/Login';
 export { default as HomePage } from '../pages/HomePage';
 export { default as Layout } from '../components/Layout';
-export { default as Test } from '../pages/Test';
 export { default as Mypage } from '../pages/Mypage';
 export { default as StationeryCategory } from '../pages/user/categories/StationeryCategory';
 export { default as ProductDetail } from '../pages/user/categories/ProductDetail';
