@@ -2,8 +2,6 @@ import userProfile from '/icons/user_icon.png';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/mypage/mypage.module.css';
-// import DaumPostcode, { Address } from 'react-daum-postcode';
-// import Modal from 'react-modal';
 import { Button, Input } from 'ys-project-ui';
 import MypageCategories from '../components/categories/MypageCategories';
 import { useUserContext } from '../context/UserContext';
