@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Footer from '../components/Footer';
+import Footer from '@components/Footer';
 import '../index.css';
 import Header from './Header';
 import { ToastContainer } from 'react-toastify';
@@ -18,7 +18,6 @@ const Layout = () => {
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
-        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

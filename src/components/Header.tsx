@@ -1,11 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from '../context/UserContext';
-import styles from '../css/header.module.css';
+import { useUserContext } from '@context/UserContext';
+import styles from '@css/header.module.css';
 import cartIcon from '/icons/cart_icon.png';
 import defaultProfile from '/icons/user_icon.png';
 import fanspickLogo from '/icons/user_header_logo.png';
-import userMenu from '../consts/user/userHeader';
-import managerMenu from '../consts/manager/managerHeader';
+import userMenu from '@consts/user/userHeader';
+import managerMenu from '@consts/manager/managerHeader';
+
+interface MenuItem {
+  path: string;
+  label: string;
+}
 
 const Header = () => {
   const { user, logout } = useUserContext();
@@ -13,7 +18,7 @@ const Header = () => {
 
   // 메뉴 렌더링
   const renderMenu = () => {
-    const menu = user?.role === 'manager' ? managerMenu : userMenu;
+    const menu: MenuItem[] = user?.role === 'manager' ? managerMenu : userMenu;
     return menu.map((item, index) => (
       <li key={index} className={styles.navItem}>
         <a
