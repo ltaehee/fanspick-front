@@ -1,56 +1,39 @@
 import styles from '../css/homepage.module.css';
 import ProductCard from '../components/product/ProductCard';
-import dummyImg1 from '/images/product/dog1.jpg';
-import dummyImg2 from '/images/product/dog2.jpg';
-import dummyImg3 from '/images/product/pet2.jpg';
+import api from '../utils/api';
+import { useEffect, useState } from 'react';
 
-interface Product {
-  id: number;
-  imageUrl: string;
-  title: string;
+export interface ProductProps {
+  _id: string;
+  name: string;
   price: string;
+  introduce: string;
+  image: string;
+  detailImage: string[];
+  category: {
+    name: string[];
+  };
 }
 
-export const products: Product[] = [
-  {
-    id: 1,
-    title: '상품 1',
-    price: '10,000원',
-    imageUrl: dummyImg1,
-  },
-  {
-    id: 2,
-    title: '상품 2',
-    price: '20,000원',
-    imageUrl: dummyImg2,
-  },
-  {
-    id: 3,
-    title: '상품 3',
-    price: '30,000원',
-    imageUrl: dummyImg3,
-  },
-  {
-    id: 4,
-    title: '상품 4',
-    price: '15,000원',
-    imageUrl: dummyImg1,
-  },
-  {
-    id: 5,
-    title: '상품 4',
-    price: '15,000원',
-    imageUrl: dummyImg2,
-  },
-  {
-    id: 6,
-    title: '상품 4',
-    price: '15,000원',
-    imageUrl: dummyImg3,
-  },
-];
-
 const HomePage = () => {
+  const [getProduct, setGetProduct] = useState<ProductProps[]>([]);
+  const getAllProduct = async () => {
+    try {
+      const response = await api.get('/manager/getAllProduct');
+      console.log('test', response);
+      if (response.status === 201) {
+        console.log('전체 상품 가져오기 성공', response.data.product);
+        setGetProduct(response.data.product);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
   return (
     <div className={styles.container}>
       <h2>이달의 한정판 굿즈</h2>
@@ -60,11 +43,12 @@ const HomePage = () => {
         이달만 만날 수 있는 특별한 굿즈를 확인하세요.
       </h1>
       <div className={styles.productListWrap}>
-        {products.map((product) => (
+        {getProduct.map((product, index) => (
           <ProductCard
-            id={product.id}
-            imageUrl={product.imageUrl}
-            title={product.title}
+            key={index}
+            _id={product._id}
+            image={product.image}
+            name={product.name}
             price={product.price}
           />
         ))}
