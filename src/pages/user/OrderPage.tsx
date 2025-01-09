@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from 'react';
 import api from '../../utils/api';
-import ProductTableHeaderMenu from '../../components/productTable/ProductTableHeaderMenu';
 import ProductTableHeader from '../../components/productTable/ProductTableHeader';
 import ProductTableMenu from '../../components/productTable/ProductTableMenu';
 import tableStyles from '../../css/productTable/productTable.module.css';
@@ -106,19 +105,19 @@ const OrderPage = () => {
       <div className={orderstyles.orderPageWrap}>
         <div className={orderstyles.productInfoWrap}>
           <ProductTableHeader className={tableStyles.Header_wrap}>
-            <ProductTableHeaderMenu
+            <ProductTableHeader.Menu
               menu="상품정보"
               className={tableStyles.Header_menu_first}
             />
-            <ProductTableHeaderMenu
+            <ProductTableHeader.Menu
               menu="판매 금액"
               className={tableStyles.Header_menu}
             />
-            <ProductTableHeaderMenu
+            <ProductTableHeader.Menu
               menu="수량"
               className={tableStyles.Header_menu}
             />
-            <ProductTableHeaderMenu
+            <ProductTableHeader.Menu
               menu=""
               className={tableStyles.Header_menu}
             />
