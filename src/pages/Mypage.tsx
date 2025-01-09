@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AWS from "aws-sdk";
 import AddressSearch from '../components/AddressSearch';
+import { businessNumberPattern, emailPattern, passwordPattern } from '../consts/patterns';
 
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
@@ -142,13 +143,18 @@ const Mypage = () => {
             return;
         }
 
-        if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(updatedUser.password)) {
-            toast.error('비밀번호는 8자리 이상, 숫자, 특수문자(@&!%*?&)를 포함해야 합니다.');
+        if (!passwordPattern.test(updatedUser.password)) {
+            toast.error('비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.');
+            return;
+        }
+        
+        if (!emailPattern.test(updatedUser.email)) {
+            toast.error('올바른 이메일 형식을 입력해주세요.');
             return;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updatedUser.email)) {
-            toast.error('올바른 이메일 형식이 아닙니다. 이메일을 다시 확인해주세요.');
+        if (updatedUser.role === 'manager' && updatedUser.businessNumber && !businessNumberPattern.test(updatedUser.businessNumber)) {
+            toast.error('올바른 사업자번호 형식이 아닙니다. (예: 123-45-67890)');
             return;
         }
 
@@ -167,9 +173,10 @@ const Mypage = () => {
             });
             if (response.status === 200) {
                 toast.success('회원정보 수정 성공');
-                const updatedUserData = response.data.user;
-
-                // UserContext 상태와 로컬 스토리지 업데이트
+                const updatedUserData = {
+                    ...response.data.user,
+                    role: loggedInUser!.role, // 기존 역할 유지
+                };
                 updateUser(updatedUserData);
                 localStorage.setItem('user', JSON.stringify(updatedUserData));
             }
@@ -211,15 +218,12 @@ const Mypage = () => {
                         <label>이메일</label>
                         <Input placeholder="이메일" name="email" value={updatedUser.email} onChange={handleChange} className={styles.ul_input} />
                     </li>
-                    <li className={styles.li}>
-                        <label>비밀번호</label>
-                        <Input placeholder="비밀번호 확인" type="password" name="password" value={updatedUser.password} onChange={handleChange} className={styles.ul_input} />
-                    </li>
                     {/* 사업자번호 (매니저만 표시) */}
                     {updatedUser.role === 'manager' && (
                         <li className={styles.li}>
                             <label>사업자번호</label>
                             <Input placeholder="사업자번호" name="businessNumber" value={updatedUser.businessNumber} onChange={handleChange} className={styles.ul_input} />
+                            <p style={{fontSize:"12px", color:"blue"}}>사업자등록번호는 10자리 숫자여야 합니다.ex) 123-45-67890</p>
                         </li>
                     )}
 
@@ -247,6 +251,11 @@ const Mypage = () => {
                     </li>
                     <li className={styles.li}>
                         <Input className={styles.ul_input} placeholder="상세 주소" name="detailAddress" value={address.detailAddress || ''} onChange={handleChange} />
+                    </li>
+                    <li className={styles.li}>
+                        <label>비밀번호</label>
+                        <Input placeholder="비밀번호 확인" type="password" name="password" value={updatedUser.password} onChange={handleChange} className={styles.ul_input} />
+                        <p style={{fontSize:"12px", color:"red"}}>안전한 회원정보 수정을 위해 비밀번호를 입력해주세요.</p>
                     </li>
                 </ul>
             </div>
