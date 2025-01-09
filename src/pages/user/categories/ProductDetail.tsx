@@ -18,7 +18,7 @@ interface PaymentData {
   name: string;
   amount: number;
 }
-const mockProduct = {
+export const mockProduct = {
   id: 4,
   title: "상품1232311",
   price: 100,
