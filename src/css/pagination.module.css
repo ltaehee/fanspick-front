@@ -1,0 +1,64 @@
+.pageButton {
+  display: flex;
+  gap: 5px;
+  justify-content: center; 
+  margin-top: 10px; /* 위쪽 여백 */
+}
+
+.pageButton button {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  cursor: pointer;
+  text-align: center;
+  line-height: 32px;
+}
+
+.pageButton button:disabled {
+  background-color: #f9f9f9;
+  border-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pageButton button.active {
+  background-color: #ffd700;
+  color: white;
+  border-color: #ffa500;
+}
+
+.disabled {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.disabled button {
+  width: 50px;
+  height: 32px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  text-align: center;
+  line-height: 32px;
+}
+
+.disabled button:hover {
+  background-color: #f4f4f4;
+}
+
+.disabled button:disabled {
+  background-color: #f9f9f9;
+  border-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}

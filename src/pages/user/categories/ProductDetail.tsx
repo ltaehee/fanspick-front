@@ -1,15 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../../css/product/productDetail.module.css';
-import dummyImg2 from '/images/product/dog2.jpg';
+// import dummyImg2 from '/images/product/dog2.jpg';
 import { Button, Tabs } from 'ys-project-ui';
 import { useEffect, useState } from 'react';
 import ProductCount from '../../../components/product/ProductCount';
-import ReviewBox from '../../../components/review/ReviewBox';
-import profileImg from '/icons/user_icon.png';
+// import ReviewBox from '../../../components/review/ReviewBox';
+// import profileImg from '/icons/user_icon.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from '../../../context/UserContext';
 import api from '../../../utils/api';
+import ProductReviewPage from '../review/ProductReviews';
 
 interface PaymentData {
   pg: string;
@@ -31,23 +32,23 @@ interface ProductDetailProps {
   detailImage: string[];
 }
 
-const mockReviews = [
-  {
-    profileImg: profileImg,
-    username: '이 * 희',
-    productName: '강아지 그립톡',
-    productImg: dummyImg2,
-    reviewContent:
-      '그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
-  },
-  {
-    profileImg: profileImg,
-    username: '이 * 희',
-    productName: '고양이 그립톡',
-    productImg: dummyImg2,
-    reviewContent: '그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
-  },
-];
+// const mockReviews = [
+//   {
+//     profileImg: profileImg,
+//     username: '이 * 희',
+//     productName: '강아지 그립톡',
+//     productImg: dummyImg2,
+//     reviewContent:
+//       '그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
+//   },
+//   {
+//     profileImg: profileImg,
+//     username: '이 * 희',
+//     productName: '고양이 그립톡',
+//     productImg: dummyImg2,
+//     reviewContent: '그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
+//   },
+// ];
 
 const ProductDetail = () => {
   const [getProduct, setGetProduct] = useState<ProductDetailProps | null>(null);
@@ -195,18 +196,7 @@ const ProductDetail = () => {
           </div>
         </Tabs.Pannel>
         <Tabs.Pannel>
-          <div className={styles.reviewListWrap}>
-            {mockReviews.map((review, index) => (
-              <ReviewBox
-                key={index}
-                profileImg={review.profileImg}
-                username={review.username}
-                productName={review.productName}
-                productImg={review.productImg}
-                reviewContent={review.reviewContent}
-              />
-            ))}
-          </div>
+          <ProductReviewPage productId={getProduct._id} />
         </Tabs.Pannel>
       </Tabs>
     </div>
