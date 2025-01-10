@@ -1,5 +1,5 @@
 import styles from '@css/review.module.css';
-import deleteIcon from '/icons/trash_icon.png';
+import deleteIcon from '/icons/trash.png';
 import editIcon from '/icons/edit_icon.png';
 import Star from './Star';
 
@@ -38,7 +38,7 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
             src={editIcon}
             alt="수정"
             className={styles.editIcon}
-            onClick={onEditClick} 
+            onClick={onEditClick}
           />
           <img
             src={deleteIcon}
