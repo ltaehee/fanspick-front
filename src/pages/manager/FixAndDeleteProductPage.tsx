@@ -27,6 +27,7 @@ interface CheckedCategory {
 }
 
 const FixAndDeleteProductPage = () => {
+  // const [productId, set_id] = useState('');
   const [managerId, setManagerId] = useState('');
   const [categories, setCategories] = useState([]); // db에서 가져온 카테고리
   const [productName, setproductName] = useState(''); // 상품이름
@@ -37,22 +38,25 @@ const FixAndDeleteProductPage = () => {
   >([]);
   const [imgUrl, setImgUrl] = useState<string>(''); // 상품이미지
   const [awsImgAddress, setAwsImgAddress] = useState(''); // 상품이미지 저장된 S3 주소
-  const [awsDetailImgAddress, setAwsDetailImgAddress] = useState<string[]>([]); // 상품상세이미지 저장된 S3 주소
   const [predetailViewUrls, setPreDetailViewUrls] = useState<string[]>([]); // 상세이미지 미리보기 url
+  const [awsDetailImgAddress, setAwsDetailImgAddress] = useState<string[]>([]); // 상품상세이미지 저장된 S3 주소
+
   const imgRef = useRef<HTMLInputElement>(null);
   const imgDetailRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
   const { user } = useUserContext();
-  console.log('managerId ', managerId);
+  const productId = localStorage.getItem('productId');
+
+  console.log('awsImgAddress ', awsImgAddress);
   console.log('awsDetailImgAddress ', awsDetailImgAddress);
+
+  // console.log('awsDetailImgAddress ', awsDetailImgAddress);
 
   useMemo(() => {
     if (user) {
       setManagerId(user.id);
     }
   }, [user]);
-
-  // console.log("상품상세이미지 ", predetailViewUrls);
 
   // AWS S3 설정
   const configAws = () => {
@@ -289,35 +293,60 @@ const FixAndDeleteProductPage = () => {
       return;
     }
 
-    try {
-      const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
-      const categoryIndex = categoryCheckedId[0];
-      // console.log("categoryIndex ", categoryIndex);
+    const isConfirmed = window.confirm('정말로 수정하시겠습니까?');
+    if (isConfirmed) {
+      try {
+        const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
+        const categoryIndex = categoryCheckedId[0];
+        // console.log("categoryIndex ", categoryIndex);
 
-      const data = {
-        userId: managerId,
-        name: productName,
-        price: productPrice,
-        introduce: productintroduce,
-        categoryIndex: categoryIndex,
-        image: awsImgAddress,
-        detailImage: awsDetailImgAddress,
-      };
-      console.log('data ', data);
-      // const response = await api.post('/manager/product', data);
-      // console.log('response data ', response.data);
-      // console.log('response status ', response.status);
+        const data = {
+          _id: productId,
+          userId: managerId,
+          name: productName,
+          price: productPrice,
+          introduce: productintroduce,
+          categoryIndex: categoryIndex,
+          image: awsImgAddress,
+          detailImage: awsDetailImgAddress,
+        };
+        console.log('data ', data);
+        const response = await api.put('/manager/update', data);
+        console.log('response data ', response.data);
+        console.log('response status ', response.status);
 
-      // if (response.status === 201) {
-      //   toast.success('상품 등록이 완료되었습니다.');
-      //   navigator('/select-product');
-      // }
-    } catch (error) {
-      const err = error as AxiosError;
-      if (err.response?.status === 400) {
-        console.log('입력이 안된 필드값이 있습니다. 다시 시도해 주세요. ', err);
-      } else if (err.response?.status === 500) {
-        console.log('internal error ', err);
+        if (response.status === 204) {
+          toast.success('상품 수정이 완료되었습니다.');
+          navigator('/select-product');
+        }
+      } catch (error) {
+        const err = error as AxiosError;
+        if (err.response?.status === 400) {
+          console.log(
+            '입력이 안된 필드값이 있습니다. 다시 시도해 주세요. ',
+            err,
+          );
+        } else if (err.response?.status === 500) {
+          console.log('internal error ', err);
+        }
+      }
+    }
+  };
+
+  const handleClickDeleteButton = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
+
+    if (isConfirmed) {
+      try {
+        const response = await api.delete(`/manager/delete/${productId}`);
+        if (response.status === 204) {
+          toast.success('상품 삭제가 완료되었습니다.');
+          navigator('/select-product');
+        }
+      } catch (err) {
+        console.log(err);
       }
     }
   };
@@ -326,7 +355,7 @@ const FixAndDeleteProductPage = () => {
     try {
       const response = await api.get('/manager/category');
       if (response.status === 200) {
-        // console.log("프론트 카테고리 가져오기 성공", response.data.data);
+        console.log('프론트 카테고리 가져오기 성공', response.data.data);
         const category = response.data.data[0].name;
         setCategories(category);
       }
@@ -334,14 +363,36 @@ const FixAndDeleteProductPage = () => {
       console.log(err);
     }
   };
+  const getProduct = async () => {
+    try {
+      const response = await api.get(`/manager/product/${productId}`);
+      if (response.status === 200) {
+        console.log('단일 상품정보 가져오기 성공', response.data.product);
+        const productData = response.data.product;
+        setproductName(productData.name);
+        setproductPrice(productData.price);
+        setProductIntroduce(productData.introduce);
+        setImgUrl(productData.image);
+        setAwsImgAddress(productData.image);
+        setPreDetailViewUrls(productData.detailImage);
+        setAwsDetailImgAddress(productData.detailImage);
+        setCategoryCheckedList([{ id: 0, item: productData.category.name[0] }]);
+
+        // console.log('categoryCheckedList ', categoryCheckedList);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     getCategory();
+    getProduct();
   }, []);
   return (
     <>
       <div className={styles.body}>
         <div className={styles.main}>
-          <h1>상품등록</h1>
+          <h1>상품상세조회</h1>
         </div>
         <div className={styles.addProduct}>
           <section className={styles.addProductInfo}>
@@ -484,9 +535,15 @@ const FixAndDeleteProductPage = () => {
             <div className={styles.buttonContainer}>
               <Button
                 className={styles.submitButton}
-                label="상품등록하기"
+                label="상품수정하기"
                 type="button"
                 onClick={handleClickSubmitButton}
+              ></Button>
+              <Button
+                className={styles.submitButton}
+                label="상품삭제하기"
+                type="button"
+                onClick={handleClickDeleteButton}
               ></Button>
             </div>
           </section>
