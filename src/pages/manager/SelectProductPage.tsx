@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '@utils/api';
 import styles from '@css/manager/selectProductPage.module.css';
 import { useUserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 /* 상품이미지 클릭하면 상품상세페이지로 네비 넣기 */
 interface ProductProps {
@@ -20,8 +21,8 @@ interface ProductProps {
 const SelectProductPage = () => {
   const [getProduct, setGetProduct] = useState<ProductProps[]>([]);
   const [userId, setUserId] = useState('');
-
   const { user } = useUserContext();
+  const navigator = useNavigate();
   console.log('userId ', userId);
 
   useMemo(() => {
@@ -30,7 +31,10 @@ const SelectProductPage = () => {
     }
   }, [user]);
 
-  const handleClickCard = () => {};
+  const handleClickCard = (product: ProductProps) => {
+    localStorage.setItem('productId', product._id);
+    navigator('/fix-product');
+  };
 
   const getAllProduct = async () => {
     try {
@@ -57,7 +61,7 @@ const SelectProductPage = () => {
           .map((product, index) => (
             <div
               key={index}
-              onClick={handleClickCard}
+              onClick={() => handleClickCard(product)}
               className={styles.productCard}
             >
               <img
