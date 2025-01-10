@@ -10,19 +10,25 @@ import MypageHeader from '@components/categories/MypageCategories';
 import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import trash from '/icons/trash.png';
+import api from '../../../utils/api';
 
 interface Cart {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
+  _id: string;
   quantity: number;
 } //quantity 추후 작업
+
+interface Detail {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+}
 
 const MypageCart = () => {
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState<Cart[]>([]);
-  const [cart, setCart] = useState<Cart[]>([]);
+  const [cart, setCart] = useState<Cart[]>([]); //로컬에서 가져온 장바구니 내역
+  const [isDetail, setIsDetail] = useState<Detail[]>([]);
   const { user } = useUserContext();
 
   const userId = user?.id;
@@ -30,7 +36,7 @@ const MypageCart = () => {
     toast.error('로그인이 필요합니다.');
     return;
   }
-  console.log('cart', cart);
+
   //장바구니 내역 가져오기
   const localCart = JSON.parse(localStorage.getItem(`cart_${userId}`) || '[]');
 
@@ -40,23 +46,35 @@ const MypageCart = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const getProductDetail = async () => {
+      const ids = cart.map((item) => item._id); // 상품의 아이디만 담은 배열
+
+      try {
+        const response = await api.get('/manager/product-by-ids', {
+          params: { ids },
+        }); //장바구니에 담긴 상품의 id를 전달
+        console.log(response.data);
+        setIsDetail(response.data.products);
+      } catch (err) {
+        console.error('장바구니 상품 조회 실패', err);
+      }
+    };
+
+    getProductDetail();
+  }, [cart]);
+
   //장바구니 내역 전체 삭제하기
   const deleteCart = () => {
     setCart([]);
   };
-
-  useEffect(() => {
-    if (cart) {
-      localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
-    }
-  }, [cart]);
 
   //수량 빼기
   const handleDown = (id: string) => {
     setCart((prevCart) =>
       prevCart.map(
         (product) =>
-          product.id === id && product.quantity > 0
+          product._id === id && product.quantity > 0
             ? { ...product, quantity: product.quantity - 1 } // 수량 감소
             : product, // 다른 상품은 변경하지 않음
       ),
@@ -68,7 +86,7 @@ const MypageCart = () => {
     setCart((prevCart) =>
       prevCart.map(
         (product) =>
-          product.id === id
+          product._id === id
             ? { ...product, quantity: product.quantity + 1 } // 수량 증가
             : product, // 다른 상품은 변경 하지 않음
       ),
@@ -76,24 +94,24 @@ const MypageCart = () => {
   };
 
   const isChecked = (id: string) =>
-    isSelected.some((product) => product.id === id);
+    isSelected.some((product) => product._id === id);
 
   //선택된 아이템 관리
   const handleChangeCheckBox = (id: string) => {
     setIsSelected((prev) => {
       // 이미 선택된 id가 있으면 해당 상품 객체를 배열에서 제거
-      if (prev.some((product) => product.id === id)) {
-        return prev.filter((product) => product.id !== id);
+      if (prev.some((product) => product._id === id)) {
+        return prev.filter((product) => product._id !== id);
       }
       // id가 없으면 cart에서 해당 상품을 찾아서 추가 (undefined가 아닌 값만 추가)
-      const product = cart.find((product) => product.id === id);
+      const product = cart.find((product) => product._id === id);
       return product ? [...prev, product] : prev; // 상품이 없으면 배열을 그대로 반환
     });
   };
 
   //장바구니 선택한 하나의 아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
-    setCart((prev) => prev.filter((product) => product.id !== productId));
+    setCart((prev) => prev.filter((product) => product._id !== productId));
   };
 
   return (
@@ -127,33 +145,38 @@ const MypageCart = () => {
             </ProductTableHeader>
             <ProductTableMenu>
               {cart.map((product) => (
-                <div key={product.id} className={tableStyles.content}>
+                <div key={product._id} className={tableStyles.content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
-                    productId={product.id}
-                    isChecked={isChecked(product.id)}
+                    productId={product._id}
+                    isChecked={isChecked(product._id)}
                     onChange={handleChangeCheckBox}
                   />
-                  <ProductTableMenu.Detail
-                    onClick={() => navigate('/add-review')}
-                    productName={product.name}
-                  />
-                  <ProductTableMenu.Content content={product.price} />
+                  {isDetail.map((product) => (
+                    <div>
+                      <ProductTableMenu.Detail
+                        onClick={() => navigate('/add-review')}
+                        productName={product.name}
+                      />
+                      <ProductTableMenu.Content content={product.price} />
+                    </div>
+                  ))}
+
                   <div className={tableStyles.quantity_wrap}>
                     <ProductTableMenu.QuantityButton
                       label="-"
                       onClick={handleDown}
-                      id={product.id}
+                      id={product._id}
                     />
                     <ProductTableMenu.Quantity quantity={product.quantity} />
                     <ProductTableMenu.QuantityButton
                       label="+"
                       onClick={handleUp}
-                      id={product.id}
+                      id={product._id}
                     />
                   </div>
                   <ProductTableMenu.DeleteButton
-                    productId={product.id}
+                    productId={product._id}
                     onClick={handleDeleteItem}
                     image={trash}
                   />
