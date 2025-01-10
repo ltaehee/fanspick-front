@@ -9,6 +9,9 @@ import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
 import { useLocation } from 'react-router-dom';
+import { addCommas } from '../../utils/util';
+import { toast } from 'react-toastify';
+import { emailPattern } from '../../consts/patterns';
 
 const OrderPage = () => {
   const { user, token } = useUserContext();
@@ -56,23 +59,25 @@ const OrderPage = () => {
     }
   };
 
-  /* 예시 데이터 */
-  /* const [userId] = useState("60d5f8f5b2c7a38b9c9d56d4");
-  const [products] = useState([
-    { productId: "60d5f8f5b2c7a38b9c9d56d5", quantity: 2, price: 100 },
-  ]);
-  const [orderAddress] = useState({
-    roadAddress: "123 Road St.",
-    jibunAddress: "Jibun Address",
-    zoneCode: "12345",
-    detail: "Some details here",
-  });
-  const [imp_uid] = useState("imp123456789"); */
-
   const handleOrderClick = async () => {
-    console.log('상품데이터', location);
-    console.log('토큰큰', token);
-
+    const { name, email } = updatedUser;
+    if (!name.trim()) {
+      toast.error('이름을 입력해주세요.');
+      return;
+    }
+    if (!emailPattern.test(email)) {
+      toast.error('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+    if (
+      !address.roadAddress.trim() ||
+      !address.zoneCode.trim() ||
+      !address.jibunAddress.trim() ||
+      !address.detailAddress.trim()
+    ) {
+      toast.error('주소를 입력해주세요.');
+      return;
+    }
     const orderData = {
       userId,
       products: [
@@ -83,8 +88,8 @@ const OrderPage = () => {
       ],
       orderAddress: address,
       imp_uid: 'imp123456789',
+      totalPrice,
     };
-    console.log({ orderData });
 
     try {
       const response = await api.post('/purchase/order', orderData, {
@@ -92,20 +97,19 @@ const OrderPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('test', response);
       if (response.status === 200) {
-        console.log('Order created successfully:', response.data);
-        alert('주문이 완료되었습니다!');
+        toast.success('주문이 완료되었습니다!');
       }
     } catch (error) {
       console.error('Error creating order:');
-      alert('주문 생성에 실패했습니다.');
+      toast.error('주문 생성에 실패했습니다.');
     }
   };
 
   return (
     <>
       <div className={orderstyles.orderPageWrap}>
+        <h2 className={orderstyles.h2}>주문 페이지</h2>
         <div className={orderstyles.productInfoWrap}>
           <ProductTableHeader className={orderstyles.Header_wrap}>
             <ProductTableHeader.Menu
@@ -127,7 +131,7 @@ const OrderPage = () => {
                 productName={product.name}
                 image={product.image}
               />
-              <ProductTableMenu.Content content={product.price} />
+              <ProductTableMenu.Content content={addCommas(product.price)} />
               <div className={tableStyles.quantity_wrap}>
                 <ProductTableMenu.Quantity quantity={quantity} />
               </div>
@@ -135,11 +139,11 @@ const OrderPage = () => {
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액 {product.price}원</p>
+          <p>주문상품금액 {addCommas(product.price)}원</p>
           <p>+</p>
-          <p>배송비 0(무료)</p>
+          <p>배송비 0원(무료)</p>
           <p>=</p>
-          <p>최종 결제 금액 {totalPrice}원</p>
+          <p>최종 결제 금액 {addCommas(totalPrice)}원</p>
         </div>
         <h3 className={orderstyles.h3}>고객 / 배송지 정보</h3>
         <div className={orderstyles.inputBoxWrap}>
@@ -153,10 +157,19 @@ const OrderPage = () => {
           </div>
           <div className={orderstyles.inputBox}>
             <label>이메일</label>
-            <input />
+            <Input
+              name="email"
+              onChange={handleChange}
+              value={updatedUser.email}
+            />
           </div>
         </div>
 
+        <Button
+          onClick={() => setIsOpen(true)}
+          label="주소 검색"
+          className={orderstyles.addressSearchBtn}
+        />
         <div className={orderstyles.inputBoxWrap}>
           <Input
             placeholder="우편번호"
@@ -164,7 +177,12 @@ const OrderPage = () => {
             value={address.zoneCode || ''}
             onChange={handleChange}
           />
-          <Button onClick={() => setIsOpen(true)} label="주소 검색" />
+          <Input
+            placeholder="도로명 주소"
+            name="roadAddress"
+            value={address.roadAddress || ''}
+            onChange={handleChange}
+          />
         </div>
         <AddressSearch
           isOpen={isOpen}
@@ -172,12 +190,6 @@ const OrderPage = () => {
           onComplete={handleDaumPost}
         />
         <div className={orderstyles.inputBoxWrap}>
-          <Input
-            placeholder="도로명 주소"
-            name="roadAddress"
-            value={address.roadAddress || ''}
-            onChange={handleChange}
-          />
           <Input
             placeholder="상세 주소"
             name="detailAddress"

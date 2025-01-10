@@ -4,18 +4,9 @@ import { useUserContext } from '../../context/UserContext';
 
 interface ProductProps {
   _id: string;
-  name: string;
-  price: string;
-  image: string;
   className: string;
 }
-const FavoritesBtn: FC<ProductProps> = ({
-  _id,
-  name,
-  price,
-  image,
-  className,
-}) => {
+const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
   const { user } = useUserContext();
   const userId = user?.id;
 
@@ -46,8 +37,7 @@ const FavoritesBtn: FC<ProductProps> = ({
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
     if (!isFavorite) {
       // 즐겨찾기에 추가
-      const favoriteData = { _id, name, price, image };
-      const updatedFavorites = [...favorites, favoriteData];
+      const updatedFavorites = [...favorites, { _id }];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {

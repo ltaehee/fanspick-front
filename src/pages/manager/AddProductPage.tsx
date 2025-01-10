@@ -10,12 +10,13 @@ import styles from '@css/manager/addProductPage.module.css';
 import { Button, Input } from 'ys-project-ui';
 import { AxiosError } from 'axios';
 import addImg from '/icons/addImg.png';
-import xImg from '/icons/xImg.png';
+import cancel from '/icons/cancel.png';
 import api from '@utils/api';
 import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from '../../context/UserContext';
+import { useUserContext } from '@context/UserContext';
+import { addCommas } from '@utils/util';
 
 /* 등록버튼 네비게이션ㅇ, 더블클릭막기ㅇ, 상세이미지 width 300px 이면 깨짐이슈, 이미지 등록 삭제 버튼추가ㅇ*/
 
@@ -386,7 +387,7 @@ const AddProductPage = () => {
                       alt=""
                       onClick={handleClickDefaultImage}
                     />
-                    <img src={xImg} alt="" className={styles.xImg} />
+                    <img src={cancel} alt="" className={styles.cancel} />
                     <div
                       className={styles.overlay}
                       onClick={() => handleDeleteImage()}
@@ -413,7 +414,7 @@ const AddProductPage = () => {
                   type="text"
                   placeholder="가격"
                   onChange={handleChangePrice}
-                  value={productPrice}
+                  value={addCommas(Number(productPrice))}
                 />
               </div>
             </div>
@@ -478,6 +479,7 @@ const AddProductPage = () => {
                       onClick={() => handleDeleteDetailImage(i)}
                     >
                       <p className={styles.deleteDetailImg}>삭제</p>
+                      <img src={cancel} alt="" className={styles.cancel} />
                     </div>
                   </div>
                 ))}
