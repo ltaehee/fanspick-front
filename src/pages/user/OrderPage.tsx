@@ -11,13 +11,12 @@ import { useUserContext } from '../../context/UserContext';
 import { useLocation } from 'react-router-dom';
 
 const OrderPage = () => {
-  const { user } = useUserContext();
+  const { user, token } = useUserContext();
   const userId = user?.id;
 
   const location = useLocation();
   const { product, quantity } = location.state;
   const totalPrice = product.price * quantity;
-  console.log('상품데이터', location);
 
   const [address, setAddress] = useState({
     roadAddress: '',
@@ -71,6 +70,9 @@ const OrderPage = () => {
   const [imp_uid] = useState("imp123456789"); */
 
   const handleOrderClick = async () => {
+    console.log('상품데이터', location);
+    console.log('토큰큰', token);
+
     const orderData = {
       userId,
       products: [
@@ -85,7 +87,11 @@ const OrderPage = () => {
     console.log({ orderData });
 
     try {
-      const response = await api.post('/purchase/order', orderData);
+      const response = await api.post('/purchase/order', orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log('test', response);
       if (response.status === 200) {
         console.log('Order created successfully:', response.data);
