@@ -3,7 +3,10 @@
   width: 100%;
   border-bottom: 1px solid rgb(204, 204, 204);
   padding-bottom: 1rem;
-  padding-top: 1rem;
+  background-color: #f1f0f0;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 .reviewBox:first-child {
   padding-top: 0;
@@ -46,13 +49,13 @@
 }
 
 .reviewTitle{
-  font-size: 20px;
-  background-color: #ffd700;
+  font-size: 18px;
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 3px;
 }
 .reviewContent {
+  font-size: 12px;
   padding-top: 10px;
 }
 /* /  / / / / / / / / / / / / / */

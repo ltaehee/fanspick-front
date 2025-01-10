@@ -1,13 +1,13 @@
-import styles from "@css/review.module.css";
-import Star from "./Star";
+import styles from '@css/review.module.css';
+import Star from './Star';
 
 interface ReviewBoxProps {
   profileImg: string;
   username: string;
   reviewTitle: string;
-  productImgs: string[]; 
+  productImgs: string[];
   reviewContent: string;
-  starpoint: number; 
+  starpoint: number;
   className?: string;
 }
 
@@ -15,10 +15,10 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
   profileImg,
   username,
   reviewTitle,
-  productImgs,
+  productImgs = [],
   reviewContent,
   starpoint,
-  className = "",
+  className = '',
 }) => {
   return (
     <div className={`${styles.reviewBox} ${className}`}>
@@ -41,7 +41,12 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
         <p className={styles.reviewTitle}>{reviewTitle}</p>
         <div className={styles.reviewImgBox}>
           {productImgs.map((img, index) => (
-            <img key={index} src={img} alt={`리뷰 이미지 ${index}`} className={styles.productImg} />
+            <img
+              key={index}
+              src={img}
+              alt={`리뷰 이미지 ${index}`}
+              className={styles.productImg}
+            />
           ))}
         </div>
         <p className={styles.reviewContent}>{reviewContent}</p>

@@ -15,6 +15,7 @@ const Layout = () => {
         <Footer />
       </div>
       <ToastContainer
+      toastStyle={{ width: "400px"}}
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
