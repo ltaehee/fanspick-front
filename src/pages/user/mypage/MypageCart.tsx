@@ -64,6 +64,10 @@ const MypageCart = () => {
     getProductDetail();
   }, [cart]);
 
+  useEffect(() => {
+    console.log('isDetail', isDetail);
+  }, [isDetail]);
+
   //장바구니 내역 전체 삭제하기
   const deleteCart = () => {
     setCart([]);
@@ -114,6 +118,11 @@ const MypageCart = () => {
     setCart((prev) => prev.filter((product) => product._id !== productId));
   };
 
+  const productDetailMap = cart.map((product) => ({
+    ...product,
+    detail: isDetail.find((detail) => detail._id === product._id), //id가 같으면 detail에 넣기
+  }));
+
   return (
     <div className={cartStyles.content_wrap}>
       <MypageHeader />
@@ -144,7 +153,7 @@ const MypageCart = () => {
               />
             </ProductTableHeader>
             <ProductTableMenu>
-              {cart.map((product) => (
+              {productDetailMap.map((product) => (
                 <div key={product._id} className={tableStyles.content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
@@ -152,16 +161,11 @@ const MypageCart = () => {
                     isChecked={isChecked(product._id)}
                     onChange={handleChangeCheckBox}
                   />
-                  {isDetail.map((product) => (
-                    <div>
-                      <ProductTableMenu.Detail
-                        onClick={() => navigate('/add-review')}
-                        productName={product.name}
-                      />
-                      <ProductTableMenu.Content content={product.price} />
-                    </div>
-                  ))}
-
+                  <ProductTableMenu.Detail
+                    onClick={() => navigate('/add-review')}
+                    productName={product.detail?.name}
+                  />
+                  <ProductTableMenu.Content content={product.detail?.price} />
                   <div className={tableStyles.quantity_wrap}>
                     <ProductTableMenu.QuantityButton
                       label="-"
