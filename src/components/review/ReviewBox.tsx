@@ -1,29 +1,25 @@
-import styles from "../../css/review.module.css";
-import { useState } from "react";
+import styles from "@css/review.module.css";
 import Star from "./Star";
 
 interface ReviewBoxProps {
   profileImg: string;
   username: string;
-  productName: string;
-  productImg: string;
+  reviewTitle: string;
+  productImgs: string[]; 
   reviewContent: string;
+  starpoint: number; 
   className?: string;
 }
 
 const ReviewBox: React.FC<ReviewBoxProps> = ({
   profileImg,
   username,
-  productName,
-  productImg,
+  reviewTitle,
+  productImgs,
   reviewContent,
+  starpoint,
   className = "",
 }) => {
-  const [rating, setRating] = useState(0);
-
-  const handleClick = (index: number) => {
-    setRating(index);
-  };
   return (
     <div className={`${styles.reviewBox} ${className}`}>
       <div className={styles.profileBox}>
@@ -33,22 +29,20 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
           className={styles.profileImg}
         />
         <div className={styles.profileInfoBox}>
-          <p>{username}</p>
+          <p className={styles.username}>{username}</p>
           <div className={styles.starBox}>
             {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                filled={star <= rating}
-                onClick={() => handleClick(star)}
-              />
+              <Star key={star} filled={star <= starpoint} onClick={() => {}} />
             ))}
           </div>
         </div>
       </div>
       <div>
-        <p className={styles.productName}>{productName}</p>
+        <p className={styles.reviewTitle}>{reviewTitle}</p>
         <div className={styles.reviewImgBox}>
-          <img src={productImg} alt="제품 이미지" />
+          {productImgs.map((img, index) => (
+            <img key={index} src={img} alt={`리뷰 이미지 ${index}`} className={styles.productImg} />
+          ))}
         </div>
         <p className={styles.reviewContent}>{reviewContent}</p>
       </div>

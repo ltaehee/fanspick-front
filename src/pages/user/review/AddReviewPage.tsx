@@ -85,7 +85,7 @@ const AddReviewPage = () => {
         (url) => url !== null
       );
       const reviewData = {
-        productId: "64abcdef1234567890abcdef",
+        productId: "677f2f0105e6231849601c8a",
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
