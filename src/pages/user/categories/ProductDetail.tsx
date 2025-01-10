@@ -77,12 +77,21 @@ const ProductDetail = () => {
       (item: any) => item._id === getProduct?._id,
     );
 
-    if (!isAlreadyCart) {
-      const updatedFavorites = [...cartItems, getProduct];
-      localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
-      toast.success('장바구니에 추가되었습니다.');
+    const cartInfo = { ...getProduct, quantity };
+
+    /* 장바구니에 만약 같은 상품이 있다면 수량을 더해서 저장*/
+    if (isAlreadyCart) {
+      const updatedCartItems = cartItems.map((product: any) =>
+        product._id === cartInfo._id
+          ? { ...product, quantity: product.quantity + quantity } // 수량 추가
+          : product,
+      );
+      localStorage.setItem(cartKey, JSON.stringify(updatedCartItems));
+      toast.success('장바구니에 수량이 추가되었습니다.');
     } else {
-      toast.warning('이미 장바구니에 있는 상품입니다.');
+      cartItems.push(cartInfo);
+      localStorage.setItem(cartKey, JSON.stringify(cartItems));
+      toast.success('장바구니에 추가되었습니다.');
     }
   };
 
