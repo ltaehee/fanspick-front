@@ -17,7 +17,7 @@ interface Cart {
   price: string;
   image: string;
   quantity: number;
-}
+} //quantity 추후 작업
 
 const MypageCart = () => {
   const navigate = useNavigate();
