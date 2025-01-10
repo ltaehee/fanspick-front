@@ -87,6 +87,7 @@
   height: 100px;
   margin-top: 5px;
   font-size: 16px;
+  box-sizing: border-box; 
 }
 
 /* 이미지 업로드 관련 추가 스타일 */
@@ -158,4 +159,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.review_title {
+  width: 100%;
+  box-sizing: border-box; 
 }

@@ -7,7 +7,7 @@ import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AWS from 'aws-sdk';
-import AddressSearch from '../components/AddressSearch';
+import AddressSearch from '@components/AddressSearch';
 import {
   businessNumberPattern,
   emailPattern,
