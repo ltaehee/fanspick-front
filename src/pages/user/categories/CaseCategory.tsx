@@ -3,6 +3,7 @@ import ProductCard from '../../../components/product/ProductCard';
 import styles from '../../../css/homepage.module.css';
 import { ProductProps } from '../../HomePage';
 import api from '../../../utils/api';
+import { toast } from 'react-toastify';
 
 const CaseCategory = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -14,7 +15,7 @@ const CaseCategory = () => {
         setProducts(response.data.product);
       }
     } catch (err) {
-      console.error('상품 가져오기 실패:', err);
+      toast.error('상품 가져오기 실패');
     }
   };
 

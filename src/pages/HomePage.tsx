@@ -2,6 +2,7 @@ import styles from '../css/homepage.module.css';
 import ProductCard from '../components/product/ProductCard';
 import api from '../utils/api';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export interface ProductProps {
   _id: string;
@@ -21,13 +22,11 @@ const HomePage = () => {
   const getAllProduct = async () => {
     try {
       const response = await api.get('/manager/get-all-product');
-      console.log('test', response);
       if (response.status === 201) {
-        console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
       }
     } catch (err) {
-      console.log(err);
+      toast.error('에러');
     }
   };
 
