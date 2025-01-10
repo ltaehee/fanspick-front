@@ -13,13 +13,13 @@ import api from '../../../utils/api';
 import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
-interface PaymentData {
+/* interface PaymentData {
   pg: string;
   pay_method: string;
   merchant_uid: string;
   name: string;
   amount: number;
-}
+} */
 
 interface ProductDetailProps {
   _id: string;
@@ -133,11 +133,10 @@ const ProductDetail = () => {
       const response = await api.get(`/manager/product/${id}`);
 
       if (response.status === 200) {
-        console.log('상세 데이터 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
       }
     } catch (err) {
-      console.log(err);
+      toast.error('에러');
     }
   };
 
