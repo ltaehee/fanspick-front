@@ -1,10 +1,10 @@
 import { Input, Button } from 'ys-project-ui';
 import styles from '@css/manager/fixAndDeleteProductPage.module.css';
 import addImg from '/icons/addImg.png';
-import xImg from '/icons/xImg.png';
+import cancel from '/icons/cancel.png';
 import api from '@utils/api';
 import AWS from 'aws-sdk';
-import { useUserContext } from '../../context/UserContext';
+import { useUserContext } from '@context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import {
   ChangeEvent,
@@ -16,6 +16,7 @@ import {
 } from 'react';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { addCommas } from '@utils/util';
 
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
@@ -27,7 +28,6 @@ interface CheckedCategory {
 }
 
 const FixAndDeleteProductPage = () => {
-  // const [productId, set_id] = useState('');
   const [managerId, setManagerId] = useState('');
   const [categories, setCategories] = useState([]); // db에서 가져온 카테고리
   const [productName, setproductName] = useState(''); // 상품이름
@@ -47,10 +47,8 @@ const FixAndDeleteProductPage = () => {
   const { user } = useUserContext();
   const productId = localStorage.getItem('productId');
 
-  console.log('awsImgAddress ', awsImgAddress);
-  console.log('awsDetailImgAddress ', awsDetailImgAddress);
-
-  // console.log('awsDetailImgAddress ', awsDetailImgAddress);
+  // console.log('awsImgAddress ', awsImgAddress);
+  // console.log('productPrice ', productPrice);
 
   useMemo(() => {
     if (user) {
@@ -96,7 +94,7 @@ const FixAndDeleteProductPage = () => {
         image.onload = () => {
           const width = image.width;
           const height = image.height;
-          console.log(width, height);
+          // console.log(width, height);
           if (width !== height) {
             toast.error('이미지의 크기는 가로 세로 길이가 같아야 합니다.');
             setImgUrl('');
@@ -124,10 +122,10 @@ const FixAndDeleteProductPage = () => {
 
           // S3에 파일 업로드
           const data = await s3.upload(uploadParams).promise();
-          console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
+          // console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
           setAwsImgAddress(data.Location);
         } catch (err) {
-          console.error('AWS S3 업로드 실패 : ', err);
+          // console.error('AWS S3 업로드 실패 : ', err);
         }
       };
     }
@@ -160,7 +158,7 @@ const FixAndDeleteProductPage = () => {
         toast.error('숙소 이미지는 최대 3개까지 등록가능합니다.');
         return;
       }
-      console.log('filesArray ', e.target.files);
+      // console.log('filesArray ', e.target.files);
       const validFiles: globalThis.File[] = [];
       let checkFiles = 0;
 
@@ -180,9 +178,9 @@ const FixAndDeleteProductPage = () => {
           });
 
           const results = await Promise.all(uploadFiles);
-          console.log('AWS S3 업로드 성공 ', results);
+          // console.log('AWS S3 업로드 성공 ', results);
           const detailImgLocation = results.map((item) => item.Location);
-          console.log('AWS S3 상세이미지 ', detailImgLocation);
+          // console.log('AWS S3 상세이미지 ', detailImgLocation);
           setAwsDetailImgAddress(detailImgLocation);
         } catch (err) {
           console.error('AWS S3 업로드 실패 : ', err);
@@ -310,10 +308,9 @@ const FixAndDeleteProductPage = () => {
           image: awsImgAddress,
           detailImage: awsDetailImgAddress,
         };
-        console.log('data ', data);
+
         const response = await api.put('/manager/update', data);
-        console.log('response data ', response.data);
-        console.log('response status ', response.status);
+        // console.log('response data ', response.data);
 
         if (response.status === 204) {
           toast.success('상품 수정이 완료되었습니다.');
@@ -355,7 +352,7 @@ const FixAndDeleteProductPage = () => {
     try {
       const response = await api.get('/manager/category');
       if (response.status === 200) {
-        console.log('프론트 카테고리 가져오기 성공', response.data.data);
+        // console.log('프론트 카테고리 가져오기 성공', response.data.data);
         const category = response.data.data[0].name;
         setCategories(category);
       }
@@ -367,7 +364,7 @@ const FixAndDeleteProductPage = () => {
     try {
       const response = await api.get(`/manager/product/${productId}`);
       if (response.status === 200) {
-        console.log('단일 상품정보 가져오기 성공', response.data.product);
+        // console.log('단일 상품정보 가져오기 성공', response.data.product);
         const productData = response.data.product;
         setproductName(productData.name);
         setproductPrice(productData.price);
@@ -381,7 +378,7 @@ const FixAndDeleteProductPage = () => {
         // console.log('categoryCheckedList ', categoryCheckedList);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
   useEffect(() => {
@@ -434,7 +431,7 @@ const FixAndDeleteProductPage = () => {
                       alt=""
                       onClick={handleClickDefaultImage}
                     />
-                    <img src={xImg} alt="" className={styles.xImg} />
+                    <img src={cancel} alt="x버튼" className={styles.cancel} />
                     <div
                       className={styles.overlay}
                       onClick={() => handleDeleteImage()}
@@ -461,7 +458,7 @@ const FixAndDeleteProductPage = () => {
                   type="text"
                   placeholder="가격"
                   onChange={handleChangePrice}
-                  value={productPrice}
+                  value={addCommas(Number(productPrice))}
                 />
               </div>
             </div>
@@ -526,6 +523,7 @@ const FixAndDeleteProductPage = () => {
                       onClick={() => handleDeleteDetailImage(i)}
                     >
                       <p className={styles.deleteDetailImg}>삭제</p>
+                      <img src={cancel} alt="x버튼" className={styles.cancel} />
                     </div>
                   </div>
                 ))}

@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import api from '@utils/api';
 import styles from '@css/manager/selectProductPage.module.css';
-import { useUserContext } from '../../context/UserContext';
+import { useUserContext } from '@context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { addCommas } from '@utils/util';
 
 /* 상품이미지 클릭하면 상품상세페이지로 네비 넣기 */
 interface ProductProps {
@@ -23,7 +24,7 @@ const SelectProductPage = () => {
   const [userId, setUserId] = useState('');
   const { user } = useUserContext();
   const navigator = useNavigate();
-  console.log('userId ', userId);
+  // console.log('userId ', userId);
 
   useMemo(() => {
     if (user) {
@@ -40,7 +41,7 @@ const SelectProductPage = () => {
     try {
       const response = await api.get('/manager/get-all-product');
       if (response.status === 201) {
-        console.log('전체 상품 가져오기 성공', response.data.product);
+        // console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
       }
     } catch (err) {
@@ -70,7 +71,7 @@ const SelectProductPage = () => {
                 className={styles.productImage}
               />
               <h3>{product.name}</h3>
-              <p>{product.price}원</p>
+              <p>{addCommas(Number(product.price))}원</p>
             </div>
           ))}
       </div>

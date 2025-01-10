@@ -97,11 +97,11 @@
   width: 900px;
   cursor: pointer;
 }
-.xImg {
+.cancel {
   position: absolute;
   top: 18px;
-  left: 84%;
-  width: 15%;
+  left: 87%;
+  width: 11%;
 }
 .overlay {
   position: absolute;
