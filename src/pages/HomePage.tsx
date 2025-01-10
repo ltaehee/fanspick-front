@@ -7,7 +7,7 @@ export interface ProductProps {
   _id: string;
   userId: string;
   name: string;
-  price: string;
+  price: number;
   introduce: string;
   image: string;
   detailImage: string[];

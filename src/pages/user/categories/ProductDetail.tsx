@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from '../../../context/UserContext';
 import api from '../../../utils/api';
 import ProductReviewPage from '../review/ProductReviews';
+import { addCommas } from '../../../utils/util';
 
 interface PaymentData {
   pg: string;
@@ -23,7 +24,7 @@ interface PaymentData {
 interface ProductDetailProps {
   _id: string;
   name: string;
-  price: string;
+  price: number;
   introduce: string;
   image: string;
   category: {
@@ -169,7 +170,7 @@ const ProductDetail = () => {
         {/* 상품 정보 */}
         <div className={styles.productInfoBox}>
           <h1 className={styles.productTitle}>{getProduct.name}</h1>
-          <p className={styles.productPrice}>{getProduct.price}원</p>
+          <p className={styles.productPrice}>{addCommas(getProduct.price)}원</p>
           <p className={styles.productDescription}>{getProduct.introduce}</p>
           <ProductCount onChange={setQuantity} />
           <Button

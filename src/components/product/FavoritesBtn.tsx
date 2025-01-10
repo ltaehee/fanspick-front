@@ -4,18 +4,9 @@ import { useUserContext } from '../../context/UserContext';
 
 interface ProductProps {
   _id: string;
-  name: string;
-  price: string;
-  image: string;
   className: string;
 }
-const FavoritesBtn: FC<ProductProps> = ({
-  _id,
-  name,
-  price,
-  image,
-  className,
-}) => {
+const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
   const { user } = useUserContext();
   const userId = user?.id;
 
