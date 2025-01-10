@@ -30,7 +30,7 @@ const MypageCart = () => {
     toast.error('로그인이 필요합니다.');
     return;
   }
-
+  console.log('cart', cart);
   //장바구니 내역 가져오기
   const localCart = JSON.parse(localStorage.getItem(`cart_${userId}`) || '[]');
 
