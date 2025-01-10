@@ -9,7 +9,7 @@ const CaseCategory = () => {
 
   const getAllProducts = async () => {
     try {
-      const response = await api.get('/manager/getAllProduct');
+      const response = await api.get('/manager/get-all-product');
       if (response.status === 201) {
         setProducts(response.data.product);
       }
