@@ -45,7 +45,7 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
   };
 
   useEffect(() => {
-    fetchReviews(currentPage); // 초기 데이터 로드
+    fetchReviews(currentPage); 
   }, [currentPage, productId]);
 
   return (
