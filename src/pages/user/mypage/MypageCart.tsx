@@ -9,7 +9,7 @@ import { Button } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
 import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
-import trash from '@public/icons/trash.png';
+import trash from '/icons/trash.png';
 
 interface Cart {
   id: string;

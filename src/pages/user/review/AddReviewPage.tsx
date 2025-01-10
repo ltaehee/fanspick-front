@@ -1,5 +1,4 @@
 import { ChangeEvent, useRef, useState } from "react";
-import Star from "@components/review/Star";
 import styles from "@css/review.module.css";
 import dummyImg2 from "/images/product/dog2.jpg";
 import uploadImg from "/icons/addImg.png";
@@ -7,7 +6,8 @@ import { Button, Input } from "ys-project-ui";
 import AWS from "aws-sdk";
 import { toast } from "react-toastify";
 import { useUserContext } from "@context/UserContext";
-import api from "../../../utils/api";
+import api from "@utils/api";
+import StarRating from "@components/review/StarRating"; 
 
 // AWS S3 환경 변수
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
@@ -28,8 +28,8 @@ const AddReviewPage = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
   const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
-  const [reviewTitle, setReviewTitle] = useState(""); // 리뷰 제목
-  const [reviewText, setReviewText] = useState(""); // 리뷰 본문
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewText, setReviewText] = useState(""); 
   const { token } = useUserContext();
 
   // AWS S3 설정
@@ -40,10 +40,6 @@ const AddReviewPage = () => {
       region: REGION,
     });
     return new AWS.S3();
-  };
-
-  const handleClick = (index: number) => {
-    setRating(index);
   };
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +85,6 @@ const AddReviewPage = () => {
         (url) => url !== null
       );
       const reviewData = {
-        // productId: mockProduct.id,
         productId: "64abcdef1234567890abcdef",
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
@@ -132,31 +127,7 @@ const AddReviewPage = () => {
           <p className={styles.productPrice}>{mockProduct.price}</p>
         </div>
       </div>
-      <div className={styles.reviewStarWrap}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            filled={star <= rating}
-            onClick={() => handleClick(star)}
-            width="40px"
-            height="40px"
-          />
-        ))}
-      </div>
-      <p className={styles.label}>리뷰 제목</p>
-      <Input
-        type="text"
-        name="reviewTitle"
-        value={reviewTitle}
-        onChange={(e) => setReviewTitle(e.target.value)}
-        placeholder="리뷰 제목을 입력하세요"
-      />
-      <p className={styles.label}>본문 입력</p>
-      <textarea
-        className={styles.textarea}
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-      />
+      <StarRating rating={rating} onRatingChange={setRating} />
       <p className={styles.label}>사진 첨부</p>
       <div className={styles.uploadContainer}>
         {previewImg.map((photo, index) => (
@@ -189,6 +160,21 @@ const AddReviewPage = () => {
           </div>
         )}
       </div>
+      <p className={styles.label}>리뷰 제목</p>
+      <Input
+        type="text"
+        name="reviewTitle"
+        value={reviewTitle}
+        onChange={(e) => setReviewTitle(e.target.value)}
+        placeholder="리뷰 제목을 입력하세요"
+        className={styles.review_title}
+      />
+      <p className={styles.label}>본문 입력</p>
+      <textarea
+        className={styles.textarea}
+        value={reviewText}
+        onChange={(e) => setReviewText(e.target.value)}
+      />
       <Button
         onClick={handleClickAddReview}
         className={styles.addButton}
