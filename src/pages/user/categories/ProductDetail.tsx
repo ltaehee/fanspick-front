@@ -1,15 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../../css/product/productDetail.module.css';
 import dummyImg2 from '/images/product/dog2.jpg';
-import dummyImg3 from '/images/product/dogDetail1.png';
 import { Button, Tabs } from 'ys-project-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCount from '../../../components/product/ProductCount';
 import ReviewBox from '../../../components/review/ReviewBox';
 import profileImg from '/icons/user_icon.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useUserContext } from '../../../context/UserContext';
+import api from '../../../utils/api';
 
 interface PaymentData {
   pg: string;
@@ -18,16 +18,18 @@ interface PaymentData {
   name: string;
   amount: number;
 }
-const mockProduct = {
-  id: 1,
-  title: '상품1232311',
-  price: 100,
-  description:
-    '한정 수량으로 준비된 이달의 인기 굿즈! 이달만 만날 수 있는 특별한 굿즈를 확인하세요.상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~상품 설명 부분입니다~~~~~~~~~~~~~',
-  imageUrl: dummyImg2,
-  detailImage: dummyImg3,
-  quantity: 5,
-};
+
+interface ProductDetailProps {
+  _id: string;
+  name: string;
+  price: string;
+  introduce: string;
+  image: string;
+  category: {
+    name: string[];
+  };
+  detailImage: string[];
+}
 
 const mockReviews = [
   {
@@ -48,13 +50,8 @@ const mockReviews = [
 ];
 
 const ProductDetail = () => {
-  /* const { id } = useParams<{ id: string }>();
-
-  const product = mockProducts.find((item) => item.id === Number(id));
-
-  if (!product) {
-    return <div>상품 정보를 찾을 수 없습니다.</div>;
-  } */
+  const [getProduct, setGetProduct] = useState<ProductDetailProps | null>(null);
+  const { id } = useParams<{ id: string }>();
 
   const [activeTab, setActiveTab] = useState(0);
   const onChangeTab = (index: number) => {
@@ -75,11 +72,11 @@ const ProductDetail = () => {
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
     const isAlreadyCart = cartItems.some(
-      (item: any) => item.id === mockProduct.id,
+      (item: any) => item._id === getProduct?._id,
     );
 
     if (!isAlreadyCart) {
-      const updatedFavorites = [...cartItems, mockProduct];
+      const updatedFavorites = [...cartItems, getProduct];
       localStorage.setItem(cartKey, JSON.stringify(updatedFavorites));
       toast.success('장바구니에 추가되었습니다.');
     } else {
@@ -102,11 +99,11 @@ const ProductDetail = () => {
     );
 
     const isAlreadyFavorite = favoriteItems.some(
-      (item: any) => item.id === mockProduct.id,
+      (item: any) => item.id === getProduct?._id,
     );
 
     if (!isAlreadyFavorite) {
-      const updatedFavorites = [...favoriteItems, mockProduct];
+      const updatedFavorites = [...favoriteItems, getProduct];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {
@@ -114,22 +111,44 @@ const ProductDetail = () => {
     }
   };
 
+  /* 상품 데이터 불러오기 */
+  const getAllProduct = async () => {
+    try {
+      const response = await api.get(`/manager/product/${id}`);
+
+      if (response.status === 200) {
+        console.log('상세 데이터 가져오기 성공', response.data.product);
+        setGetProduct(response.data.product);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllProduct();
+  }, []);
+
+  if (!getProduct) {
+    return <div>상품 정보를 찾을 수 없습니다.</div>;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.productDetailWrapper}>
         {/* 상품 이미지 */}
         <div className={styles.productImageBox}>
           <img
-            src={mockProduct.imageUrl}
+            src={getProduct.image}
             alt="상품 이미지"
             className={styles.productImage}
           />
         </div>
         {/* 상품 정보 */}
         <div className={styles.productInfoBox}>
-          <h1 className={styles.productTitle}>{mockProduct.title}</h1>
-          <p className={styles.productPrice}>{mockProduct.price}원</p>
-          <p className={styles.productDescription}>{mockProduct.description}</p>
+          <h1 className={styles.productTitle}>{getProduct.name}</h1>
+          <p className={styles.productPrice}>{getProduct.price}원</p>
+          <p className={styles.productDescription}>{getProduct.introduce}</p>
           <ProductCount />
           <Button
             label="구매하기"
@@ -164,11 +183,16 @@ const ProductDetail = () => {
           </Tabs.Menu>
         </Tabs.MenuList>
         <Tabs.Pannel className={styles.tabsPannel}>
-          <img
-            src={mockProduct.detailImage}
-            className={styles.detailImage}
-            alt="상품 상세 이미지"
-          />
+          <div className={styles.detailImageWrap}>
+            {getProduct.detailImage.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                className={styles.detailImage}
+                alt="상품 상세 이미지"
+              />
+            ))}
+          </div>
         </Tabs.Pannel>
         <Tabs.Pannel>
           <div className={styles.reviewListWrap}>

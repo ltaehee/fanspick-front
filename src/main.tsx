@@ -96,7 +96,7 @@ const router = createBrowserRouter([
         element: <CaseCategory />,
       },
       {
-        path: '/product',
+        path: '/product/:id',
         element: <ProductDetail />,
       },
       {
