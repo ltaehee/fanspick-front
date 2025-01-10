@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 export interface ProductProps {
   _id: string;
+  userId: string;
   name: string;
   price: string;
   introduce: string;
@@ -19,7 +20,7 @@ const HomePage = () => {
   const [getProduct, setGetProduct] = useState<ProductProps[]>([]);
   const getAllProduct = async () => {
     try {
-      const response = await api.get('/manager/getAllProduct');
+      const response = await api.get('/manager/get-all-product');
       console.log('test', response);
       if (response.status === 201) {
         console.log('전체 상품 가져오기 성공', response.data.product);
