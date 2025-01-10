@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import noticeImg from '/icons/alert-circle.png';
 import { useUserContext } from '@context/UserContext';
+import api from '../../../utils/api';
 
 interface Product {
   productId: {
@@ -36,8 +37,8 @@ const MypageOrder = () => {
   const handleOrderList = async () => {
     try {
       if (user) {
-        const response = await axios.get<{ orderList: Order[] }>(
-          '/api/purchase/order/list',
+        const response = await api.get<{ orderList: Order[] }>(
+          '/purchase/order/list',
           {
             headers: {
               Authorization: `Bearer ${token}`, // 헤더에 토큰을 포함
