@@ -4,21 +4,21 @@ import ProductTableHeader from '../../components/productTable/ProductTableHeader
 import ProductTableMenu from '../../components/productTable/ProductTableMenu';
 import tableStyles from '../../css/productTable/productTable.module.css';
 import orderstyles from '../../css/order.module.css';
-import dummyImg2 from '/images/product/dog2.jpg';
 import { Button, Input } from 'ys-project-ui';
 import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
+import { useLocation } from 'react-router-dom';
 
 const OrderPage = () => {
   const { user } = useUserContext();
   const userId = user?.id;
-  const favorites = JSON.parse(
-    localStorage.getItem(`favorite_${userId}`) || '[]',
-  );
-  console.log('즐겨찾기목록', favorites);
 
-  console.log('유저 정보', user);
+  const location = useLocation();
+  const { product, quantity } = location.state;
+  const totalPrice = product.price * quantity;
+  console.log('상품데이터', location);
+
   const [address, setAddress] = useState({
     roadAddress: '',
     zoneCode: '',
@@ -70,26 +70,32 @@ const OrderPage = () => {
   });
   const [imp_uid] = useState("imp123456789"); */
 
-  /* const handleOrderClick = async () => {
+  const handleOrderClick = async () => {
     const orderData = {
       userId,
-      products,
-      orderAddress,
-      imp_uid,
+      products: [
+        {
+          ...product,
+          quantity,
+        },
+      ],
+      orderAddress: address,
+      imp_uid: 'imp123456789',
     };
+    console.log({ orderData });
 
     try {
-      const response = await api.post("/purchase/order", orderData);
-      console.log("test", response);
+      const response = await api.post('/purchase/order', orderData);
+      console.log('test', response);
       if (response.status === 200) {
-        console.log("Order created successfully:", response.data);
-        alert("주문이 완료되었습니다!");
+        console.log('Order created successfully:', response.data);
+        alert('주문이 완료되었습니다!');
       }
     } catch (error) {
-      console.error("Error creating order:");
-      alert("주문 생성에 실패했습니다.");
+      console.error('Error creating order:');
+      alert('주문 생성에 실패했습니다.');
     }
-  }; */
+  };
 
   return (
     <>
@@ -110,26 +116,24 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            {favorites.map((product: any) => (
-              <div key={product.id} className={orderstyles.content}>
-                <ProductTableMenu.Detail
-                  productName={product.name}
-                  image={product.image}
-                />
-                <ProductTableMenu.Content content={product.price} />
-                <div className={tableStyles.quantity_wrap}>
-                  <ProductTableMenu.Quantity quantity={product.quantity} />
-                </div>
+            <div key={product.id} className={orderstyles.content}>
+              <ProductTableMenu.Detail
+                productName={product.name}
+                image={product.image}
+              />
+              <ProductTableMenu.Content content={product.price} />
+              <div className={tableStyles.quantity_wrap}>
+                <ProductTableMenu.Quantity quantity={quantity} />
               </div>
-            ))}
+            </div>
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액?</p>
+          <p>주문상품금액 {product.price}원</p>
           <p>+</p>
-          <p>배송비 0(임시)</p>
+          <p>배송비 0(무료)</p>
           <p>=</p>
-          <p>최종 결제 금액??</p>
+          <p>최종 결제 금액 {totalPrice}원</p>
         </div>
         <h3 className={orderstyles.h3}>고객 / 배송지 정보</h3>
         <div className={orderstyles.inputBoxWrap}>
@@ -175,7 +179,11 @@ const OrderPage = () => {
             onChange={handleChange}
           />
         </div>
-        <Button label="결제하기" className={orderstyles.paymentBtn} />
+        <Button
+          label="결제하기"
+          className={orderstyles.paymentBtn}
+          onClick={handleOrderClick}
+        />
       </div>
     </>
   );

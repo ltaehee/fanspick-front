@@ -1,11 +1,24 @@
-import { useState } from "react";
-import styles from "../../css/product/productDetail.module.css";
+import { useState } from 'react';
+import styles from '../../css/product/productDetail.module.css';
 
-const ProductCount = () => {
+interface ProductCountProps {
+  onChange: (count: number) => void;
+}
+
+const ProductCount = ({ onChange }: ProductCountProps) => {
   const [count, setCount] = useState(1);
 
-  const increaseCount = () => setCount((prev) => prev + 1);
-  const decreaseCount = () => setCount((prev) => (prev > 1 ? prev - 1 : prev));
+  const increaseCount = () => {
+    const newCount = count + 1;
+    setCount(newCount);
+    onChange(newCount);
+  };
+
+  const decreaseCount = () => {
+    const newCount = count > 1 ? count - 1 : count;
+    setCount(newCount);
+    onChange(newCount);
+  };
 
   return (
     <div className={styles.productCount}>

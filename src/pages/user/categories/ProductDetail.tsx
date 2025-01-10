@@ -54,6 +54,7 @@ const ProductDetail = () => {
   const [getProduct, setGetProduct] = useState<ProductDetailProps | null>(null);
   const { id } = useParams<{ id: string }>();
 
+  const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState(0);
   const onChangeTab = (index: number) => {
     setActiveTab(index);
@@ -134,6 +135,13 @@ const ProductDetail = () => {
     return <div>상품 정보를 찾을 수 없습니다.</div>;
   }
 
+  /* 상품 데이터 주문 페이지로 그대로 전달 */
+  const handleBuyClick = () => {
+    if (getProduct) {
+      navigate('/order', { state: { product: getProduct, quantity } });
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.productDetailWrapper}>
@@ -150,11 +158,11 @@ const ProductDetail = () => {
           <h1 className={styles.productTitle}>{getProduct.name}</h1>
           <p className={styles.productPrice}>{getProduct.price}원</p>
           <p className={styles.productDescription}>{getProduct.introduce}</p>
-          <ProductCount />
+          <ProductCount onChange={setQuantity} />
           <Button
             label="구매하기"
             className={styles.buyButton}
-            onClick={() => navigate('/order')}
+            onClick={handleBuyClick}
           />
           <div className={styles.secondBtnWrap}>
             <Button label="장바구니" onClick={handleAddCart} />
