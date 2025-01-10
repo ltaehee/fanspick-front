@@ -8,9 +8,7 @@
   border-radius: 10px;
   margin-top: 10px;
 }
-.reviewBox:first-child {
-  padding-top: 0;
-}
+
 .reviewBox:last-child {
   border-bottom: none;
 }
@@ -178,4 +176,39 @@
 .review_title {
   width: 100%;
   box-sizing: border-box; 
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 8px; 
+}
+
+.reviewBox {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.iconContainer {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.editIcon,
+.deleteIcon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.editIcon:hover,
+.deleteIcon:hover {
+  transform: scale(1.1);
 }

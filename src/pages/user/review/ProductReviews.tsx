@@ -45,7 +45,7 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
   };
 
   useEffect(() => {
-    fetchReviews(currentPage); 
+    fetchReviews(currentPage);
   }, [currentPage, productId]);
 
   return (
@@ -61,6 +61,7 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
               productImgs={review.image.length > 0 ? review.image : []}
               reviewContent={review.content}
               starpoint={review.starpoint}
+              hideIcons={true} 
             />
           ))
         ) : (
