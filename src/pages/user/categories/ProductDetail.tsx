@@ -77,18 +77,17 @@ const ProductDetail = () => {
       (item: any) => item._id === getProduct?._id,
     );
 
-    const cartInfo = { ...getProduct, quantity };
-
     /* 장바구니에 만약 같은 상품이 있다면 수량을 더해서 저장*/
     if (isAlreadyCart) {
       const updatedCartItems = cartItems.map((product: any) =>
-        product._id === cartInfo._id
+        product._id === getProduct?._id
           ? { ...product, quantity: product.quantity + quantity } // 수량 추가
           : product,
       );
       localStorage.setItem(cartKey, JSON.stringify(updatedCartItems));
       toast.success('장바구니에 수량이 추가되었습니다.');
     } else {
+      const cartInfo = { _id: getProduct?._id, quantity };
       cartItems.push(cartInfo);
       localStorage.setItem(cartKey, JSON.stringify(cartItems));
       toast.success('장바구니에 추가되었습니다.');
@@ -109,12 +108,17 @@ const ProductDetail = () => {
       localStorage.getItem(favoritesKey) || '[]',
     );
 
+    if (!getProduct?._id) {
+      toast.error('상품 정보가 유효하지 않습니다.');
+      return;
+    }
+
     const isAlreadyFavorite = favoriteItems.some(
-      (item: any) => item.id === getProduct?._id,
+      (item: any) => item._id === getProduct._id,
     );
 
     if (!isAlreadyFavorite) {
-      const updatedFavorites = [...favoriteItems, getProduct];
+      const updatedFavorites = [...favoriteItems, { _id: getProduct._id }];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {

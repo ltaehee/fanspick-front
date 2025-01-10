@@ -46,8 +46,7 @@ const FavoritesBtn: FC<ProductProps> = ({
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
     if (!isFavorite) {
       // 즐겨찾기에 추가
-      const favoriteData = { _id, name, price, image };
-      const updatedFavorites = [...favorites, favoriteData];
+      const updatedFavorites = [...favorites, { _id }];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {
