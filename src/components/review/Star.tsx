@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 interface StarProps {
   filled: boolean;
   onClick: () => void;
@@ -5,7 +7,7 @@ interface StarProps {
   height?: string;
 }
 
-const Star: React.FC<StarProps> = ({
+const Star: FC<StarProps> = ({
   filled,
   onClick,
   width = "20px",
