@@ -79,6 +79,7 @@
   display: flex;
   align-items: center;
   gap: 30px;
+  margin-left: 150px;
 }
 
 .total_delete {

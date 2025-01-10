@@ -28,7 +28,6 @@ interface Order {
 const MypageOrder = () => {
   const { user } = useUserContext();
   const token = localStorage.getItem('token');
-  console.log('token', token);
 
   const navigate = useNavigate();
 
@@ -45,7 +44,8 @@ const MypageOrder = () => {
             },
           },
         );
-        console.log(response);
+
+        console.log('주문 목록', response.data.orderList);
         setOrderList(response.data.orderList);
       }
     } catch (err) {
@@ -57,8 +57,8 @@ const MypageOrder = () => {
     handleOrderList();
   }, []);
 
-  const handleReview = () => {
-    navigate(`/add-review`);
+  const handleReview = (order: Order) => {
+    navigate('/add-review', { state: { order } });
   };
 
   return (
@@ -91,7 +91,7 @@ const MypageOrder = () => {
                         </div>
                         <Button
                           label="리뷰 등록하기"
-                          onClick={handleReview}
+                          onClick={() => handleReview(order)}
                           className={orderStyles.review_button}
                         />
                       </div>

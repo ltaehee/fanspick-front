@@ -14,10 +14,10 @@ import trash from '/icons/trash.png';
 import cart from '/icons/cart_icon.png';
 
 interface Bookmark {
-  id: string;
-  title: string;
+  _id: string;
+  name: string;
   price: string;
-  imageUrl: string;
+  image: string;
 }
 
 const MypageBookmark = () => {
@@ -45,17 +45,17 @@ const MypageBookmark = () => {
   }, []);
 
   const isChecked = (id: string) =>
-    isSelected.some((product) => product.id === id);
+    isSelected.some((product) => product._id === id);
 
   //선택된 아이템 관리
   const handleChangeCheckBox = (id: string) => {
     setIsSelected((prev) => {
       // 이미 선택된 id가 있으면 해당 상품 객체를 배열에서 제거
-      if (prev.some((product) => product.id === id)) {
-        return prev.filter((product) => product.id !== id);
+      if (prev.some((product) => product._id === id)) {
+        return prev.filter((product) => product._id !== id);
       } else {
         // id가 없으면 cart에서 해당 상품을 찾아서 추가 (undefined가 아닌 값만 추가)
-        const product = isFavorite.find((product) => product.id === id);
+        const product = isFavorite.find((product) => product._id === id);
         return product ? [...prev, product] : prev; // 상품이 없으면 배열을 그대로 반환
       }
     });
@@ -65,7 +65,7 @@ const MypageBookmark = () => {
   const handleDeleteItem = (productId: string) => {
     setIsFavorite((prev) => {
       const updatedFavorites = prev.filter(
-        (product) => product.id !== productId,
+        (product) => product._id !== productId,
       ); //삭제하려는 아이템의 아이디를 지움
       if (userId) {
         localStorage.setItem(
@@ -119,32 +119,28 @@ const MypageBookmark = () => {
             </ProductTableHeader>
             <ProductTableMenu>
               {isFavorite.map((product) => (
-                <div key={product.id} className={tableStyles.bookmark_content}>
+                <div key={product._id} className={tableStyles.bookmark_content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
-                    productId={product.id}
-                    isChecked={isChecked(product.id)}
+                    productId={product._id}
+                    isChecked={isChecked(product._id)}
                     onChange={handleChangeCheckBox}
                   />
                   <ProductTableMenu.Detail
                     onClick={() => navigate('/add-review')}
-                    productName={product.title}
+                    productName={product.name}
+                    image={product.image}
                   />
                   <ProductTableMenu.Content content={product.price} />
                   <div className={cartStyles.bookmark_buttons_wrap}>
-                    <Button
-                      className={cartStyles.bookmark_button}
-                      label="장바구니에 담기"
-                      onClick={handleAddCart}
-                    />
                     <ProductTableMenu.DeleteButton
-                      productId={product.id}
+                      productId={product._id}
                       onClick={handleAddCart}
                       image={cart}
                     />
                     <ProductTableMenu.DeleteButton
-                      productId={product.id}
-                      onClick={handleDeleteItem}
+                      productId={product._id}
+                      onClick={() => handleDeleteItem(product._id)}
                       image={trash}
                     />
                   </div>
