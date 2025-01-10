@@ -10,6 +10,12 @@
   padding-top: 1rem;
   border-top: 1px solid rgb(213, 213, 213);
 }
+.cardTextBox h3 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 250px;
+}
 .imgBox {
   position: relative;
 }

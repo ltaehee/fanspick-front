@@ -9,24 +9,15 @@ import { Button, Input } from 'ys-project-ui';
 import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
-const product = [
-  {
-    id: 1,
-    name: '상품 A',
-    price: '10,000원',
-    image: dummyImg2,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: '상품 A',
-    price: '10,000원',
-    image: dummyImg2,
-    quantity: 1,
-  },
-];
+
 const OrderPage = () => {
   const { user } = useUserContext();
+  const userId = user?.id;
+  const favorites = JSON.parse(
+    localStorage.getItem(`favorite_${userId}`) || '[]',
+  );
+  console.log('즐겨찾기목록', favorites);
+
   console.log('유저 정보', user);
   const [address, setAddress] = useState({
     roadAddress: '',
@@ -119,7 +110,7 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            {product.map((product) => (
+            {favorites.map((product: any) => (
               <div key={product.id} className={orderstyles.content}>
                 <ProductTableMenu.Detail
                   productName={product.name}

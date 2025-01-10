@@ -126,8 +126,11 @@
 }
 
 /* * * * * * * * * * * * * * * * * * * */
+.detailImageWrap {
+  width: 1000px;
+}
 .detailImage {
-  width: 900px;
+  width: 100%;
   height: auto;
 }
 /* 리뷰 */
