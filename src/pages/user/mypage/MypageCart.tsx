@@ -13,7 +13,7 @@ import trash from '/icons/trash.png';
 
 interface Cart {
   id: string;
-  title: string;
+  name: string;
   price: string;
   image: string;
   quantity: number;
@@ -43,8 +43,13 @@ const MypageCart = () => {
   //장바구니 내역 전체 삭제하기
   const deleteCart = () => {
     setCart([]);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
   };
+
+  useEffect(() => {
+    if (cart) {
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
+    }
+  }, [cart]);
 
   //수량 빼기
   const handleDown = (id: string) => {
@@ -131,7 +136,7 @@ const MypageCart = () => {
                   />
                   <ProductTableMenu.Detail
                     onClick={() => navigate('/add-review')}
-                    productName={product.title}
+                    productName={product.name}
                   />
                   <ProductTableMenu.Content content={product.price} />
                   <div className={tableStyles.quantity_wrap}>

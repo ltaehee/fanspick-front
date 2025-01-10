@@ -86,11 +86,16 @@ const MypageBookmark = () => {
     toast.success('장바구니에 추가되었습니다.');
   };
 
-  //장바구니 내역 전체 삭제하기
+  //즐겨찾기 내역 전체 삭제하기
   const deleteCart = () => {
     setIsFavorite([]);
-    localStorage.setItem(`favorite_${userId}`, JSON.stringify(cart));
   };
+
+  useEffect(() => {
+    if (isFavorite) {
+      localStorage.setItem(`favorite_${userId}`, JSON.stringify(isFavorite));
+    }
+  }, [isFavorite]);
 
   return (
     <div className={cartStyles.content_wrap}>
