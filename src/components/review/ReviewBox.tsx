@@ -15,6 +15,7 @@ interface ReviewBoxProps {
   hideIcons?: boolean;
   onEditClick?: () => void;
   onDeleteClick?: () => void;
+  reviewImages?: string[];
 }
 
 const ReviewBox: React.FC<ReviewBoxProps> = ({
@@ -29,6 +30,7 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
   hideIcons = false,
   onEditClick,
   onDeleteClick,
+  reviewImages = [],
 }) => {
   return (
     <div className={`${styles.reviewBox} ${className}`}>
@@ -64,19 +66,29 @@ const ReviewBox: React.FC<ReviewBoxProps> = ({
         </div>
       </div>
       <div>
-        <p className={styles.productName}>{productName}</p>{' '}
-        <p className={styles.reviewTitle}>{reviewTitle}</p>
-        <div className={styles.reviewImgBox}>
+        <p className={styles.productName}>{productName}</p>
+        <div className={styles.productImgBox}>
           {productImgs.map((img, index) => (
             <img
               key={index}
               src={img}
-              alt={`리뷰 이미지 ${index}`}
+              alt={`상품 이미지 ${index}`}
               className={styles.productImg}
             />
           ))}
         </div>
+        <p className={styles.reviewTitle}>{reviewTitle}</p>
         <p className={styles.reviewContent}>{reviewContent}</p>
+        <div className={styles.reviewImgBox}>
+          {reviewImages.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`리뷰 이미지 ${index}`}
+              className={styles.reviewImg}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

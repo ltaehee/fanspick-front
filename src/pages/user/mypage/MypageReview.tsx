@@ -9,17 +9,19 @@ import { Pagination } from 'ys-project-ui';
 import { useUserContext } from '@context/UserContext';
 import MypageHeader from '@components/categories/MypageCategories';
 import cartStyles from '@css/mypage/mypageCart.module.css';
+import { toast } from 'react-toastify';
 
 interface Review {
   _id: string;
   productId: {
-    title: string;
+    name: string;
     image: string;
   };
-  title: string; 
+  title: string;
   content: string;
   starpoint: number;
   createdAt: string;
+  image: string[];
 }
 
 const MypageReviewPage = () => {
@@ -40,6 +42,7 @@ const MypageReviewPage = () => {
           },
         },
       );
+      console.log(response.data);
       if (response.status === 200) {
         setReviews(response.data.reviews);
         setTotalReviews(response.data.totalCount);
@@ -54,13 +57,24 @@ const MypageReviewPage = () => {
   };
 
   const handleEditReview = (reviewId: string) => {
-    console.log(`수정 클릭: ${reviewId}`);
-    // 수정 로직 추가
+    window.location.href = `/edit-review/${reviewId}`;
   };
 
-  const handleDeleteReview = (reviewId: string) => {
-    console.log(`삭제 클릭: ${reviewId}`);
-    // 삭제 로직 추가
+  const handleDeleteReview = async (reviewId: string) => {
+    const confirmDelete = window.confirm('정말로 이 리뷰를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      try {
+        await api.delete(`/review/${reviewId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        toast.success('리뷰가 성공적으로 삭제되었습니다.');
+        fetchReviews(currentPage); 
+      } catch (err) {
+        toast.error('리뷰 삭제 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   useEffect(() => {
@@ -71,8 +85,8 @@ const MypageReviewPage = () => {
 
   return (
     <div className={cartStyles.content_wrap}>
-      <MypageHeader/>
-      <div className={styles.reviewListWrap} style={{marginTop:"30px"}}>
+      <MypageHeader />
+      <div className={styles.reviewListWrap} style={{ marginTop: '30px' }}>
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <ReviewBox
@@ -80,10 +94,13 @@ const MypageReviewPage = () => {
               profileImg={user.profileImage || defaultProfile}
               username={user?.name || '익명 사용자'}
               reviewTitle={review.title || '리뷰 제목 없음'}
-              productName={review.productId?.title || '상품 정보 없음'} 
+              productName={review.productId?.name || '상품 정보 없음'}
               productImgs={[review.productId?.image || defaultProfile]}
               reviewContent={review.content}
               starpoint={review.starpoint}
+              reviewImages={review.image || []} 
+              onEditClick={() => handleEditReview(review._id)}
+              onDeleteClick={() => handleDeleteReview(review._id)}
             />
           ))
         ) : (

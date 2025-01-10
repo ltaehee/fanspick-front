@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import styles from '@css/review.module.css';
-import dummyImg2 from '/images/product/dog2.jpg';
+// import dummyImg2 from '/images/product/dog2.jpg';
 import uploadImg from '/icons/addImg.png';
 import { Button, Input } from 'ys-project-ui';
 import AWS from 'aws-sdk';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useUserContext } from '@context/UserContext';
 import api from '@utils/api';
 import StarRating from '@components/review/StarRating';
+import { useLocation } from 'react-router-dom';
 
 // AWS S3 환경 변수
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
@@ -15,15 +16,17 @@ const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
 const REGION = import.meta.env.VITE_REGION;
 const BUCKET_NAME = 'fanspick';
 
-const mockProduct = {
-  id: 1,
-  title: '상품12321',
-  price: '100,000원',
-  count: 1,
-  imageUrl: dummyImg2,
-};
+// const mockProduct = {
+//   id: 1,
+//   title: '상품12321',
+//   price: '100,000원',
+//   count: 1,
+//   imageUrl: dummyImg2,
+// };
 
 const AddReviewPage = () => {
+  const location = useLocation();
+  const { product } = location.state || {};
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
@@ -85,7 +88,8 @@ const AddReviewPage = () => {
         (url) => url !== null,
       );
       const reviewData = {
-        productId: '677f2f0105e6231849601c8a',
+        productId: product.id,
+        productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
@@ -118,13 +122,13 @@ const AddReviewPage = () => {
       <div className={styles.productInfoBox}>
         <img
           className={styles.productImg}
-          src={mockProduct.imageUrl}
+          src={product.imageUrl}
           alt="상품 이미지"
         />
         <div className={styles.productInfo}>
-          <p className={styles.productTitle}>{mockProduct.title}</p>
-          <p className={styles.productCount}>수량: {mockProduct.count}</p>
-          <p className={styles.productPrice}>{mockProduct.price}</p>
+          <p className={styles.productTitle}>{product.title}</p>
+          <p className={styles.productCount}>수량: {product.count}</p>
+          <p className={styles.productPrice}>{product.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
