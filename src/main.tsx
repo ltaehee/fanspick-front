@@ -104,7 +104,7 @@ const router = createBrowserRouter([
         element: <AddReviewPage />,
       },
       {
-        path: '/edit-review',
+        path: '/edit-review/:reviewId',
         element: <EditReviewPage />,
       },
       {
