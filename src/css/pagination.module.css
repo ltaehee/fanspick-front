@@ -1,64 +1,49 @@
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; 
+  margin-top: 20px; 
+}
+
 .pageButton {
   display: flex;
-  gap: 5px;
-  justify-content: center; 
-  margin-top: 10px; /* 위쪽 여백 */
+  gap: 8px;
+  justify-content: center;
+  
 }
 
 .pageButton button {
   width: 32px;
   height: 32px;
-  border-radius: 4px;
-  background-color: white;
+  border: 1px solid #ddd;
   font-size: 14px;
   font-weight: bold;
-  color: #000000;
   cursor: pointer;
   text-align: center;
-  line-height: 32px;
+  border-radius: 4px;
+  padding: 0;
 }
 
-.pageButton button:disabled {
-  background-color: #f9f9f9;
-  border-color: #ddd;
-  color: #aaa;
-  cursor: not-allowed;
-}
 
-.pageButton button.active {
-  background-color: #ffd700;
-  color: white;
-  border-color: #ffa500;
-}
-
-.disabled {
+.pageNavigate {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin-top: 10px;
+  width: 100%; 
 }
 
-.disabled button {
-  width: 50px;
-  height: 32px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
+.pageNavigate button {
+  width: 60px;
+  height: 36px;
   font-size: 14px;
   font-weight: bold;
-  color: #333;
+  border-radius: 4px;
   cursor: pointer;
   text-align: center;
-  line-height: 32px;
 }
 
-.disabled button:hover {
-  background-color: #f4f4f4;
-}
-
-.disabled button:disabled {
+.pageNavigate button:disabled, .pageButton button:disabled {
   background-color: #f9f9f9;
-  border-color: #ddd;
   color: #aaa;
   cursor: not-allowed;
 }

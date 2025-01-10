@@ -1,8 +1,0 @@
-.reviewListWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  background-color: #ececec;
-  border-radius: 8px;
-}

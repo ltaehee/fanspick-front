@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import ReviewBox from '@components/review/ReviewBox';
-import styles from '@css/product/productReviewPage.module.css';
-import paginationStyles from '@/css/pagination.module.css'
-
+import paginationStyles from '@/css/pagination.module.css';
+import userPaginationStyles from '@/css/userPagination.module.css';
+import styles from '@css/review.module.css';
+import defaultProfile from '/icons/user_icon.png';
 import api from '@utils/api';
 import { Pagination } from 'ys-project-ui';
 
@@ -25,9 +26,11 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
   const [totalReviews, setTotalReviews] = useState(0);
   const reviewsPerPage = 2;
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (page: number) => {
     try {
-      const response = await api.get(`/review/product/${productId}`);
+      const response = await api.get(
+        `/review/product/${productId}?page=${page}&itemsPerPage=${reviewsPerPage}`,
+      );
       if (response.status === 200) {
         setReviews(response.data.reviews);
         setTotalReviews(response.data.totalCount);
@@ -42,41 +45,44 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
   };
 
   useEffect(() => {
-    fetchReviews();
-  }, [productId]);
+    fetchReviews(currentPage); // 초기 데이터 로드
+  }, [currentPage, productId]);
 
   return (
-    <div className={styles.reviewListWrap}>
-      {reviews.length > 0 ? (
-        <>
-          {reviews.map((review) => (
+    <div>
+      <div className={styles.reviewListWrap}>
+        {reviews.length > 0 ? (
+          reviews.map((review) => (
             <ReviewBox
               key={review._id}
-              profileImg={review.userId.profileImage}
+              profileImg={review.userId.profileImage || defaultProfile}
               username={review.userId.name}
               reviewTitle={review.title}
-              productImgs={review.image}
+              productImgs={review.image.length > 0 ? review.image : []}
               reviewContent={review.content}
               starpoint={review.starpoint}
-              className={paginationStyles.paginationContainer}
             />
-          ))}
-          <Pagination
-            itemLength={totalReviews}
-            value={currentPage}
-            itemCountPerPage={reviewsPerPage}
-            onPageChange={handlePageChange}
-          >
-            <Pagination.PageButtons
-              className={paginationStyles.pageButton}
-            />
-            <Pagination.Navigator
-              className={paginationStyles.disabled}
-            />
-          </Pagination>
-        </>
-      ) : (
-        <p>등록된 리뷰가 없습니다.</p>
+          ))
+        ) : (
+          <p>등록된 리뷰가 없습니다.</p>
+        )}
+      </div>
+
+      {totalReviews > 0 && (
+        <Pagination
+          itemLength={totalReviews}
+          value={currentPage}
+          itemCountPerPage={reviewsPerPage}
+          onPageChange={handlePageChange}
+          className={paginationStyles.pagination}
+        >
+          <Pagination.PageButtons
+            className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+          />
+          <Pagination.Navigator
+            className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+          />
+        </Pagination>
       )}
     </div>
   );

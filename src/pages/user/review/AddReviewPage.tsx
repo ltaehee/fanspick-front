@@ -1,24 +1,24 @@
-import { ChangeEvent, useRef, useState } from "react";
-import styles from "@css/review.module.css";
-import dummyImg2 from "/images/product/dog2.jpg";
-import uploadImg from "/icons/addImg.png";
-import { Button, Input } from "ys-project-ui";
-import AWS from "aws-sdk";
-import { toast } from "react-toastify";
-import { useUserContext } from "@context/UserContext";
-import api from "@utils/api";
-import StarRating from "@components/review/StarRating"; 
+import { ChangeEvent, useRef, useState } from 'react';
+import styles from '@css/review.module.css';
+import dummyImg2 from '/images/product/dog2.jpg';
+import uploadImg from '/icons/addImg.png';
+import { Button, Input } from 'ys-project-ui';
+import AWS from 'aws-sdk';
+import { toast } from 'react-toastify';
+import { useUserContext } from '@context/UserContext';
+import api from '@utils/api';
+import StarRating from '@components/review/StarRating';
 
 // AWS S3 환경 변수
 const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
 const REGION = import.meta.env.VITE_REGION;
-const BUCKET_NAME = "fanspick";
+const BUCKET_NAME = 'fanspick';
 
 const mockProduct = {
   id: 1,
-  title: "상품12321",
-  price: "100,000원",
+  title: '상품12321',
+  price: '100,000원',
   count: 1,
   imageUrl: dummyImg2,
 };
@@ -28,8 +28,8 @@ const AddReviewPage = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
   const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [reviewText, setReviewText] = useState(""); 
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewText, setReviewText] = useState('');
   const { token } = useUserContext();
 
   // AWS S3 설정
@@ -61,13 +61,13 @@ const AddReviewPage = () => {
         Bucket: BUCKET_NAME,
         Key: `review/${file.name}`,
         Body: file,
-        ACL: "public-read",
+        ACL: 'public-read',
       };
 
       const data = await s3.upload(uploadParams).promise();
       return data.Location;
     } catch (error) {
-      toast.error("이미지 업로드에 실패했습니다.");
+      toast.error('이미지 업로드에 실패했습니다.');
       return null;
     }
   };
@@ -82,27 +82,27 @@ const AddReviewPage = () => {
     try {
       const s3UploadPromises = reviewPhotos.map((file) => uploadToS3(file));
       const s3Urls = (await Promise.all(s3UploadPromises)).filter(
-        (url) => url !== null
+        (url) => url !== null,
       );
       const reviewData = {
-        productId: "677f2f0105e6231849601c8a",
+        productId: '677f2f0105e6231849601c8a',
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
         images: s3Urls,
       };
 
-      console.log("사용자 토큰:", token);
-      await api.post("/review/add", reviewData, {
+      console.log('사용자 토큰:', token);
+      await api.post('/review/add', reviewData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      toast.success("리뷰가 성공적으로 등록되었습니다!");
+      toast.success('리뷰가 성공적으로 등록되었습니다!');
     } catch (error) {
-      console.error("Review submission error:", error);
-      toast.error("리뷰 등록 중 오류가 발생했습니다.");
+      console.error('Review submission error:', error);
+      toast.error('리뷰 등록 중 오류가 발생했습니다.');
     }
   };
 
@@ -169,11 +169,22 @@ const AddReviewPage = () => {
         placeholder="리뷰 제목을 입력하세요"
         className={styles.review_title}
       />
-      <p className={styles.label}>본문 입력</p>
+      <p className={styles.label}>
+        본문 입력{' '}
+        <span style={{ fontSize: '10px', color: 'blue' }}>
+          (최대 100자까지 입력 가능합니다.)
+        </span>
+      </p>
       <textarea
         className={styles.textarea}
         value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
+        onChange={(e) => {
+          if (e.target.value.length <= 100) {
+            setReviewText(e.target.value);
+          } else {
+            toast.warning('리뷰 본문은 최대 100자까지 입력 가능합니다.');
+          }
+        }}
       />
       <Button
         onClick={handleClickAddReview}
