@@ -162,7 +162,7 @@ const OrderPage = () => {
           }
         } catch (error) {
           console.error('Error creating order:');
-          toast.error('주문 생성에 실패했습니다.');
+          toast.error('주문  실패');
         }
       } else {
         toast.error(`결제 실패: ${error_msg}`);
