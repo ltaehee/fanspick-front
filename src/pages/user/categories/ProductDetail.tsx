@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../../css/product/productDetail.module.css';
-// import dummyImg2 from '/images/product/dog2.jpg';
 import { Button, Tabs } from 'ys-project-ui';
 import { useEffect, useState } from 'react';
 import ProductCount from '../../../components/product/ProductCount';
@@ -13,14 +12,6 @@ import api from '../../../utils/api';
 import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
-/* interface PaymentData {
-  pg: string;
-  pay_method: string;
-  merchant_uid: string;
-  name: string;
-  amount: number;
-} */
-
 interface ProductDetailProps {
   _id: string;
   name: string;
@@ -32,24 +23,6 @@ interface ProductDetailProps {
   };
   detailImage: string[];
 }
-
-// const mockReviews = [
-//   {
-//     profileImg: profileImg,
-//     username: '이 * 희',
-//     productName: '강아지 그립톡',
-//     productImg: dummyImg2,
-//     reviewContent:
-//       '그립톡 정말 좋아요! 그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
-//   },
-//   {
-//     profileImg: profileImg,
-//     username: '이 * 희',
-//     productName: '고양이 그립톡',
-//     productImg: dummyImg2,
-//     reviewContent: '그립톡 정말 좋아요!그립톡 정말 좋아요!그립톡 정말 좋아요!',
-//   },
-// ];
 
 const ProductDetail = () => {
   const [getProduct, setGetProduct] = useState<ProductDetailProps | null>(null);
