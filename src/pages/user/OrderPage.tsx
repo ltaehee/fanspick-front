@@ -123,8 +123,7 @@ const OrderPage = () => {
       const { success, error_msg } = response;
 
       if (success) {
-        console.log({ response });
-        /* try {
+        try {
           const response = await api.post('/purchase/payment', paymentData, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -136,8 +135,8 @@ const OrderPage = () => {
           }
         } catch (error) {
           console.error('Error creating payment:');
-          toast.error('결제 실패..');
-        } */
+          toast.error('결제 실패...');
+        }
         const orderData = {
           userId,
           products: [
