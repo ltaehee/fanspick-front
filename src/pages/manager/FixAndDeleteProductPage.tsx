@@ -262,9 +262,43 @@ const FixAndDeleteProductPage = () => {
     setPreDetailViewUrls(newPreviewUrls);
   };
 
-  const handleClickSubmitButton = async (e: MouseEvent<HTMLButtonElement>) => {
+  const handleFixConfirm = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    try {
+      const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
+      const categoryIndex = categoryCheckedId[0];
+      // console.log("categoryIndex ", categoryIndex);
+
+      const data = {
+        _id: productId,
+        userId: managerId,
+        name: productName,
+        price: productPrice,
+        introduce: productintroduce,
+        categoryIndex: categoryIndex,
+        image: awsImgAddress,
+        detailImage: awsDetailImgAddress,
+      };
+
+      const response = await api.put('/manager/update', data);
+      // console.log('response data ', response.data);
+
+      if (response.status === 204) {
+        toast.success('상품 수정이 완료되었습니다.');
+        navigator('/select-product');
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.status === 400) {
+        console.log('입력이 안된 필드값이 있습니다. 다시 시도해 주세요. ', err);
+      } else if (err.response?.status === 500) {
+        console.log('internal error ', err);
+      }
+    }
+  };
+
+  const handleClickSubmitConfirmToast = () => {
     if (awsImgAddress === '') {
       toast.error('상품이미지를 등록해주세요');
       return;
@@ -291,61 +325,39 @@ const FixAndDeleteProductPage = () => {
       return;
     }
 
-    const isConfirmed = window.confirm('정말로 수정하시겠습니까?');
-    if (isConfirmed) {
-      try {
-        const categoryCheckedId = categoryCheckedList.map((prev) => prev.id);
-        const categoryIndex = categoryCheckedId[0];
-        // console.log("categoryIndex ", categoryIndex);
+    toast.info(
+      <div className={styles.customToastDiv}>
+        <p>정말로 수정하시겠습니까?</p>
+        <Button onClick={handleFixConfirm} label="수정"></Button>
+        <Button onClick={() => toast.dismiss()} label="취소"></Button>
+      </div>,
+      { autoClose: false, draggable: false },
+    );
+  };
 
-        const data = {
-          _id: productId,
-          userId: managerId,
-          name: productName,
-          price: productPrice,
-          introduce: productintroduce,
-          categoryIndex: categoryIndex,
-          image: awsImgAddress,
-          detailImage: awsDetailImgAddress,
-        };
+  const handleDeleteConfirm = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-        const response = await api.put('/manager/update', data);
-        // console.log('response data ', response.data);
-
-        if (response.status === 204) {
-          toast.success('상품 수정이 완료되었습니다.');
-          navigator('/select-product');
-        }
-      } catch (error) {
-        const err = error as AxiosError;
-        if (err.response?.status === 400) {
-          console.log(
-            '입력이 안된 필드값이 있습니다. 다시 시도해 주세요. ',
-            err,
-          );
-        } else if (err.response?.status === 500) {
-          console.log('internal error ', err);
-        }
+    try {
+      const response = await api.delete(`/manager/delete/${productId}`);
+      if (response.status === 204) {
+        toast.success('상품 삭제가 완료되었습니다.');
+        navigator('/select-product');
       }
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const handleClickDeleteButton = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    const isConfirmed = window.confirm('정말로 삭제하시겠습니까?');
-
-    if (isConfirmed) {
-      try {
-        const response = await api.delete(`/manager/delete/${productId}`);
-        if (response.status === 204) {
-          toast.success('상품 삭제가 완료되었습니다.');
-          navigator('/select-product');
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  const handleClickDeleteConfirmToast = () => {
+    toast.info(
+      <div className={styles.customToastDiv}>
+        <p>정말로 삭제하시겠습니까?</p>
+        <Button onClick={handleDeleteConfirm} label="삭제"></Button>
+        <Button onClick={() => toast.dismiss()} label="취소"></Button>
+      </div>,
+      { autoClose: false, draggable: false },
+    );
   };
 
   const getCategory = async () => {
@@ -535,13 +547,13 @@ const FixAndDeleteProductPage = () => {
                 className={styles.submitButton}
                 label="상품수정하기"
                 type="button"
-                onClick={handleClickSubmitButton}
+                onClick={handleClickSubmitConfirmToast}
               ></Button>
               <Button
                 className={styles.submitButton}
                 label="상품삭제하기"
                 type="button"
-                onClick={handleClickDeleteButton}
+                onClick={handleClickDeleteConfirmToast}
               ></Button>
             </div>
           </section>
