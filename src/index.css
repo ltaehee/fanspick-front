@@ -1,7 +1,7 @@
 @font-face {
-  font-family: "GmarketSansMedium";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff")
-    format("woff");
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+    format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: "GmarketSansMedium", Arial, sans-serif;
+  font-family: 'GmarketSansMedium', Arial, sans-serif;
 }
 .wrapper {
   display: flex;
@@ -36,7 +36,7 @@ button {
   cursor: pointer;
   padding: 10px;
   border: none;
-  font-family: "GmarketSansMedium";
+  font-family: 'GmarketSansMedium';
 }
 
 input {
@@ -59,12 +59,21 @@ Label {
 
 .Toastify__toast-container {
   position: fixed;
-  top: 10%; 
+  top: 10%;
 }
 
 .Toastify__close-button {
   position: absolute;
   left: 43%;
-  top: 55%; 
-  transform: translateY(-50%); 
+  top: 55%;
+  transform: translateY(-50%);
+}
+
+/* toast confirm custom */
+.Toastify__toast-icon {
+  display: none;
+}
+
+.Toastify__close-button {
+  display: none;
 }
