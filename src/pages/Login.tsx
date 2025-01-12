@@ -76,9 +76,11 @@ function Login() {
       if (response.status === 200) {
         const userData = response.data.user;
         const token = response.data.token;
+        const tokenExpiry = response.data.tokenExpiry; 
 
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('token', token);
+        localStorage.setItem('tokenExpiry', tokenExpiry.toString()); 
 
         updateUser(userData);
         updateToken(token);
