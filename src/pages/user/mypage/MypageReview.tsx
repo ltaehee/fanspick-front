@@ -70,9 +70,9 @@ const MypageReviewPage = () => {
           },
         });
         toast.success('리뷰가 성공적으로 삭제되었습니다.');
-        fetchReviews(currentPage); 
+        fetchReviews(currentPage);
       } catch (err) {
-        toast.error('리뷰 삭제 중 오류가 발생했습니다.');
+        console.error('리뷰 삭제 중 오류가 발생했습니다.');
       }
     }
   };
@@ -98,7 +98,7 @@ const MypageReviewPage = () => {
               productImgs={[review.productId?.image || defaultProfile]}
               reviewContent={review.content}
               starpoint={review.starpoint}
-              reviewImages={review.image || []} 
+              reviewImages={review.image || []}
               onEditClick={() => handleEditReview(review._id)}
               onDeleteClick={() => handleDeleteReview(review._id)}
             />

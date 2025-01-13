@@ -65,6 +65,7 @@ const MypageCart = () => {
         const response = await api.get('/mypage/product-by-ids', {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
+
         setIsDetail(response.data.productDetail);
       } catch (err) {
         console.error('장바구니 상품 조회 실패', err);
@@ -73,10 +74,6 @@ const MypageCart = () => {
 
     getProductDetail();
   }, [cart]);
-
-  useEffect(() => {
-    console.log('isDetail', isDetail);
-  }, []);
 
   //장바구니 내역 전체 삭제하기
   const deleteCart = () => {
@@ -144,6 +141,24 @@ const MypageCart = () => {
       totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
     };
   });
+
+  //선택된 상품의 총 금액
+  const selectedTotalPrice = isSelected.reduce((sum, product) => {
+    const detail = isDetail.find((detail) => detail._id === product._id);
+    const price = detail?.price || 0;
+    return sum + price * product.quantity;
+  }, 0);
+
+  //구매하기 버튼 누를 때
+  const handleBuyClick = () => {
+    if (productDetailMap.length > 0) {
+      navigate('/order', {
+        state: { product: isDetail, cart, selectedTotalPrice },
+      });
+    } else {
+      toast.error('구매할 상품이 없습니다.');
+    }
+  };
 
   return (
     <div className={cartStyles.content_wrap}>
@@ -215,7 +230,7 @@ const MypageCart = () => {
             <Button
               className={cartStyles.button}
               label="구매하기"
-              onClick={() => navigate('/')}
+              onClick={handleBuyClick}
             />
           </div>
         </div>
