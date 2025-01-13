@@ -75,7 +75,7 @@ const router = createBrowserRouter([
         element: <UserFaq />,
       },
       {
-        path: '/cart',
+        path: '/cart/:userId',
         element: <MypageCart />,
       },
       {
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/oauth/callback',
-        element: <OauthCallback />
+        element: <OauthCallback />,
       },
     ],
   },

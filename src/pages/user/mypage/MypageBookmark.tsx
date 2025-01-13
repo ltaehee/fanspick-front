@@ -152,6 +152,8 @@ const MypageBookmark = () => {
     isDetail: isDetail.find((detail) => product.productId === detail._id),
   }));
 
+  console.log('productDetail', productDetailMap);
+
   // 현재 페이지에 맞는 데이터
   const startIndex = (currentPage - 1) * favoritesPerPage; //0
   const endIndex = startIndex + favoritesPerPage; //5
@@ -166,18 +168,26 @@ const MypageBookmark = () => {
     const newItem = { productId: id, quantity: 1 }; // 장바구니에 추가할 상품
 
     const existItem = localCart.find(
-      (item: { _id: string }) => item._id === id,
+      (item: { productId: string }) => item.productId === id,
     ); // 장바구니에 이미 존재하는지
 
+    //장바구니에 있는 상품일 때
     if (existItem) {
-      toast.error('이미 장바구니에 존재하는 상품입니다.');
+      const updatedQuantity = localCart.map((item: any) =>
+        item.productId === id ? { ...item, quantity: item.quantity + 1 } : item,
+      );
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedQuantity));
+      toast.success('장바구니에 추가 되었습니다.');
       return;
     }
 
+    //장바구니에 없는 상품일 때
     const updatedItem = [...localCart, newItem];
 
     localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedItem));
     toast.success('장바구니에 추가되었습니다.');
+
+    console.log('product.productId');
   };
 
   return (

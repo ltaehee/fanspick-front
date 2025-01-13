@@ -15,6 +15,7 @@ interface MenuItem {
 const Header = () => {
   const { user, logout } = useUserContext();
   const navigate = useNavigate();
+  console.log('헤더', user);
 
   // 메뉴 렌더링
   const renderMenu = () => {
@@ -69,7 +70,7 @@ const Header = () => {
               </a>
               {user.role !== 'manager' && (
                 <>
-                  <a href="#cart">
+                  <a onClick={() => navigate(`/cart/${user.id}`)}>
                     <img
                       src={cartIcon}
                       alt="Shopping Cart"
