@@ -155,7 +155,7 @@ const MypageBookmark = () => {
   // 현재 페이지에 맞는 데이터
   const startIndex = (currentPage - 1) * favoritesPerPage; //0
   const endIndex = startIndex + favoritesPerPage; //5
-  const currentDetailMap = productDetailMap.slice(startIndex, endIndex); //
+  const currentDetailMap = productDetailMap.slice(startIndex, endIndex);
 
   //장바구니에 넣기
   const handleAddCart = (id: string) => {

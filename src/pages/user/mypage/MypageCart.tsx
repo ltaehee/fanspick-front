@@ -5,12 +5,14 @@ import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from '@components/productTable/ProductTableHeader';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'ys-project-ui';
+import { Button, Pagination } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
 import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import trash from '/icons/trash.png';
 import api from '../../../utils/api';
+import paginationStyles from '@/css/pagination.module.css';
+import userPaginationStyles from '@/css/userPagination.module.css';
 
 interface Cart {
   productId: string;
@@ -30,6 +32,8 @@ const MypageCart = () => {
   const { user } = useUserContext();
   const [cart, setCart] = useState<Cart[]>([]); //로컬에서 가져온 장바구니 내역
   const [isDetail, setIsDetail] = useState<Detail[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const cartsPerPage = 5;
 
   useEffect(() => {
     if (user?.id) {
@@ -154,16 +158,13 @@ const MypageCart = () => {
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
     if (productDetailMap.length > 0) {
-      const quantities = cart.map((item) => item.quantity);
+      const quantities = isSelected.map((item) => item.quantity);
 
       const dataToSend = {
         product: isDetail,
         quantity: quantities,
         selectedTotalPrice,
       };
-
-      // 콘솔로 데이터 확인
-      console.log('Sending data:', dataToSend);
 
       navigate('/order', {
         state: dataToSend,
@@ -172,6 +173,11 @@ const MypageCart = () => {
       toast.error('구매할 상품이 없습니다.');
     }
   };
+
+  // 현재 페이지에 맞는 데이터
+  const startIndex = (currentPage - 1) * cartsPerPage; //0
+  const endIndex = startIndex + cartsPerPage; //5
+  const currentDetailMap = productDetailMap.slice(startIndex, endIndex);
 
   return (
     <div className={cartStyles.content_wrap}>
@@ -203,7 +209,7 @@ const MypageCart = () => {
               />
             </ProductTableHeader>
             <ProductTableMenu>
-              {productDetailMap.map((product) => (
+              {currentDetailMap.map((product) => (
                 <div key={product.productId} className={tableStyles.content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
@@ -246,6 +252,20 @@ const MypageCart = () => {
               onClick={handleBuyClick}
             />
           </div>
+          <Pagination
+            itemLength={isDetail.length}
+            value={currentPage}
+            itemCountPerPage={cartsPerPage}
+            onPageChange={(page) => setCurrentPage(page)}
+            className={paginationStyles.pagination}
+          >
+            <Pagination.PageButtons
+              className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+            />
+            <Pagination.Navigator
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+          </Pagination>
         </div>
       ) : (
         <div>
