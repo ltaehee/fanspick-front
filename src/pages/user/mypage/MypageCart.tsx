@@ -57,7 +57,7 @@ const MypageCart = () => {
 
   useEffect(() => {
     const getProductDetail = async () => {
-      if (!cart || cart.length === 0) return;
+      if (!cart || cart.length === 0) return; //
 
       const ids = cart.map((item) => item._id); // 상품의 아이디만 담은 배열
 
