@@ -24,7 +24,7 @@
     "react-toastify": "^11.0.2",
     "vite-plugin-remove-console": "^2.2.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "ys-project-ui": "^0.0.17"
+    "ys-project-ui": "^0.0.22"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

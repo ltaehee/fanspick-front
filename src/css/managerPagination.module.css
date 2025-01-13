@@ -1,6 +1,4 @@
-.pageButton button {
+.pageButton button:disabled {
   background-color: #ffacac;
-}
-.pageNavigate button {
-  background-color: #ffacac;
+  border-radius: 10%;
 }

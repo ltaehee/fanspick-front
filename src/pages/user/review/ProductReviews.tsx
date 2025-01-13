@@ -61,7 +61,7 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
               productImgs={review.image.length > 0 ? review.image : []}
               reviewContent={review.content}
               starpoint={review.starpoint}
-              hideIcons={true} 
+              hideIcons={true}
             />
           ))
         ) : (
@@ -77,12 +77,19 @@ const ProductReviewPage = ({ productId }: { productId: string }) => {
           onPageChange={handlePageChange}
           className={paginationStyles.pagination}
         >
-          <Pagination.PageButtons
-            className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
-          />
-          <Pagination.Navigator
-            className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
-          />
+          <div className={paginationStyles.pageContainer}>
+            <Pagination.Navigator
+              type="prev"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+            <Pagination.PageButtons
+              className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+            />
+            <Pagination.Navigator
+              type="next"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+          </div>
         </Pagination>
       )}
     </div>
