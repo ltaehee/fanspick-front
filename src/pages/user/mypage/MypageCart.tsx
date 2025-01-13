@@ -15,7 +15,7 @@ import api from '../../../utils/api';
 interface Cart {
   _id: string;
   quantity: number;
-} //quantity 추후 작업
+}
 
 interface Detail {
   _id: string;
@@ -27,9 +27,18 @@ interface Detail {
 const MypageCart = () => {
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState<Cart[]>([]);
+  const { user } = useUserContext();
   const [cart, setCart] = useState<Cart[]>([]); //로컬에서 가져온 장바구니 내역
   const [isDetail, setIsDetail] = useState<Detail[]>([]);
-  const { user } = useUserContext();
+
+  useEffect(() => {
+    if (user?.id) {
+      const localCart = JSON.parse(
+        localStorage.getItem(`cart_${user.id}`) || '[]',
+      );
+      setCart(localCart); // 로컬 스토리지에서 데이터를 가져와 상태에 설정
+    }
+  }, []);
 
   const userId = user?.id;
   if (!userId) {
@@ -48,14 +57,15 @@ const MypageCart = () => {
 
   useEffect(() => {
     const getProductDetail = async () => {
+      if (!cart || cart.length === 0) return;
+
       const ids = cart.map((item) => item._id); // 상품의 아이디만 담은 배열
 
       try {
-        const response = await api.get('/manager/product-by-ids', {
+        const response = await api.get('/mypage/product-by-ids', {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
-        console.log(response.data);
-        setIsDetail(response.data.products);
+        setIsDetail(response.data.productDetail);
       } catch (err) {
         console.error('장바구니 상품 조회 실패', err);
       }
@@ -66,7 +76,7 @@ const MypageCart = () => {
 
   useEffect(() => {
     console.log('isDetail', isDetail);
-  }, [isDetail]);
+  }, []);
 
   //장바구니 내역 전체 삭제하기
   const deleteCart = () => {
@@ -116,12 +126,24 @@ const MypageCart = () => {
   //장바구니 선택한 하나의 아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
     setCart((prev) => prev.filter((product) => product._id !== productId));
+    toast.success('삭제가 완료되었습니다.');
   };
 
-  const productDetailMap = cart.map((product) => ({
-    ...product,
-    detail: isDetail.find((detail) => detail._id === product._id), //id가 같으면 detail에 넣기
-  }));
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem(`cart_${userId}`, JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  const productDetailMap = cart.map((product) => {
+    const detail = isDetail.find((detail) => detail._id === product._id);
+    const price = detail?.price || 0;
+    return {
+      ...product,
+      detail,
+      totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
+    };
+  });
 
   return (
     <div className={cartStyles.content_wrap}>
@@ -164,8 +186,9 @@ const MypageCart = () => {
                   <ProductTableMenu.Detail
                     onClick={() => navigate('/add-review')}
                     productName={product.detail?.name}
+                    image={product.detail?.image}
                   />
-                  <ProductTableMenu.Content content={product.detail?.price} />
+                  <ProductTableMenu.Content content={product.totalPrice} />
                   <div className={tableStyles.quantity_wrap}>
                     <ProductTableMenu.QuantityButton
                       label="-"
