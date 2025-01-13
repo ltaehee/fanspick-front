@@ -25,7 +25,7 @@ interface ProductDetailProps {
 }
 
 const ProductDetail = () => {
-  const [getProduct, setGetProduct] = useState<ProductDetailProps | null>(null);
+  const [getProduct, setGetProduct] = useState<ProductDetailProps>();
   const { id } = useParams<{ id: string }>();
 
   const [quantity, setQuantity] = useState(1);

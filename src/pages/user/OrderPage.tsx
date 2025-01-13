@@ -30,13 +30,14 @@ const OrderPage = () => {
   const userId = user?.id;
 
   const location = useLocation();
-  const { product, quantity, cart, selectedTotalPrice } = location.state;
+  console.log('location.state', location.state);
+  const { product, quantity, selectedTotalPrice } = location.state;
   const productIdMap = {
     ...product,
     productId: product._id,
   };
-  console.log('test', location.state);
   const totalPrice = product.price * quantity;
+  const cartTotalPrice = selectedTotalPrice;
 
   const navigate = useNavigate();
 
@@ -186,24 +187,32 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            <div key={productIdMap.id} className={orderstyles.content}>
-              <ProductTableMenu.Detail
-                productName={product.name}
-                image={product.image}
-              />
-              <ProductTableMenu.Content content={addCommas(product.price)} />
-              <div className={tableStyles.quantity_wrap}>
-                <ProductTableMenu.Quantity quantity={quantity} />
-              </div>
-            </div>
+            {(Array.isArray(product) ? product : [product]).map(
+              (item, index) => (
+                <div key={item._id} className={orderstyles.content}>
+                  <ProductTableMenu.Detail
+                    productName={item.name}
+                    image={item.image}
+                  />
+                  <ProductTableMenu.Content content={addCommas(item.price)} />
+                  <div className={tableStyles.quantity_wrap}>
+                    <ProductTableMenu.Quantity
+                      quantity={
+                        Array.isArray(quantity) ? quantity[index] : quantity
+                      }
+                    />
+                  </div>
+                </div>
+              ),
+            )}
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액 {addCommas(totalPrice)}원</p>
+          <p>주문상품금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
           <p>+</p>
           <p>배송비 0원(무료)</p>
           <p>=</p>
-          <p>최종 결제 금액 {addCommas(totalPrice)}원</p>
+          <p>최종 결제 금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
         </div>
         <h3 className={orderstyles.h3}>고객 / 배송지 정보</h3>
         <div className={orderstyles.inputBoxWrap}>
