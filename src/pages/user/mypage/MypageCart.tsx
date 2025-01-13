@@ -13,7 +13,7 @@ import trash from '/icons/trash.png';
 import api from '../../../utils/api';
 
 interface Cart {
-  _id: string;
+  productId: string;
   quantity: number;
 }
 
@@ -59,7 +59,7 @@ const MypageCart = () => {
     const getProductDetail = async () => {
       if (!cart || cart.length === 0) return; //
 
-      const ids = cart.map((item) => item._id); // 상품의 아이디만 담은 배열
+      const ids = cart.map((item) => item.productId); // 상품의 아이디만 담은 배열
 
       try {
         const response = await api.get('/mypage/product-by-ids', {
@@ -85,7 +85,7 @@ const MypageCart = () => {
     setCart((prevCart) =>
       prevCart.map(
         (product) =>
-          product._id === id && product.quantity > 0
+          product.productId === id && product.quantity > 0
             ? { ...product, quantity: product.quantity - 1 } // 수량 감소
             : product, // 다른 상품은 변경하지 않음
       ),
@@ -97,7 +97,7 @@ const MypageCart = () => {
     setCart((prevCart) =>
       prevCart.map(
         (product) =>
-          product._id === id
+          product.productId === id
             ? { ...product, quantity: product.quantity + 1 } // 수량 증가
             : product, // 다른 상품은 변경 하지 않음
       ),
@@ -105,24 +105,26 @@ const MypageCart = () => {
   };
 
   const isChecked = (id: string) =>
-    isSelected.some((product) => product._id === id);
+    isSelected.some((product) => product.productId === id);
 
   //선택된 아이템 관리
   const handleChangeCheckBox = (id: string) => {
     setIsSelected((prev) => {
       // 이미 선택된 id가 있으면 해당 상품 객체를 배열에서 제거
-      if (prev.some((product) => product._id === id)) {
-        return prev.filter((product) => product._id !== id);
+      if (prev.some((product) => product.productId === id)) {
+        return prev.filter((product) => product.productId !== id);
       }
       // id가 없으면 cart에서 해당 상품을 찾아서 추가 (undefined가 아닌 값만 추가)
-      const product = cart.find((product) => product._id === id);
+      const product = cart.find((product) => product.productId === id);
       return product ? [...prev, product] : prev; // 상품이 없으면 배열을 그대로 반환
     });
   };
 
   //장바구니 선택한 하나의 아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
-    setCart((prev) => prev.filter((product) => product._id !== productId));
+    setCart((prev) =>
+      prev.filter((product) => product.productId !== productId),
+    );
     toast.success('삭제가 완료되었습니다.');
   };
 
@@ -133,7 +135,7 @@ const MypageCart = () => {
   }, [cart]);
 
   const productDetailMap = cart.map((product) => {
-    const detail = isDetail.find((detail) => detail._id === product._id);
+    const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
     return {
       ...product,
@@ -144,7 +146,7 @@ const MypageCart = () => {
 
   //선택된 상품의 총 금액
   const selectedTotalPrice = isSelected.reduce((sum, product) => {
-    const detail = isDetail.find((detail) => detail._id === product._id);
+    const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
     return sum + price * product.quantity;
   }, 0);
@@ -191,11 +193,11 @@ const MypageCart = () => {
             </ProductTableHeader>
             <ProductTableMenu>
               {productDetailMap.map((product) => (
-                <div key={product._id} className={tableStyles.content}>
+                <div key={product.productId} className={tableStyles.content}>
                   <ProductTableMenu.CheckBox
                     className={cartStyles.checkbox_box}
-                    productId={product._id}
-                    isChecked={isChecked(product._id)}
+                    productId={product.productId}
+                    isChecked={isChecked(product.productId)}
                     onChange={handleChangeCheckBox}
                   />
                   <ProductTableMenu.Detail
@@ -208,17 +210,17 @@ const MypageCart = () => {
                     <ProductTableMenu.QuantityButton
                       label="-"
                       onClick={handleDown}
-                      id={product._id}
+                      id={product.productId}
                     />
                     <ProductTableMenu.Quantity quantity={product.quantity} />
                     <ProductTableMenu.QuantityButton
                       label="+"
                       onClick={handleUp}
-                      id={product._id}
+                      id={product.productId}
                     />
                   </div>
                   <ProductTableMenu.DeleteButton
-                    productId={product._id}
+                    productId={product.productId}
                     onClick={handleDeleteItem}
                     image={trash}
                   />
