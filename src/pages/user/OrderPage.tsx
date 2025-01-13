@@ -30,21 +30,21 @@ const OrderPage = () => {
   const userId = user?.id;
 
   const location = useLocation();
-  const { product, quantity } = location.state;
+  const { product, quantity, cart, selectedTotalPrice } = location.state;
   const productIdMap = {
     ...product,
     productId: product._id,
   };
-  console.log({ product });
+  console.log('test', location.state);
   const totalPrice = product.price * quantity;
 
   const navigate = useNavigate();
 
   const [address, setAddress] = useState({
-    roadAddress: '',
-    zoneCode: '',
-    jibunAddress: '',
-    detailAddress: '',
+    roadAddress: user?.address?.roadAddress || '',
+    zoneCode: user?.address?.zoneCode || '',
+    jibunAddress: user?.address?.jibunAddress || '',
+    detailAddress: user?.address?.detailAddress || '',
   });
 
   const [updatedUser, setUpdatedUser] = useState({
