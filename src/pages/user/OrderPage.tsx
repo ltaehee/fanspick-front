@@ -38,6 +38,8 @@ const OrderPage = () => {
   };
   const totalPrice = product.price * quantity;
   const cartTotalPrice = selectedTotalPrice;
+  console.log('totalPrice', totalPrice);
+  console.log('cartTotalPrice', cartTotalPrice);
 
   const navigate = useNavigate();
 
@@ -78,17 +80,6 @@ const OrderPage = () => {
     }
   };
 
-  /*  콜백 함수 정의하기 */
-  /* const paymentCallback = (response: PaymentResponse) => {
-    const { success, error_msg } = response;
-
-    if (success) {
-      console.log({ response });
-      toast.success('결제 성공');
-    } else {
-      toast.error(`결제 실패: ${error_msg}`);
-    }
-  }; */
   const handleOrderClick = async () => {
     const { name, email } = updatedUser;
     if (!name.trim()) {
@@ -124,7 +115,7 @@ const OrderPage = () => {
       pg: 'kakaopay', // PG사,(필수)
       pay_method: 'card', // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-      amount: totalPrice, // 결제금액,(필수)
+      amount: totalPrice || cartTotalPrice, // 결제금액,(필수)
       name: product.name, // 주문명,(필수)
     };
     IMP.request_pay(paymentData, async (response: PaymentResponse) => {
@@ -132,7 +123,7 @@ const OrderPage = () => {
 
       if (success) {
         try {
-          const response = await api.post('/purchase/payment', paymentData);
+          await api.post('/purchase/payment', paymentData);
         } catch (error) {
           console.error('결제 실패:');
         }
@@ -146,7 +137,7 @@ const OrderPage = () => {
           ],
           orderAddress: address,
           imp_uid: impCode,
-          totalPrice,
+          totalPrice: totalPrice || cartTotalPrice,
         };
         try {
           const response = await api.post('/purchase/order', orderData, {
