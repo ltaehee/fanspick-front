@@ -110,7 +110,7 @@ const Mypage = () => {
       const data = await s3.upload(uploadParams).promise();
       setAwsImgAddress(data.Location); // 업로드된 URL 저장
     } catch (error) {
-      toast.error('이미지 업로드에 실패했습니다.');
+      console.error('이미지 업로드에 실패했습니다.');
     }
   };
 
