@@ -31,10 +31,10 @@ const OrderPage = () => {
 
   const location = useLocation();
   const { product, quantity, selectedTotalPrice } = location.state;
-  const productIdMap = {
-    ...product,
-    productId: product._id,
-  };
+  // const productIdMap = {
+  //   ...product,
+  //   productId: product._id,
+  // };
 
   const products = Array.isArray(product) ? product : [product];
   const quantities = Array.isArray(quantity) ? quantity : [quantity];

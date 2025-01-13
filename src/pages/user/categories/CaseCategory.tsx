@@ -3,7 +3,7 @@ import ProductCard from '../../../components/product/ProductCard';
 import styles from '../../../css/homepage.module.css';
 import { ProductProps } from '../../HomePage';
 import api from '../../../utils/api';
-import { toast } from 'react-toastify';
+
 
 const CaseCategory = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
