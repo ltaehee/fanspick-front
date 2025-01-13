@@ -5,7 +5,6 @@ import cartStyles from '@css/mypage/mypageCart.module.css';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import noticeImg from '/icons/alert-circle.png';
 import { useUserContext } from '@context/UserContext';
