@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "homepage": ".",
   "dependencies": {
     "@types/node": "^22.10.5",
     "@types/react-modal": "^3.16.3",
