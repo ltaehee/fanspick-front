@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import { useUserContext } from '../../context/UserContext';
 
 interface ProductProps {
-  _id: string;
+  productId: string;
   className: string;
 }
-const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
+const FavoritesBtn: FC<ProductProps> = ({ productId, className }) => {
   const { user } = useUserContext();
   const userId = user?.id;
 
@@ -17,7 +17,9 @@ const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
   const initialFavorite = () => {
     if (!userId) return false;
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
-    return favorites.some((item: { _id: string }) => item._id === _id); // 객체 배열에서 _id 비교
+    return favorites.some(
+      (item: { productId: string }) => item.productId === productId,
+    ); // 객체 배열에서 _id 비교
   };
 
   const [isFavorite, setIsFavorite] = useState(initialFavorite);
@@ -25,7 +27,7 @@ const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
   useEffect(() => {
     // 유저가 바뀌거나, productId가 바뀌었을 때 로컬 스토리지를 다시 확인
     setIsFavorite(initialFavorite());
-  }, [_id, userId]);
+  }, [productId, userId]);
 
   // 좋아요 상태 토글 함수
   const toggleFavorite = (e: React.MouseEvent) => {
@@ -37,13 +39,13 @@ const FavoritesBtn: FC<ProductProps> = ({ _id, className }) => {
     const favorites = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
     if (!isFavorite) {
       // 즐겨찾기에 추가
-      const updatedFavorites = [...favorites, { _id }];
+      const updatedFavorites = [...favorites, { productId }];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {
       // 즐겨찾기에서 제거
       const updatedFavorites = favorites.filter(
-        (favorite: { _id: string }) => favorite._id !== _id,
+        (favorite: { productId: string }) => favorite.productId !== productId,
       );
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에서 제거되었습니다.');

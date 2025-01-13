@@ -23,7 +23,7 @@ const ProductCard: React.FC<ProductProps> = ({ image, name, price, _id }) => {
     <div className={styles.productCard} onClick={handleCardClick}>
       <div className={styles.imgBox}>
         <img src={image} alt="상품 이미지" className={styles.productImage} />
-        <FavoritesBtn className={styles.favoritImage} _id={_id} />
+        <FavoritesBtn className={styles.favoritImage} productId={_id} />
       </div>
       <div className={styles.cardTextBox}>
         <h3>{name}</h3>
