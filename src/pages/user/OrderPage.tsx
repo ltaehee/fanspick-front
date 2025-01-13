@@ -30,16 +30,16 @@ const OrderPage = () => {
   const userId = user?.id;
 
   const location = useLocation();
-  console.log('location.state', location.state);
   const { product, quantity, selectedTotalPrice } = location.state;
   const productIdMap = {
     ...product,
     productId: product._id,
   };
-  const totalPrice = product.price * quantity;
-  const cartTotalPrice = selectedTotalPrice;
-  console.log('totalPrice', totalPrice);
-  console.log('cartTotalPrice', cartTotalPrice);
+
+  const products = Array.isArray(product) ? product : [product];
+  const quantities = Array.isArray(quantity) ? quantity : [quantity];
+
+  const totalPrice = selectedTotalPrice || product.price * quantity;
 
   const navigate = useNavigate();
 
@@ -115,8 +115,8 @@ const OrderPage = () => {
       pg: 'kakaopay', // PG사,(필수)
       pay_method: 'card', // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-      amount: totalPrice || cartTotalPrice, // 결제금액,(필수)
-      name: product.name, // 주문명,(필수)
+      amount: totalPrice, // 결제금액,(필수)
+      name: products.map((item) => item.name).join(', ') /* 상품 여러개일때 */,
     };
     IMP.request_pay(paymentData, async (response: PaymentResponse) => {
       const { success, error_msg } = response;
@@ -129,15 +129,14 @@ const OrderPage = () => {
         }
         const orderData = {
           userId,
-          products: [
-            {
-              ...productIdMap,
-              quantity,
-            },
-          ],
+          products: products.map((item, idx) => ({
+            ...item,
+            productId: item._id,
+            quantity: quantities[idx],
+          })),
           orderAddress: address,
           imp_uid: impCode,
-          totalPrice: totalPrice || cartTotalPrice,
+          totalPrice: totalPrice,
         };
         try {
           const response = await api.post('/purchase/order', orderData, {
@@ -199,11 +198,11 @@ const OrderPage = () => {
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
+          <p>주문상품금액 {addCommas(totalPrice)}원</p>
           <p>+</p>
           <p>배송비 0원(무료)</p>
           <p>=</p>
-          <p>최종 결제 금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
+          <p>최종 결제 금액 {addCommas(totalPrice)}원</p>
         </div>
         <h3 className={orderstyles.h3}>고객 / 배송지 정보</h3>
         <div className={orderstyles.inputBoxWrap}>
