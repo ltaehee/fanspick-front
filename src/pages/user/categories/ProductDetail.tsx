@@ -13,7 +13,7 @@ import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
 interface ProductDetailProps {
-  productId: string;
+  _id: string;
   name: string;
   price: number;
   introduce: string;
@@ -48,20 +48,20 @@ const ProductDetail = () => {
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
     const isAlreadyCart = cartItems.some(
-      (item: any) => item._id === getProduct?.productId,
+      (item: any) => item._id === getProduct?._id,
     );
 
     /* 장바구니에 만약 같은 상품이 있다면 수량을 더해서 저장*/
     if (isAlreadyCart) {
       const updatedCartItems = cartItems.map((product: any) =>
-        product._id === getProduct?.productId
+        product._id === getProduct?._id
           ? { ...product, quantity: product.quantity + quantity } // 수량 추가
           : product,
       );
       localStorage.setItem(cartKey, JSON.stringify(updatedCartItems));
       toast.success('장바구니에 수량이 추가되었습니다.');
     } else {
-      const cartInfo = { productId: getProduct?.productId, quantity };
+      const cartInfo = { productId: getProduct?._id, quantity };
       cartItems.push(cartInfo);
       localStorage.setItem(cartKey, JSON.stringify(cartItems));
       toast.success('장바구니에 추가되었습니다.');
@@ -82,19 +82,19 @@ const ProductDetail = () => {
       localStorage.getItem(favoritesKey) || '[]',
     );
 
-    if (!getProduct?.productId) {
+    if (!getProduct?._id) {
       toast.error('상품 정보가 유효하지 않습니다.');
       return;
     }
 
     const isAlreadyFavorite = favoriteItems.some(
-      (item: any) => item.productId === getProduct.productId,
+      (item: any) => item.productId === getProduct._id,
     );
 
     if (!isAlreadyFavorite) {
       const updatedFavorites = [
         ...favoriteItems,
-        { productId: getProduct.productId },
+        { productId: getProduct._id },
       ];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
@@ -118,6 +118,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getAllProduct();
+    console.log('test', getProduct);
   }, []);
 
   if (!getProduct) {
@@ -193,7 +194,7 @@ const ProductDetail = () => {
           </div>
         </Tabs.Pannel>
         <Tabs.Pannel>
-          <ProductReviewPage productId={getProduct.productId} />
+          <ProductReviewPage productId={getProduct._id} />
         </Tabs.Pannel>
       </Tabs>
     </div>
