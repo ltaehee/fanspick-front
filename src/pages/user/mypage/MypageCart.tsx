@@ -69,7 +69,7 @@ const MypageCart = () => {
       const ids = cart.map((item) => item.productId); // 상품의 아이디만 담은 배열
 
       try {
-        const response = await api.get('/mypage/product-by-ids', {
+        const response = await api.get('/mypage/productbyids', {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
 
