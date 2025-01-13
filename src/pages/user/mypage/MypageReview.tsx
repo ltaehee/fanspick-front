@@ -116,12 +116,19 @@ const MypageReviewPage = () => {
           onPageChange={handlePageChange}
           className={paginationStyles.pagination}
         >
-          <Pagination.PageButtons
-            className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
-          />
-          <Pagination.Navigator
-            className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
-          />
+          <div className={paginationStyles.pageContainer}>
+            <Pagination.Navigator
+              type="prev"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+            <Pagination.PageButtons
+              className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+            />
+            <Pagination.Navigator
+              type="next"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+          </div>
         </Pagination>
       )}
     </div>

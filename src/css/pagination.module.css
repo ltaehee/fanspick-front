@@ -2,48 +2,30 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; 
-  margin-top: 20px; 
+  gap: 16px;
 }
 
-.pageButton {
+.pageContainer {
   display: flex;
+  align-items: center; 
   gap: 8px;
-  justify-content: center;
-  
 }
 
+.pageNavigate button,
 .pageButton button {
   width: 32px;
   height: 32px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 4px;
-  padding: 0;
-}
-
-
-.pageNavigate {
-  display: flex;
-  justify-content: space-between;
-  width: 100%; 
-}
-
-.pageNavigate button {
-  width: 60px;
-  height: 36px;
   font-size: 14px;
   font-weight: bold;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
+  background: none; 
+  color: #000000;
 }
 
-.pageNavigate button:disabled, .pageButton button:disabled {
-  background-color: #f9f9f9;
-  color: #aaa;
+.pageNavigate button:disabled{
+  background: none; 
+  color: #a6a6a6;
   cursor: not-allowed;
 }
