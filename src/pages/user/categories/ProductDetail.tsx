@@ -13,7 +13,7 @@ import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
 interface ProductDetailProps {
-  _id: string;
+  productId: string;
   name: string;
   price: number;
   introduce: string;
@@ -48,20 +48,20 @@ const ProductDetail = () => {
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
     const isAlreadyCart = cartItems.some(
-      (item: any) => item._id === getProduct?._id,
+      (item: any) => item._id === getProduct?.productId,
     );
 
     /* 장바구니에 만약 같은 상품이 있다면 수량을 더해서 저장*/
     if (isAlreadyCart) {
       const updatedCartItems = cartItems.map((product: any) =>
-        product._id === getProduct?._id
+        product._id === getProduct?.productId
           ? { ...product, quantity: product.quantity + quantity } // 수량 추가
           : product,
       );
       localStorage.setItem(cartKey, JSON.stringify(updatedCartItems));
       toast.success('장바구니에 수량이 추가되었습니다.');
     } else {
-      const cartInfo = { _id: getProduct?._id, quantity };
+      const cartInfo = { productId: getProduct?.productId, quantity };
       cartItems.push(cartInfo);
       localStorage.setItem(cartKey, JSON.stringify(cartItems));
       toast.success('장바구니에 추가되었습니다.');
@@ -82,17 +82,20 @@ const ProductDetail = () => {
       localStorage.getItem(favoritesKey) || '[]',
     );
 
-    if (!getProduct?._id) {
+    if (!getProduct?.productId) {
       toast.error('상품 정보가 유효하지 않습니다.');
       return;
     }
 
     const isAlreadyFavorite = favoriteItems.some(
-      (item: any) => item._id === getProduct._id,
+      (item: any) => item.productId === getProduct.productId,
     );
 
     if (!isAlreadyFavorite) {
-      const updatedFavorites = [...favoriteItems, { _id: getProduct._id }];
+      const updatedFavorites = [
+        ...favoriteItems,
+        { productId: getProduct.productId },
+      ];
       localStorage.setItem(favoritesKey, JSON.stringify(updatedFavorites));
       toast.success('즐겨찾기에 추가되었습니다.');
     } else {
@@ -190,7 +193,7 @@ const ProductDetail = () => {
           </div>
         </Tabs.Pannel>
         <Tabs.Pannel>
-          <ProductReviewPage productId={getProduct._id} />
+          <ProductReviewPage productId={getProduct.productId} />
         </Tabs.Pannel>
       </Tabs>
     </div>

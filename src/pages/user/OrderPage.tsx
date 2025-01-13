@@ -31,6 +31,11 @@ const OrderPage = () => {
 
   const location = useLocation();
   const { product, quantity } = location.state;
+  const productIdMap = {
+    ...product,
+    productId: product._id,
+  };
+  console.log({ product });
   const totalPrice = product.price * quantity;
 
   const navigate = useNavigate();
@@ -134,7 +139,7 @@ const OrderPage = () => {
           userId,
           products: [
             {
-              ...product,
+              ...productIdMap,
               quantity,
             },
           ],
@@ -181,7 +186,7 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            <div key={product.id} className={orderstyles.content}>
+            <div key={productIdMap.id} className={orderstyles.content}>
               <ProductTableMenu.Detail
                 productName={product.name}
                 image={product.image}
