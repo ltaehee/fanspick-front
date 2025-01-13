@@ -26,6 +26,7 @@ import {
   ErrorPage,
   FixAndDeleteProductPage,
 } from '@utils/index.ts';
+import OauthCallback from './pages/OauthCallback';
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
       {
         path: '/order',
         element: <OrderPage />,
+      },
+      {
+        path: '/oauth/callback',
+        element: <OauthCallback />
       },
     ],
   },
