@@ -8,7 +8,7 @@ import { Button, Input } from 'ys-project-ui';
 import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { addCommas } from '../../utils/util';
 import { toast } from 'react-toastify';
 import { emailPattern } from '../../consts/patterns';
@@ -30,14 +30,24 @@ const OrderPage = () => {
   const userId = user?.id;
 
   const location = useLocation();
-  const { product, quantity } = location.state;
-  const totalPrice = product.price * quantity;
+  const { product, quantity, selectedTotalPrice } = location.state;
+  // const productIdMap = {
+  //   ...product,
+  //   productId: product._id,
+  // };
+
+  const products = Array.isArray(product) ? product : [product];
+  const quantities = Array.isArray(quantity) ? quantity : [quantity];
+
+  const totalPrice = selectedTotalPrice || product.price * quantity;
+
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState({
-    roadAddress: '',
-    zoneCode: '',
-    jibunAddress: '',
-    detailAddress: '',
+    roadAddress: user?.address?.roadAddress || '',
+    zoneCode: user?.address?.zoneCode || '',
+    jibunAddress: user?.address?.jibunAddress || '',
+    detailAddress: user?.address?.detailAddress || '',
   });
 
   const [updatedUser, setUpdatedUser] = useState({
@@ -70,17 +80,6 @@ const OrderPage = () => {
     }
   };
 
-  /*  콜백 함수 정의하기 */
-  /* const paymentCallback = (response: PaymentResponse) => {
-    const { success, error_msg } = response;
-
-    if (success) {
-      console.log({ response });
-      toast.success('결제 성공');
-    } else {
-      toast.error(`결제 실패: ${error_msg}`);
-    }
-  }; */
   const handleOrderClick = async () => {
     const { name, email } = updatedUser;
     if (!name.trim()) {
@@ -117,39 +116,28 @@ const OrderPage = () => {
       pay_method: 'card', // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
       amount: totalPrice, // 결제금액,(필수)
-      name: product.name, // 주문명,(필수)
+      name: products.map((item) => item.name).join(', ') /* 상품 여러개일때 */,
     };
     IMP.request_pay(paymentData, async (response: PaymentResponse) => {
       const { success, error_msg } = response;
 
       if (success) {
         try {
-          const response = await api.post('/purchase/payment', paymentData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.status === 200) {
-            console.log('결제 성공!!');
-            toast.success('결제가 완료되었습니다!');
-          }
+          await api.post('/purchase/payment', paymentData);
         } catch (error) {
-          console.error('Error creating payment:');
-          toast.error('결제 실패...');
+          console.error('결제 실패:');
         }
         const orderData = {
           userId,
-          products: [
-            {
-              ...product,
-              quantity,
-            },
-          ],
+          products: products.map((item, idx) => ({
+            ...item,
+            productId: item._id,
+            quantity: quantities[idx],
+          })),
           orderAddress: address,
           imp_uid: impCode,
-          totalPrice,
+          totalPrice: totalPrice,
         };
-        console.log({ orderData });
         try {
           const response = await api.post('/purchase/order', orderData, {
             headers: {
@@ -158,10 +146,10 @@ const OrderPage = () => {
           });
           if (response.status === 200) {
             toast.success('주문이 완료되었습니다!');
+            navigate('/mypage-order');
           }
         } catch (error) {
-          console.error('Error creating order:');
-          toast.error('주문  실패');
+          console.error('주문  실패');
         }
       } else {
         toast.error(`결제 실패: ${error_msg}`);
@@ -189,16 +177,24 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            <div key={product.id} className={orderstyles.content}>
-              <ProductTableMenu.Detail
-                productName={product.name}
-                image={product.image}
-              />
-              <ProductTableMenu.Content content={addCommas(product.price)} />
-              <div className={tableStyles.quantity_wrap}>
-                <ProductTableMenu.Quantity quantity={quantity} />
-              </div>
-            </div>
+            {(Array.isArray(product) ? product : [product]).map(
+              (item, index) => (
+                <div key={item._id} className={orderstyles.content}>
+                  <ProductTableMenu.Detail
+                    productName={item.name}
+                    image={item.image}
+                  />
+                  <ProductTableMenu.Content content={addCommas(item.price)} />
+                  <div className={tableStyles.quantity_wrap}>
+                    <ProductTableMenu.Quantity
+                      quantity={
+                        Array.isArray(quantity) ? quantity[index] : quantity
+                      }
+                    />
+                  </div>
+                </div>
+              ),
+            )}
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>

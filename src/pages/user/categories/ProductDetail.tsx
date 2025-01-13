@@ -118,7 +118,6 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getAllProduct();
-    console.log('test', getProduct);
   }, []);
 
   if (!getProduct) {

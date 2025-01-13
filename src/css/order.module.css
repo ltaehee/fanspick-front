@@ -43,9 +43,7 @@
   transition: 0.2s all;
   background-color: #ffd700;
 }
-.addressSearchBtn:hover {
-  background-color: #c9c9c9;
-}
+
 .inputBoxWrap {
   display: flex;
   gap: 1rem;
