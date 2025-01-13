@@ -13,7 +13,7 @@ import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
 interface ProductDetailProps {
-  _id: string; //_id로 나옴
+  _id: string;
   name: string;
   price: number;
   introduce: string;
@@ -88,7 +88,7 @@ const ProductDetail = () => {
     }
 
     const isAlreadyFavorite = favoriteItems.some(
-      (item: any) => item._id === getProduct._id,
+      (item: any) => item.productId === getProduct._id,
     );
 
     if (!isAlreadyFavorite) {
@@ -118,6 +118,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getAllProduct();
+    console.log('test', getProduct);
   }, []);
 
   if (!getProduct) {
