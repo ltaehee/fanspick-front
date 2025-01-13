@@ -76,7 +76,7 @@ function Signup() {
         navigate('/login');
       }
     } catch (error) {
-      toast.error('회원정보 가입 실패. 다시 시도해주세요.');
+      console.error('회원정보 가입 실패. 다시 시도해주세요.');
     }
   };
 

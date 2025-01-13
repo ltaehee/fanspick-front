@@ -76,9 +76,11 @@ function Login() {
       if (response.status === 200) {
         const userData = response.data.user;
         const token = response.data.token;
+        const tokenExpiry = response.data.tokenExpiry; 
 
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('token', token);
+        localStorage.setItem('tokenExpiry', tokenExpiry.toString()); 
 
         updateUser(userData);
         updateToken(token);
@@ -89,11 +91,11 @@ function Login() {
         } else if (userData.role === 'manager') {
           navigate('/main'); // 관리자
         } else {
-          toast.warning('알 수 없는 사용자입니다.');
+          console.log('알 수 없는 사용자입니다.');
         }
       }
     } catch (error) {
-      toast.error('로그인 실패. 다시 시도하세요.');
+      console.error('로그인 실패. 다시 시도하세요.');
     }
   };
 

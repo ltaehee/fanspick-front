@@ -2,7 +2,6 @@ import styles from '../css/homepage.module.css';
 import ProductCard from '../components/product/ProductCard';
 import api from '../utils/api';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 export interface ProductProps {
   _id: string;

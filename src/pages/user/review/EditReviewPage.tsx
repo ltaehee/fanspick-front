@@ -47,15 +47,14 @@ const EditReviewPage = () => {
         setReviewContent(review.content);
         setPreviewImg(review.image || []);
       } catch (error) {
-        console.error('리뷰 불러오기 오류:', error);
-        toast.error('리뷰 정보를 불러오는 중 오류가 발생했습니다.');
+        console.error('리뷰 정보를 불러오는 중 오류가 발생했습니다.');
       }
     };
 
     if (reviewId) {
       fetchReview();
     } else {
-      toast.error('리뷰 ID가 유효하지 않습니다.');
+      console.error('리뷰 ID가 유효하지 않습니다.');
     }
   }, [reviewId]);
 

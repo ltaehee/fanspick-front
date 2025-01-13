@@ -1,4 +1,4 @@
-import { Button } from 'ys-project-ui';
+import { Button, Pagination } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
 import ProductTableHeader from '@components/productTable/ProductTableHeader';
 import ProductTableHeaderMenu from '@components/productTable/ProductTableHeaderMenu';
@@ -12,18 +12,66 @@ import { toast } from 'react-toastify';
 import { useUserContext } from '@context/UserContext';
 import trash from '/icons/trash.png';
 import cart from '/icons/cart_icon.png';
+import api from '../../../utils/api';
+import paginationStyles from '@/css/pagination.module.css';
+import userPaginationStyles from '@/css/userPagination.module.css';
 
 interface Bookmark {
   _id: string;
+}
+
+interface Detail {
+  _id: string;
   name: string;
-  price: string;
+  price: number;
   image: string;
 }
 
 const MypageBookmark = () => {
   const navigate = useNavigate();
-  const [isSelected, setIsSelected] = useState<Bookmark[]>([]);
-  const [isFavorite, setIsFavorite] = useState<Bookmark[]>([]);
+  const [isFavorite, setIsFavorite] = useState<Bookmark[]>([]); //로컬에서
+  const [isDetail, setIsDetail] = useState<Detail[]>([]); //서버에서
+  const [currentPage, setCurrentPage] = useState(1);
+  const favoritesPerPage = 5;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const getProductDetail = async () => {
+      if (!isFavorite || isFavorite.length === 0) return;
+
+      const ids = isFavorite.map((item) => item._id); // 상품의 아이디만 담은 배열
+      console.log(ids);
+
+      setIsLoading(true);
+      try {
+        const response = await api.get('/mypage/product-by-ids', {
+          params: { ids },
+        }); //장바구니에 담긴 상품의 id를 전달
+        console.log(response.data);
+        setIsDetail(response.data.productDetail);
+      } catch (err) {
+        console.error('장바구니 상품 조회 실패', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProductDetail();
+  }, [isFavorite]);
+
+  // const fetchFavorites = async () => {
+  //   const ids = isFavorite.map((item) => item._id);
+
+  //   try {
+  //     const response = await api.get('/mypage/product-by-ids', {
+  //       params: { ids },
+  //     });
+  //     setIsDetail(response.data.productDetail);
+  //     // setTotalFavorites(response.data.totalCount);
+  //   } catch (err) {
+  //     console.error('즐겨찾기 데이터 가져오기 실패', err);
+  //   }
+  // };
 
   //유저 정보 가져오기
   const { user } = useUserContext();
@@ -42,24 +90,29 @@ const MypageBookmark = () => {
     if (inFavorites) {
       setIsFavorite(inFavorites);
     }
-  }, []);
+  }, [user]);
 
-  const isChecked = (id: string) =>
-    isSelected.some((product) => product._id === id);
+  // const getFavoriteDetail = async (page: number) => {
+  //   const ids = isFavorite.map((item) => item._id);
 
-  //선택된 아이템 관리
-  const handleChangeCheckBox = (id: string) => {
-    setIsSelected((prev) => {
-      // 이미 선택된 id가 있으면 해당 상품 객체를 배열에서 제거
-      if (prev.some((product) => product._id === id)) {
-        return prev.filter((product) => product._id !== id);
-      } else {
-        // id가 없으면 cart에서 해당 상품을 찾아서 추가 (undefined가 아닌 값만 추가)
-        const product = isFavorite.find((product) => product._id === id);
-        return product ? [...prev, product] : prev; // 상품이 없으면 배열을 그대로 반환
-      }
-    });
-  };
+  //   try {
+  //     const response = await api.get(
+  //       `/manager/product-by-ids/${productId}?page=${page}&itemsPerPage=${favoritesPerPage}`,
+  //       {
+  //         params: { ids },
+  //       },
+  //     );
+  //     console.log(response.data);
+  //     setIsDetail(response.data.productDetail);
+  //     setTotalFavorites(isFavorite.length);
+  //   } catch (err) {
+  //     console.error('즐겨찾기 목록 가져오기 실패', err);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getFavoriteDetail(currentPage);
+  // }, [isFavorite, currentPage]);
 
   //아이템 삭제 버튼
   const handleDeleteItem = (productId: string) => {
@@ -78,14 +131,6 @@ const MypageBookmark = () => {
     });
   };
 
-  // 선택한 항목 장바구니에 추가
-  const handleAddCart = () => {
-    if (isSelected) {
-      localStorage.setItem(`cart_${userId}`, JSON.stringify(isSelected));
-    }
-    toast.success('장바구니에 추가되었습니다.');
-  };
-
   //즐겨찾기 내역 전체 삭제하기
   const deleteCart = () => {
     setIsFavorite([]);
@@ -97,62 +142,119 @@ const MypageBookmark = () => {
     }
   }, [isFavorite]);
 
+  //로컬과 서버에서 받아온 값 합치기
+  const productDetailMap = isFavorite.map((product) => ({
+    ...product,
+    isDetail: isDetail.find((detail) => product._id === detail._id),
+  }));
+
+  // 현재 페이지에 맞는 데이터
+  const startIndex = (currentPage - 1) * favoritesPerPage; //0
+  const endIndex = startIndex + favoritesPerPage; //5
+  const currentDetailMap = productDetailMap.slice(startIndex, endIndex); //
+
+  //장바구니에 넣기
+  const handleAddCart = (id: string) => {
+    const localCart = JSON.parse(
+      localStorage.getItem(`cart_${userId}`) || '[]',
+    );
+
+    const newItem = { _id: id, quantity: 1 }; // 장바구니에 추가할 상품
+
+    const existItem = localCart.find(
+      (item: { _id: string }) => item._id === id,
+    ); // 장바구니에 이미 존재하는지
+
+    if (existItem) {
+      toast.error('이미 장바구니에 존재하는 상품입니다.');
+      return;
+    }
+
+    const updatedItem = [...localCart, newItem];
+
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedItem));
+    toast.success('장바구니에 추가되었습니다.');
+  };
+
   return (
     <div className={cartStyles.content_wrap}>
       {isFavorite.length !== 0 ? (
         <div>
           <MypageHeader />
-          <div className={cartStyles.Table_wrap}>
-            <Button
-              onClick={deleteCart}
-              className={cartStyles.total_delete}
-              label="전체 삭제"
-            />
-            <ProductTableHeader className={tableStyles.bookmark_wrap}>
-              <ProductTableHeaderMenu
-                menu="상품정보"
-                className={tableStyles.Header_menu_first}
-              />
-              <ProductTableHeaderMenu
-                menu="판매 금액"
-                className={tableStyles.Header_menu}
-              />
-              <ProductTableHeaderMenu
-                menu=""
-                className={tableStyles.Header_menu}
-              />
-            </ProductTableHeader>
-            <ProductTableMenu>
-              {isFavorite.map((product) => (
-                <div key={product._id} className={tableStyles.bookmark_content}>
-                  <ProductTableMenu.CheckBox
-                    className={cartStyles.checkbox_box}
-                    productId={product._id}
-                    isChecked={isChecked(product._id)}
-                    onChange={handleChangeCheckBox}
+          {isLoading ? (
+            <div>
+              <p>즐겨찾기 내역 불러오는 중..</p>
+            </div>
+          ) : (
+            <div>
+              <div className={cartStyles.Table_wrap}>
+                <Button
+                  onClick={deleteCart}
+                  className={cartStyles.total_delete}
+                  label="전체 삭제"
+                />
+                <ProductTableHeader className={tableStyles.bookmark_wrap}>
+                  <ProductTableHeaderMenu
+                    menu="상품정보"
+                    className={tableStyles.Header_menu_first}
                   />
-                  <ProductTableMenu.Detail
-                    onClick={() => navigate('/add-review')}
-                    productName={product.name}
-                    image={product.image}
+                  <ProductTableHeaderMenu
+                    menu="판매 금액"
+                    className={tableStyles.Header_menu}
                   />
-                  <ProductTableMenu.Content content={product.price} />
-                  <div className={cartStyles.bookmark_buttons_wrap}>
-                    <ProductTableMenu.DeleteButton
-                      productId={product._id}
-                      onClick={handleAddCart}
-                      image={cart}
-                    />
-                    <ProductTableMenu.DeleteButton
-                      productId={product._id}
-                      onClick={() => handleDeleteItem(product._id)}
-                      image={trash}
-                    />
-                  </div>
-                </div>
-              ))}
-            </ProductTableMenu>
-          </div>
+                  <ProductTableHeaderMenu
+                    menu=""
+                    className={tableStyles.Header_menu}
+                  />
+                </ProductTableHeader>
+                <ProductTableMenu>
+                  {currentDetailMap.map((product) => (
+                    <div>
+                      <div
+                        key={product._id}
+                        className={tableStyles.bookmark_content}
+                      >
+                        <ProductTableMenu.Detail
+                          onClick={() => navigate('/add-review')}
+                          productName={product.isDetail?.name}
+                          image={product.isDetail?.image}
+                        />
+                        <ProductTableMenu.Content
+                          content={product.isDetail?.price}
+                        />
+                        <div className={cartStyles.bookmark_buttons_wrap}>
+                          <ProductTableMenu.DeleteButton
+                            productId={product._id}
+                            onClick={handleAddCart}
+                            image={cart}
+                          />
+                          <ProductTableMenu.DeleteButton
+                            productId={product._id}
+                            onClick={() => handleDeleteItem(product._id)}
+                            image={trash}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </ProductTableMenu>
+              </div>
+              <Pagination
+                itemLength={isDetail.length}
+                value={currentPage}
+                itemCountPerPage={favoritesPerPage}
+                onPageChange={(page) => setCurrentPage(page)}
+                className={paginationStyles.pagination}
+              >
+                <Pagination.PageButtons
+                  className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+                />
+                <Pagination.Navigator
+                  className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+                />
+              </Pagination>
+            </div>
+          )}
         </div>
       ) : (
         <div>
