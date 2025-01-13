@@ -17,11 +17,11 @@ import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
 
 interface Bookmark {
-  _id: string;
+  productId: string;
 }
 
 interface Detail {
-  productId: string;
+  _id: string;
   name: string;
   price: number;
   image: string;
@@ -36,16 +36,22 @@ const MypageBookmark = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log('isFavorite 상태', isFavorite);
+  }, [isFavorite]);
+
+  useEffect(() => {
     const getProductDetail = async () => {
       if (!isFavorite || isFavorite.length === 0) return;
 
-      const ids = isFavorite.map((item) => item._id); // 상품의 아이디만 담은 배열
+      const ids = isFavorite.map((item) => item.productId); // 상품의 아이디만 담은 배열
+      console.log(ids);
 
       setIsLoading(true);
       try {
         const response = await api.get('/mypage/product-by-ids', {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
+        console.log(response.data);
         setIsDetail(response.data.productDetail);
       } catch (err) {
         console.error('장바구니 상품 조회 실패', err);
@@ -116,7 +122,7 @@ const MypageBookmark = () => {
   const handleDeleteItem = (productId: string) => {
     setIsFavorite((prev) => {
       const updatedFavorites = prev.filter(
-        (product) => product._id !== productId,
+        (product) => product.productId !== productId,
       ); //삭제하려는 아이템의 아이디를 지움
       if (userId) {
         localStorage.setItem(
@@ -143,7 +149,7 @@ const MypageBookmark = () => {
   //로컬과 서버에서 받아온 값 합치기
   const productDetailMap = isFavorite.map((product) => ({
     ...product,
-    isDetail: isDetail.find((detail) => product._id === detail.productId),
+    isDetail: isDetail.find((detail) => product.productId === detail._id),
   }));
 
   // 현재 페이지에 맞는 데이터
@@ -209,7 +215,7 @@ const MypageBookmark = () => {
                   {currentDetailMap.map((product) => (
                     <div>
                       <div
-                        key={product._id}
+                        key={product.productId}
                         className={tableStyles.bookmark_content}
                       >
                         <ProductTableMenu.Detail
@@ -222,13 +228,13 @@ const MypageBookmark = () => {
                         />
                         <div className={cartStyles.bookmark_buttons_wrap}>
                           <ProductTableMenu.DeleteButton
-                            productId={product._id}
+                            productId={product.productId}
                             onClick={handleAddCart}
                             image={cart}
                           />
                           <ProductTableMenu.DeleteButton
-                            productId={product._id}
-                            onClick={() => handleDeleteItem(product._id)}
+                            productId={product.productId}
+                            onClick={() => handleDeleteItem(product.productId)}
                             image={trash}
                           />
                         </div>

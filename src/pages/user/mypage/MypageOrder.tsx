@@ -14,6 +14,7 @@ interface Product {
   productId: {
     _id: string;
     name: string;
+    image: string;
   };
   quantity: number;
   price: number;
@@ -82,6 +83,7 @@ const MypageOrder = () => {
                         <ProductTableMenu.Detail
                           onClick={() => navigate('/')}
                           productName={product.productId.name}
+                          image={product.productId.image}
                         />
                         <ProductTableMenu.Content content={product.price} />
                         <div className={tableStyles.quantity_wrap}>
