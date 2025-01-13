@@ -91,11 +91,11 @@ function Login() {
         } else if (userData.role === 'manager') {
           navigate('/main'); // 관리자
         } else {
-          toast.warning('알 수 없는 사용자입니다.');
+          console.log('알 수 없는 사용자입니다.');
         }
       }
     } catch (error) {
-      toast.error('로그인 실패. 다시 시도하세요.');
+      console.error('로그인 실패. 다시 시도하세요.');
     }
   };
 

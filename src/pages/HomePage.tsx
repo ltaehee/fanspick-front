@@ -2,7 +2,6 @@ import styles from '../css/homepage.module.css';
 import ProductCard from '../components/product/ProductCard';
 import api from '../utils/api';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 export interface ProductProps {
   _id: string;
@@ -26,7 +25,7 @@ const HomePage = () => {
         setGetProduct(response.data.product);
       }
     } catch (err) {
-      toast.error('에러');
+      console.error('에러');
     }
   };
 
