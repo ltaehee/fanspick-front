@@ -95,7 +95,7 @@ function Login() {
         }
       }
     } catch (error) {
-      console.error('로그인 실패. 다시 시도하세요.');
+      console.log('로그인 실패. 다시 시도하세요.');
     }
   };
 
