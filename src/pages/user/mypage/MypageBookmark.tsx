@@ -163,7 +163,7 @@ const MypageBookmark = () => {
       localStorage.getItem(`cart_${userId}`) || '[]',
     );
 
-    const newItem = { _id: id, quantity: 1 }; // 장바구니에 추가할 상품
+    const newItem = { productId: id, quantity: 1 }; // 장바구니에 추가할 상품
 
     const existItem = localCart.find(
       (item: { _id: string }) => item._id === id,

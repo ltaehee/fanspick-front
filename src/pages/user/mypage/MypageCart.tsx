@@ -60,6 +60,10 @@ const MypageCart = () => {
   }, []);
 
   useEffect(() => {
+    console.log('cart 상태', cart);
+  }, [cart]);
+
+  useEffect(() => {
     const getProductDetail = async () => {
       if (!cart || cart.length === 0) return; //
 
@@ -138,6 +142,7 @@ const MypageCart = () => {
     }
   }, [cart]);
 
+  //return부분
   const productDetailMap = cart.map((product) => {
     const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
@@ -148,8 +153,18 @@ const MypageCart = () => {
     };
   });
 
+  //구매버튼 부분
+  const selectedDetail = isSelected.map((product) => {
+    const detail = isDetail.find((detail) => detail._id === product.productId);
+    const price = detail?.price || 0;
+    return {
+      detail,
+      totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
+    };
+  });
+
   //선택된 상품의 총 금액
-  const selectedTotalPrice = cart.reduce((sum, product) => {
+  const selectedTotalPrice = isSelected.reduce((sum, product) => {
     const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
     return sum + price * product.quantity;
@@ -158,10 +173,10 @@ const MypageCart = () => {
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
     if (productDetailMap.length > 0) {
-      const quantities = cart.map((item) => item.quantity);
+      const quantities = isSelected.map((item) => item.quantity);
 
       const dataToSend = {
-        product: isDetail,
+        product: selectedDetail, //상품 정보
         quantity: quantities,
         selectedTotalPrice,
       };

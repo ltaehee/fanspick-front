@@ -8,7 +8,7 @@ import { Button, Input } from 'ys-project-ui';
 import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { addCommas } from '../../utils/util';
 import { toast } from 'react-toastify';
 import { emailPattern } from '../../consts/patterns';
@@ -30,22 +30,14 @@ const OrderPage = () => {
   const userId = user?.id;
 
   const location = useLocation();
-  console.log('location.state', location.state);
-  const { product, quantity, selectedTotalPrice } = location.state;
-  const productIdMap = {
-    ...product,
-    productId: product._id,
-  };
+  const { product, quantity } = location.state;
   const totalPrice = product.price * quantity;
-  const cartTotalPrice = selectedTotalPrice;
-
-  const navigate = useNavigate();
 
   const [address, setAddress] = useState({
-    roadAddress: user?.address?.roadAddress || '',
-    zoneCode: user?.address?.zoneCode || '',
-    jibunAddress: user?.address?.jibunAddress || '',
-    detailAddress: user?.address?.detailAddress || '',
+    roadAddress: '',
+    zoneCode: '',
+    jibunAddress: '',
+    detailAddress: '',
   });
 
   const [updatedUser, setUpdatedUser] = useState({
@@ -132,15 +124,24 @@ const OrderPage = () => {
 
       if (success) {
         try {
-          const response = await api.post('/purchase/payment', paymentData);
+          const response = await api.post('/purchase/payment', paymentData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.status === 200) {
+            console.log('결제 성공!!');
+            toast.success('결제가 완료되었습니다!');
+          }
         } catch (error) {
-          console.error('결제 실패:');
+          console.error('Error creating payment:');
+          toast.error('결제 실패...');
         }
         const orderData = {
           userId,
           products: [
             {
-              ...productIdMap,
+              ...product,
               quantity,
             },
           ],
@@ -148,6 +149,7 @@ const OrderPage = () => {
           imp_uid: impCode,
           totalPrice,
         };
+        console.log({ orderData });
         try {
           const response = await api.post('/purchase/order', orderData, {
             headers: {
@@ -156,10 +158,10 @@ const OrderPage = () => {
           });
           if (response.status === 200) {
             toast.success('주문이 완료되었습니다!');
-            navigate('/mypage-order');
           }
         } catch (error) {
-          console.error('주문  실패');
+          console.error('Error creating order:');
+          toast.error('주문  실패');
         }
       } else {
         toast.error(`결제 실패: ${error_msg}`);
@@ -187,32 +189,24 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            {(Array.isArray(product) ? product : [product]).map(
-              (item, index) => (
-                <div key={item._id} className={orderstyles.content}>
-                  <ProductTableMenu.Detail
-                    productName={item.name}
-                    image={item.image}
-                  />
-                  <ProductTableMenu.Content content={addCommas(item.price)} />
-                  <div className={tableStyles.quantity_wrap}>
-                    <ProductTableMenu.Quantity
-                      quantity={
-                        Array.isArray(quantity) ? quantity[index] : quantity
-                      }
-                    />
-                  </div>
-                </div>
-              ),
-            )}
+            <div key={product.id} className={orderstyles.content}>
+              <ProductTableMenu.Detail
+                productName={product.name}
+                image={product.image}
+              />
+              <ProductTableMenu.Content content={addCommas(product.price)} />
+              <div className={tableStyles.quantity_wrap}>
+                <ProductTableMenu.Quantity quantity={quantity} />
+              </div>
+            </div>
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
+          <p>주문상품금액 {addCommas(totalPrice)}원</p>
           <p>+</p>
           <p>배송비 0원(무료)</p>
           <p>=</p>
-          <p>최종 결제 금액 {addCommas(totalPrice || cartTotalPrice)}원</p>
+          <p>최종 결제 금액 {addCommas(totalPrice)}원</p>
         </div>
         <h3 className={orderstyles.h3}>고객 / 배송지 정보</h3>
         <div className={orderstyles.inputBoxWrap}>
