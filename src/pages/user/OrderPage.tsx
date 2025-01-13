@@ -13,6 +13,18 @@ import { addCommas } from '../../utils/util';
 import { toast } from 'react-toastify';
 import { emailPattern } from '../../consts/patterns';
 
+interface PaymentResponse {
+  success: boolean;
+  error_msg?: string;
+}
+/* interface PaymentData {
+  pg: string;
+  pay_method: string;
+  merchant_uid: string;
+  name: string;
+  amount: number;
+}
+ */
 const OrderPage = () => {
   const { user, token } = useUserContext();
   const userId = user?.id;
@@ -29,10 +41,10 @@ const OrderPage = () => {
   });
 
   const [updatedUser, setUpdatedUser] = useState({
-    name: '',
-    email: '',
-    role: '',
+    name: user?.name || '',
+    email: user?.email || '',
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleDaumPost = (data: Address) => {
     setAddress((prev) => ({
@@ -44,7 +56,6 @@ const OrderPage = () => {
     }));
     setIsOpen(false);
   };
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,6 +70,17 @@ const OrderPage = () => {
     }
   };
 
+  /*  콜백 함수 정의하기 */
+  /* const paymentCallback = (response: PaymentResponse) => {
+    const { success, error_msg } = response;
+
+    if (success) {
+      console.log({ response });
+      toast.success('결제 성공');
+    } else {
+      toast.error(`결제 실패: ${error_msg}`);
+    }
+  }; */
   const handleOrderClick = async () => {
     const { name, email } = updatedUser;
     if (!name.trim()) {
@@ -78,32 +100,73 @@ const OrderPage = () => {
       toast.error('주소를 입력해주세요.');
       return;
     }
-    const orderData = {
-      userId,
-      products: [
-        {
-          ...product,
-          quantity,
-        },
-      ],
-      orderAddress: address,
-      imp_uid: 'imp123456789',
-      totalPrice,
-    };
 
-    try {
-      const response = await api.post('/purchase/order', orderData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        toast.success('주문이 완료되었습니다!');
-      }
-    } catch (error) {
-      console.error('Error creating order:');
-      toast.error('주문 생성에 실패했습니다.');
+    /* 결제 창 호출*/
+    const { IMP } = window;
+    const impCode = import.meta.env.VITE_IMP_CODE;
+
+    if (!impCode) {
+      toast.error('IMP 가맹점 식별 코드가 설정되지 않았습니다.');
+      return;
     }
+    IMP.init(impCode);
+
+    const paymentData = {
+      userId,
+      pg: 'kakaopay', // PG사,(필수)
+      pay_method: 'card', // 결제수단
+      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+      amount: totalPrice, // 결제금액,(필수)
+      name: product.name, // 주문명,(필수)
+    };
+    IMP.request_pay(paymentData, async (response: PaymentResponse) => {
+      const { success, error_msg } = response;
+
+      if (success) {
+        try {
+          const response = await api.post('/purchase/payment', paymentData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.status === 200) {
+            console.log('결제 성공!!');
+            toast.success('결제가 완료되었습니다!');
+          }
+        } catch (error) {
+          console.error('Error creating payment:');
+          toast.error('결제 실패...');
+        }
+        const orderData = {
+          userId,
+          products: [
+            {
+              ...product,
+              quantity,
+            },
+          ],
+          orderAddress: address,
+          imp_uid: impCode,
+          totalPrice,
+        };
+        console.log({ orderData });
+        try {
+          const response = await api.post('/purchase/order', orderData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.status === 200) {
+            toast.success('주문이 완료되었습니다!');
+          }
+        } catch (error) {
+          console.error('Error creating order:');
+          toast.error('주문  실패');
+        }
+      } else {
+        toast.error(`결제 실패: ${error_msg}`);
+      }
+    });
   };
 
   return (
@@ -139,7 +202,7 @@ const OrderPage = () => {
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>
-          <p>주문상품금액 {addCommas(product.price)}원</p>
+          <p>주문상품금액 {addCommas(totalPrice)}원</p>
           <p>+</p>
           <p>배송비 0원(무료)</p>
           <p>=</p>
@@ -198,7 +261,7 @@ const OrderPage = () => {
           />
         </div>
         <Button
-          label="결제하기"
+          label="카카오페이 간편 결제하기"
           className={orderstyles.paymentBtn}
           onClick={handleOrderClick}
         />
