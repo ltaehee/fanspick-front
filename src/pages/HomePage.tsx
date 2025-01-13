@@ -26,7 +26,7 @@ const HomePage = () => {
         setGetProduct(response.data.product);
       }
     } catch (err) {
-      toast.error('에러');
+      console.error('에러');
     }
   };
 

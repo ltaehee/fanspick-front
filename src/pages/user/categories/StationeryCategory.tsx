@@ -15,7 +15,7 @@ const StationeryCategory = () => {
         setProducts(response.data.product);
       }
     } catch (err) {
-      toast.error('상품 가져오기 실패');
+      console.error('상품 가져오기 실패');
     }
   };
 
