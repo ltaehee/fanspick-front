@@ -126,7 +126,7 @@ const AddProductPage = () => {
           console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
           setAwsImgAddress(data.Location);
         } catch (err) {
-          console.error('AWS S3 업로드 실패 : ', err);
+          console.log('AWS S3 업로드 실패 : ', err);
         }
       };
     }
@@ -184,7 +184,7 @@ const AddProductPage = () => {
           console.log('AWS S3 상세이미지 ', detailImgLocation);
           setAwsDetailImgAddress(detailImgLocation);
         } catch (err) {
-          console.error('AWS S3 업로드 실패 : ', err);
+          console.log('AWS S3 업로드 실패 : ', err);
         }
       };
 
