@@ -1,5 +1,5 @@
 .total {
-    width: 1280;
+    width: 1280px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -9,11 +9,10 @@
 }
 
 .h1_box{
-    width: 1080px;
+    width: 100%;
     margin: 0 auto;
     text-align: left;
 }
-
 
 .button_box{
     margin-top: 20px;
