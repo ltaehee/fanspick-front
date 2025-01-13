@@ -8,7 +8,7 @@ import { Button, Input } from 'ys-project-ui';
 import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
 import { useUserContext } from '../../context/UserContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { addCommas } from '../../utils/util';
 import { toast } from 'react-toastify';
 import { emailPattern } from '../../consts/patterns';
@@ -31,7 +31,14 @@ const OrderPage = () => {
 
   const location = useLocation();
   const { product, quantity } = location.state;
+  const productIdMap = {
+    ...product,
+    productId: product._id,
+  };
+  console.log({ product });
   const totalPrice = product.price * quantity;
+
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState({
     roadAddress: '',
@@ -124,24 +131,15 @@ const OrderPage = () => {
 
       if (success) {
         try {
-          const response = await api.post('/purchase/payment', paymentData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          if (response.status === 200) {
-            console.log('결제 성공!!');
-            toast.success('결제가 완료되었습니다!');
-          }
+          const response = await api.post('/purchase/payment', paymentData);
         } catch (error) {
-          console.error('Error creating payment:');
-          toast.error('결제 실패...');
+          console.error('결제 실패:');
         }
         const orderData = {
           userId,
           products: [
             {
-              ...product,
+              ...productIdMap,
               quantity,
             },
           ],
@@ -149,7 +147,6 @@ const OrderPage = () => {
           imp_uid: impCode,
           totalPrice,
         };
-        console.log({ orderData });
         try {
           const response = await api.post('/purchase/order', orderData, {
             headers: {
@@ -158,10 +155,10 @@ const OrderPage = () => {
           });
           if (response.status === 200) {
             toast.success('주문이 완료되었습니다!');
+            navigate('/mypage-order');
           }
         } catch (error) {
-          console.error('Error creating order:');
-          toast.error('주문  실패');
+          console.error('주문  실패');
         }
       } else {
         toast.error(`결제 실패: ${error_msg}`);
@@ -189,7 +186,7 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            <div key={product.id} className={orderstyles.content}>
+            <div key={productIdMap.id} className={orderstyles.content}>
               <ProductTableMenu.Detail
                 productName={product.name}
                 image={product.image}

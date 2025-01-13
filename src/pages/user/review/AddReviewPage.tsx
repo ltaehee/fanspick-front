@@ -105,8 +105,7 @@ const AddReviewPage = () => {
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
     } catch (error) {
-      console.error('Review submission error:', error);
-      toast.error('리뷰 등록 중 오류가 발생했습니다.');
+      console.error('리뷰 등록 중 오류가 발생했습니다.');
     }
   };
 
