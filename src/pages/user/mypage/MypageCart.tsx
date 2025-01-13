@@ -4,10 +4,9 @@ import tableStyles from '@css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from '@components/productTable/ProductTableHeader';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Pagination } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
-import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import trash from '/icons/trash.png';
 import api from '../../../utils/api';
@@ -29,22 +28,22 @@ interface Detail {
 const MypageCart = () => {
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState<Cart[]>([]);
-  const { user } = useUserContext();
+  const { userId } = useParams<{ userId: string }>();
   const [cart, setCart] = useState<Cart[]>([]); //로컬에서 가져온 장바구니 내역
   const [isDetail, setIsDetail] = useState<Detail[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cartsPerPage = 5;
 
   useEffect(() => {
-    if (user?.id) {
+    if (userId) {
       const localCart = JSON.parse(
-        localStorage.getItem(`cart_${user.id}`) || '[]',
+        localStorage.getItem(`cart_${userId}`) || '[]',
       );
       setCart(localCart); // 로컬 스토리지에서 데이터를 가져와 상태에 설정
     }
+    console.log(userId);
   }, []);
 
-  const userId = user?.id;
   if (!userId) {
     toast.error('로그인이 필요합니다.');
     return;

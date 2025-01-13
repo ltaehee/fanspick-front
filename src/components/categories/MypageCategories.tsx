@@ -10,7 +10,6 @@ interface Category {
   label: string;
 }
 
-
 interface Header {
   className?: string;
 }
@@ -23,7 +22,8 @@ const MypageHeader: FC<Header> = (props) => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const categories: Category[] = user?.role === 'user' ? userCategories : [];
+  const categories: Category[] =
+    user?.role === 'user' ? userCategories(user?.id) : [];
 
   return (
     <div className={className}>
