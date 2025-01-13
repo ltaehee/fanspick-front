@@ -48,7 +48,7 @@ const MypageBookmark = () => {
 
       setIsLoading(true);
       try {
-        const response = await api.get('/mypage/product-by-ids', {
+        const response = await api.get('/mypage/productbyids', {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
         console.log(response.data);
