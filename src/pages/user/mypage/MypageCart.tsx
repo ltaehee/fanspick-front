@@ -149,7 +149,7 @@ const MypageCart = () => {
   });
 
   //선택된 상품의 총 금액
-  const selectedTotalPrice = isSelected.reduce((sum, product) => {
+  const selectedTotalPrice = cart.reduce((sum, product) => {
     const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
     return sum + price * product.quantity;
@@ -158,10 +158,10 @@ const MypageCart = () => {
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
     if (productDetailMap.length > 0) {
-      const quantities = isSelected.map((item) => item.quantity);
+      const quantities = cart.map((item) => item.quantity);
 
       const dataToSend = {
-        product: isSelected,
+        product: isDetail,
         quantity: quantities,
         selectedTotalPrice,
       };
