@@ -161,7 +161,7 @@ const MypageCart = () => {
       const quantities = isSelected.map((item) => item.quantity);
 
       const dataToSend = {
-        product: isDetail,
+        product: isSelected,
         quantity: quantities,
         selectedTotalPrice,
       };
