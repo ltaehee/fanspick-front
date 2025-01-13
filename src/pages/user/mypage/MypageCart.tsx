@@ -154,8 +154,19 @@ const MypageCart = () => {
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
     if (productDetailMap.length > 0) {
+      const quantities = cart.map((item) => item.quantity);
+
+      const dataToSend = {
+        product: isDetail,
+        quantity: quantities,
+        selectedTotalPrice,
+      };
+
+      // 콘솔로 데이터 확인
+      console.log('Sending data:', dataToSend);
+
       navigate('/order', {
-        state: { product: isDetail, cart, selectedTotalPrice },
+        state: dataToSend,
       });
     } else {
       toast.error('구매할 상품이 없습니다.');
