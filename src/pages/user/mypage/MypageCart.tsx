@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import cartStyles from '@css/mypage/mypageCart.module.css';
 import tableStyles from '@css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
 import ProductTableHeader from '@components/productTable/ProductTableHeader';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Pagination } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
 import { toast } from 'react-toastify';
@@ -96,8 +96,16 @@ const MypageCart = () => {
     setCart((prevCart) =>
       prevCart.map(
         (product) =>
+          product.productId === id && product.quantity > 1
+            ? { ...product, quantity: product.quantity - 1 } // 장바구니 수량 감소
+            : product, // 다른 상품은 변경하지 않음
+      ),
+    );
+    setIsSelected((prev) =>
+      prev.map(
+        (product) =>
           product.productId === id && product.quantity > 0
-            ? { ...product, quantity: product.quantity - 1 } // 수량 감소
+            ? { ...product, quantity: product.quantity - 1 } // 선택된 상품 수량 감소
             : product, // 다른 상품은 변경하지 않음
       ),
     );
@@ -111,6 +119,14 @@ const MypageCart = () => {
           product.productId === id
             ? { ...product, quantity: product.quantity + 1 } // 수량 증가
             : product, // 다른 상품은 변경 하지 않음
+      ),
+    );
+    setIsSelected((prev) =>
+      prev.map(
+        (product) =>
+          product.productId === id && product.quantity > 0
+            ? { ...product, quantity: product.quantity + 1 } // 선택된 상품 수량 증가
+            : product, // 다른 상품은 변경하지 않음
       ),
     );
   };
@@ -145,7 +161,7 @@ const MypageCart = () => {
     }
   }, [cart]);
 
-  //return부분
+  //mypageCart의 return부분
   const productDetailMap = cart.map((product) => {
     const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
@@ -156,7 +172,7 @@ const MypageCart = () => {
     };
   });
 
-  //구매버튼 부분
+  //구매버튼 누를 때 보낼 상품의 상세 정보
   const selectedDetail = isSelected.map((product) => {
     const detail = isDetail.find((detail) => detail._id === product.productId);
     const price = detail?.price || 0;
@@ -167,11 +183,11 @@ const MypageCart = () => {
   });
 
   //선택된 상품의 총 금액
-  const selectedTotalPrice = isSelected.reduce((sum, product) => {
-    const detail = isDetail.find((detail) => detail._id === product.productId);
-    const price = detail?.price || 0;
-    return sum + price * product.quantity;
-  }, 0);
+  const selectedTotalPrice = selectedDetail.map((item) => item.totalPrice);
+
+  useEffect(() => {
+    console.log(selectedTotalPrice);
+  }, [isSelected]);
 
   useEffect(() => {
     console.log('isSelected', isSelected);
