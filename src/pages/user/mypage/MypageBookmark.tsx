@@ -260,11 +260,16 @@ const MypageBookmark = () => {
                 onPageChange={(page) => setCurrentPage(page)}
                 className={paginationStyles.pagination}
               >
+                <Pagination.Navigator
+                  className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+                  type="prev"
+                />
                 <Pagination.PageButtons
                   className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
                 />
                 <Pagination.Navigator
                   className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+                  type="next"
                 />
               </Pagination>
             </div>

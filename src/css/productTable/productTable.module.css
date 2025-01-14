@@ -18,6 +18,12 @@
   justify-content: center;
 }
 
+.Header_menu2 {
+  color: #838383;
+  width: 160px;
+  display: flex;
+}
+
 .quantity_wrap {
   display: flex;
   align-items: center;
