@@ -37,7 +37,7 @@ const HomePage = () => {
   const getAllProducts = async (page: number) => {
     try {
       const response = await api.get(
-        `/manager/products?page=${page}&itemsPerPage=${productPerPage}&category=${
+        `/manager/products-category?page=${page}&itemsPerPage=${productPerPage}&category=${
           categoryFilter || ''
         }`,
       );
