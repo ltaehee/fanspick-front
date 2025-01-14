@@ -72,8 +72,9 @@ const MypageOrder = () => {
     }
   }, [currentPage, userId]);
 
-  const handleReview = (order: Order) => {
-    navigate('/add-review', { state: { order } });
+  const handleReview = (productId: string) => {
+    console.log(productId);
+    navigate('/add-review', { state: { productId } });
   };
 
   return (
@@ -125,7 +126,7 @@ const MypageOrder = () => {
                         </div>
                         <Button
                           label="리뷰 등록하기"
-                          onClick={() => handleReview(order)}
+                          onClick={() => handleReview(product.productId._id)}
                           className={orderStyles.review_button}
                         />
                       </div>
