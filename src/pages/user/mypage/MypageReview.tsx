@@ -44,6 +44,7 @@ const MypageReviewPage = () => {
       );
       console.log(response.data);
       if (response.status === 200) {
+        console.log(response.data.reviews);
         setReviews(response.data.reviews);
         setTotalReviews(response.data.totalCount);
       }
