@@ -23,7 +23,7 @@ export interface ProductProps {
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProduct, setTotalProduct] = useState(0);
-  const productPerPage = 4;
+  const productPerPage = 8;
 
   const [products, setProducts] = useState<ProductProps[]>([]);
   const location = useLocation();
