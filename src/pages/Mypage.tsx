@@ -6,7 +6,7 @@ import MypageCategories from '@components/categories/MypageCategories';
 import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
 import AddressSearch from '@components/AddressSearch';
 import {
   businessNumberPattern,
@@ -14,10 +14,11 @@ import {
   passwordPattern,
 } from '@consts/patterns';
 import api from '@utils/api';
+import axios from 'axios';
 
-const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
-const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
-const REGION = import.meta.env.VITE_REGION;
+// const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
+// const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
+// const REGION = import.meta.env.VITE_REGION;
 
 interface Address {
   roadAddress: string;
@@ -49,14 +50,14 @@ const Mypage = () => {
   const { user: loggedInUser, token, updateUser } = useUserContext();
 
   // AWS S3 설정
-  const configAws = () => {
-    AWS.config.update({
-      accessKeyId: ACCESS_KEY_ID, // IAM 사용자 엑세스 키 변경
-      secretAccessKey: SECRET_ACCESS_KEY, // IAM 엑세스 시크릿키 변경
-      region: REGION,
-    });
-    return new AWS.S3();
-  };
+  // const configAws = () => {
+  //   AWS.config.update({
+  //     accessKeyId: ACCESS_KEY_ID, // IAM 사용자 엑세스 키 변경
+  //     secretAccessKey: SECRET_ACCESS_KEY, // IAM 엑세스 시크릿키 변경
+  //     region: REGION,
+  //   });
+  //   return new AWS.S3();
+  // };
 
   useEffect(() => {
     if (loggedInUser) {
@@ -99,18 +100,40 @@ const Mypage = () => {
     fileInputRef?.current?.click();
   };
 
+  // const uploadToS3 = async (file: File) => {
+  //   try {
+  //     const s3 = configAws();
+  //     const uploadParams = {
+  //       Bucket: 'fanspick',
+  //       Key: `profile/${file.name}`,
+  //       Body: file,
+  //     };
+  //     const data = await s3.upload(uploadParams).promise();
+  //     setAwsImgAddress(data.Location); // 업로드된 URL 저장
+  //   } catch (error) {
+  //     console.error('이미지 업로드에 실패했습니다.');
+  //   }
+  // };
+
   const uploadToS3 = async (file: File) => {
+    console.log('file ', file);
     try {
-      const s3 = configAws();
-      const uploadParams = {
-        Bucket: 'fanspick',
-        Key: `profile/${file.name}`,
-        Body: file,
-      };
-      const data = await s3.upload(uploadParams).promise();
-      setAwsImgAddress(data.Location); // 업로드된 URL 저장
-    } catch (error) {
-      console.error('이미지 업로드에 실패했습니다.');
+      // 백엔드에서 presigned URL 가져오기
+      const response = await api.get('/aws/presigned-url');
+      const { url } = response.data;
+
+      // presigned URL을 이용해 S3에 파일 업로드
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+      // console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
+      console.log('url2 ', url);
+
+      setAwsImgAddress(url.split('?')[0]); // presigned URL에서 파일 위치 추출
+    } catch (err) {
+      console.log('AWS S3 업로드 실패 : ', err);
     }
   };
 

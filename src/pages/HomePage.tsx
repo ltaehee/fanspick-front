@@ -30,15 +30,20 @@ const HomePage = () => {
   const queryParams = new URLSearchParams(location.search);
   const categoryFilter = queryParams.get('category');
 
+  useEffect(() => {
+    // 카테고리가 바뀔 때 페이지를 초기화
+    setCurrentPage(1);
+  }, [categoryFilter]);
   const getAllProducts = async (page: number) => {
     try {
       const response = await api.get(
-        `/manager/products` /* /manager/products?page=${page}&itemsPerPage=${productPerPage} */,
+        `/manager/products?page=${page}&itemsPerPage=${productPerPage}` /* /manager/products?page=${page}&itemsPerPage=${productPerPage} */,
       );
-      console.log({ response });
+      console.log('response.data', response.data);
       if (response.status === 200) {
         setProducts(response.data.product);
         setTotalProduct(response.data.totalCount);
+        console.log(response.data);
       }
     } catch (err) {
       console.error('상품 가져오기 실패');
@@ -91,7 +96,7 @@ const HomePage = () => {
         )}
       </div>
 
-      {/* <Pagination
+      <Pagination
         itemLength={totalProduct}
         value={currentPage}
         itemCountPerPage={productPerPage}
@@ -111,7 +116,7 @@ const HomePage = () => {
             className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
           />
         </div>
-      </Pagination> */}
+      </Pagination>
     </div>
   );
 };
