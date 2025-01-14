@@ -37,7 +37,7 @@ const MypageOrder = () => {
   const [orderList, setOrderList] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalOrder, setTotalOrder] = useState(0);
-  const reviewsPerPage = 5;
+  const orderPerPage = 2;
   const userId = user?.id;
 
   const getReviews = JSON.parse(
@@ -53,7 +53,7 @@ const MypageOrder = () => {
     try {
       if (user) {
         const response = await api.get(
-          `/purchase/order/list/${userId}?page=${page}&itemsPerPage=${totalOrder}`,
+          `/purchase/order/list/${userId}?page=${page}&itemsPerPage=${orderPerPage}`,
         );
 
         console.log('주문 목록', response.data.orderList);
@@ -162,7 +162,7 @@ const MypageOrder = () => {
         <Pagination
           itemLength={totalOrder}
           value={currentPage}
-          itemCountPerPage={reviewsPerPage}
+          itemCountPerPage={orderPerPage}
           onPageChange={handlePageChange}
           className={paginationStyles.pagination}
         >
