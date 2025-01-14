@@ -155,11 +155,7 @@ const OrderPage = () => {
         console.log('orderData', orderData);
 
         try {
-          const response = await api.post('/purchase/order', orderData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await api.post('/purchase/order', orderData);
           if (response.status === 200) {
             toast.success('주문이 완료되었습니다!');
             navigate('/mypage-order');
