@@ -17,7 +17,9 @@ const ProductDetail: FC<ProductDetailProps> = (props) => {
         <img src={image} className={styles.image} />
       </a>
       <div>
-        <a onClick={onClick}>{productName}</a>
+        <a onClick={onClick} className={styles.a}>
+          {productName}
+        </a>
       </div>
     </div>
   );

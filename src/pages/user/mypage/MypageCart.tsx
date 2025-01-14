@@ -222,9 +222,9 @@ const MypageCart = () => {
 
   return (
     <div className={cartStyles.content_wrap}>
-      <MypageHeader />
       {cart.length !== 0 ? (
         <div>
+          <MypageHeader />
           <div className={cartStyles.Table_wrap}>
             <Button
               onClick={deleteCart}
@@ -259,7 +259,7 @@ const MypageCart = () => {
                     onChange={handleChangeCheckBox}
                   />
                   <ProductTableMenu.Detail
-                    onClick={() => navigate('/add-review')}
+                    onClick={() => navigate(`/product/${product.detail?._id}`)}
                     productName={product.detail?.name}
                     image={product.detail?.image}
                   />

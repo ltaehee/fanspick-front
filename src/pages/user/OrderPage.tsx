@@ -162,6 +162,19 @@ const OrderPage = () => {
           const response = await api.post('/purchase/order', orderData);
           if (response.status === 200) {
             toast.success('주문이 완료되었습니다!');
+
+            const cartKey = `cart_${userId}`;
+            const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
+
+            const updateCart = cartItems.filter(
+              (cartItem: { productId: string }) =>
+                !product.some(
+                  (orderedId) => orderedId.detail._id === cartItem.productId,
+                ),
+            );
+
+            localStorage.setItem(cartKey, JSON.stringify(updateCart));
+
             navigate('/mypage-order');
           }
         } catch (error) {
