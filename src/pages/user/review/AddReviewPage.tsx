@@ -27,7 +27,8 @@ const AddReviewPage = () => {
   const [reviewText, setReviewText] = useState('');
   const { token } = useUserContext();
 
-  console.log("fh",location.state)
+  console.log('location.state', location.state);
+
   // AWS S3 설정
   const configAws = () => {
     AWS.config.update({
@@ -118,9 +119,9 @@ const AddReviewPage = () => {
           alt="상품 이미지"
         />
         <div className={styles.productInfo}>
-          <p className={styles.productTitle}>{product?.title}</p>
-          <p className={styles.productCount}>수량: {product?.quantity}</p>
-          <p className={styles.productPrice}>{product?.price}</p>
+          <p className={styles.productTitle}>{product?.name}</p>
+          <p className={styles.productCount}>수량: {product.quantity}</p>
+          <p className={styles.productPrice}>{product.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
