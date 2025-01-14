@@ -2,6 +2,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import styles from '@css/review.module.css';
 // import dummyImg2 from '/images/product/dog2.jpg';
 import uploadImg from '/icons/addImg.png';
+import closeImg from '/icons/closeImg.png';
 import { Button, Input } from 'ys-project-ui';
 // import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
@@ -9,6 +10,7 @@ import api from '@utils/api';
 import StarRating from '@components/review/StarRating';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { addCommas } from '../../../utils/util';
 
 // AWS S3 환경 변수
 // const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
@@ -126,7 +128,7 @@ const AddReviewPage = () => {
       await api.post('/review/add', reviewData);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
-      navigate('/mypage-review');
+      navigate('/mypage-rsssseview');
     } catch (error) {
       console.error('리뷰 등록 중 오류가 발생했습니다.');
     }
@@ -150,7 +152,9 @@ const AddReviewPage = () => {
         <div className={styles.productInfo}>
           <p className={styles.productTitle}>{order?.name}</p>
           <p className={styles.productCount}>수량: {order.quantity}</p>
-          <p className={styles.productPrice}>가격: {order.price}</p>
+          <p className={styles.productPrice}>
+            가격: {addCommas(order.price)}원
+          </p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
@@ -159,13 +163,19 @@ const AddReviewPage = () => {
         {previewImg.map((photo, index) => (
           <div key={`previewImg-${index}`} className={styles.previewImgBox}>
             <img src={photo} alt="리뷰 사진" className={styles.imagePreview} />
-            <button
+            {/* <button
               type="button"
               className={styles.removeButton}
               onClick={() => handleImageDelete(index)}
             >
-              &times;
-            </button>
+              closeImg &times;
+            </button> */}
+            <img
+              src={closeImg}
+              alt="이미지 제거 버튼"
+              className={styles.removeButton}
+              onClick={() => handleImageDelete(index)}
+            />
           </div>
         ))}
         {previewImg.length < 3 && (

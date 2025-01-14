@@ -7,6 +7,7 @@ import { Button } from 'ys-project-ui';
 import { toast } from 'react-toastify';
 import api from '@utils/api';
 import axios from 'axios';
+import closeImg from '/icons/closeImg.png';
 // import AWS from 'aws-sdk';
 
 // AWS S3 환경 변수
@@ -66,18 +67,18 @@ const EditReviewPage = () => {
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-  
+
     const fileArray = Array.from(files);
     const remainingSlots = 3 - previewImg.length; // 3개 제한에서 남은 슬롯 계산
-  
+
     if (remainingSlots <= 0) {
       toast.warning('최대 3개의 이미지만 업로드 가능합니다.');
       return;
     }
-  
+
     const filesToAdd = fileArray.slice(0, remainingSlots); // 남은 슬롯만큼 파일 제한
     const previewArray = filesToAdd.map((file) => URL.createObjectURL(file));
-  
+
     setReviewPhotos((prev) => [...prev, ...filesToAdd]);
     setPreviewImg((prev) => [...prev, ...previewArray]);
   };
@@ -95,20 +96,20 @@ const EditReviewPage = () => {
     try {
       const s3UploadPromises = reviewPhotos.map((file) => uploadToS3(file));
       const s3Urls = (await Promise.all(s3UploadPromises)).filter((url) => url);
-  
+
       // 기존 previewImg에서 blob이 아닌 S3 URL만 남기고 새로 업로드된 S3 URL 추가
       const updatedImages = [
         ...previewImg.filter((img) => !img.startsWith('blob:')),
         ...s3Urls,
       ];
-  
+
       const updatedReview = {
         title: reviewTitle,
         content: reviewContent,
         starpoint: rating,
         image: updatedImages,
       };
-  
+
       await api.put(`/review/${reviewId}`, updatedReview);
       toast.success('리뷰가 성공적으로 수정되었습니다!');
       navigate('/mypage-review');
@@ -147,10 +148,10 @@ const EditReviewPage = () => {
       });
 
       console.log('업로드된 이미지 URL:', url.split('?')[0]);
-      return url.split('?')[0]; 
+      return url.split('?')[0];
     } catch (err) {
       console.error('AWS S3 업로드 실패:', err);
-      return null; 
+      return null;
     }
   };
 
@@ -199,10 +200,18 @@ const EditReviewPage = () => {
       <div className={styles.uploadContainer}>
         {previewImg.map((photo, index) => (
           <div key={`previewImg-${index}`} className={styles.previewImgBox}>
+            <img src={photo} alt="리뷰 사진" className={styles.imagePreview} />
+            {/* <button
+              type="button"
+              className={styles.removeButton}
+              onClick={() => handleImageDelete(index)}
+            >
+              &times;
+            </button> */}
             <img
-              src={photo}
-              alt="리뷰 사진"
-              className={styles.imagePreview}
+              src={closeImg}
+              alt="이미지 제거 버튼"
+              className={styles.removeButton}
               onClick={() => handleImageDelete(index)}
             />
           </div>
