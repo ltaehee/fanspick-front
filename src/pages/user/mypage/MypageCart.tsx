@@ -12,6 +12,7 @@ import trash from '/icons/trash.png';
 import api from '../../../utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
+import { addCommas } from '../../../utils/util';
 
 interface Cart {
   productId: string;
@@ -236,7 +237,9 @@ const MypageCart = () => {
                     productName={product.detail?.name}
                     image={product.detail?.image}
                   />
-                  <ProductTableMenu.Content content={product.totalPrice} />
+                  <ProductTableMenu.Content
+                    content={addCommas(product.totalPrice)}
+                  />
                   <div className={tableStyles.quantity_wrap}>
                     <ProductTableMenu.QuantityButton
                       label="-"

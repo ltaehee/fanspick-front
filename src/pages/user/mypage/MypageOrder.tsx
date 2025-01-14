@@ -12,6 +12,7 @@ import api from '../../../utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
 import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
+import { addCommas } from '../../../utils/util';
 
 interface Product {
   productId: {
@@ -114,7 +115,9 @@ const MypageOrder = () => {
                           productName={order.productId.name}
                           image={order.productId.image}
                         />
-                        <ProductTableMenu.Content content={order.price} />
+                        <ProductTableMenu.Content
+                          content={addCommas(order.price)}
+                        />
                         <div className={tableStyles.quantity_wrap}>
                           <ProductTableMenu.Quantity
                             quantity={order.quantity}
