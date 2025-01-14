@@ -44,6 +44,7 @@ const Mypage = () => {
     role: '',
     profileImage: '',
     businessNumber: '',
+    provider: '',
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +62,7 @@ const Mypage = () => {
 
   useEffect(() => {
     if (loggedInUser) {
+      console.log('LoggedIn User:', loggedInUser);
       setUpdatedUser({
         name: loggedInUser.name || '',
         email: loggedInUser.email || '',
@@ -68,6 +70,7 @@ const Mypage = () => {
         role: loggedInUser.role || '',
         profileImage: loggedInUser.profileImage || '',
         businessNumber: loggedInUser.businessNumber || '',
+        provider: loggedInUser.provider || 'local',
       });
       setAddress(
         loggedInUser.address || {
@@ -167,19 +170,25 @@ const Mypage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!updatedUser.password) {
+    if (updatedUser.provider === 'local' && !updatedUser.password) {
       toast.error('비밀번호를 입력해주세요.');
       return;
     }
 
-    if (!passwordPattern.test(updatedUser.password)) {
+    if (
+      updatedUser.provider === 'local' &&
+      !passwordPattern.test(updatedUser.password)
+    ) {
       toast.error(
         '비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.',
       );
       return;
     }
 
-    if (!emailPattern.test(updatedUser.email)) {
+    if (
+      updatedUser.provider !== 'kakao' &&
+      !emailPattern.test(updatedUser.email)
+    ) {
       toast.error('올바른 이메일 형식을 입력해주세요.');
       return;
     }
@@ -207,10 +216,12 @@ const Mypage = () => {
       });
       if (response.status === 200) {
         toast.success('회원정보 수정 성공');
+
         const updatedUserData = {
           ...response.data.user,
-          role: loggedInUser!.role, // 기존 역할 유지
+          provider: updatedUser.provider, // 기존 provider 유지
         };
+        
         updateUser(updatedUserData);
         localStorage.setItem('user', JSON.stringify(updatedUserData));
       }
@@ -271,16 +282,18 @@ const Mypage = () => {
               className={styles.ul_input}
             />
           </li>
-          <li className={styles.li}>
-            <label>이메일</label>
-            <Input
-              placeholder="이메일"
-              name="email"
-              value={updatedUser.email}
-              onChange={handleChange}
-              className={styles.ul_input}
-            />
-          </li>
+          {updatedUser.provider !== 'kakao' && (
+            <li className={styles.li}>
+              <label>이메일</label>
+              <Input
+                placeholder="이메일"
+                name="email"
+                value={updatedUser.email}
+                onChange={handleChange}
+                className={styles.ul_input}
+              />
+            </li>
+          )}
           {/* 사업자번호 (매니저만 표시) */}
           {updatedUser.role === 'manager' && (
             <li className={styles.li}>
@@ -342,20 +355,22 @@ const Mypage = () => {
               onChange={handleChange}
             />
           </li>
-          <li className={styles.li}>
-            <label>비밀번호</label>
-            <Input
-              placeholder="비밀번호 확인"
-              type="password"
-              name="password"
-              value={updatedUser.password}
-              onChange={handleChange}
-              className={styles.ul_input}
-            />
-            <p style={{ fontSize: '12px', color: 'red' }}>
-              안전한 회원정보 수정을 위해 비밀번호를 입력해주세요.
-            </p>
-          </li>
+          {updatedUser.provider === 'local' && (
+            <li className={styles.li}>
+              <label>비밀번호</label>
+              <Input
+                placeholder="비밀번호 확인"
+                type="password"
+                name="password"
+                value={updatedUser.password}
+                onChange={handleChange}
+                className={styles.ul_input}
+              />
+              <p style={{ fontSize: '12px', color: 'red' }}>
+                안전한 회원정보 수정을 위해 비밀번호를 입력해주세요.
+              </p>
+            </li>
+          )}
         </ul>
       </div>
       <div className={styles.edit_button_box}>
