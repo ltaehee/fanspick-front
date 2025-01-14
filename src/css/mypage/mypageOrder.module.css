@@ -30,3 +30,7 @@
   width: 150px;
   height: 50px;
 }
+
+.none_review_button {
+  display: none;
+}

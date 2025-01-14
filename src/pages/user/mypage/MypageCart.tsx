@@ -159,7 +159,7 @@ const MypageCart = () => {
     const price = detail?.price || 0;
     return {
       detail,
-      totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
+      totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 각 상품의 가격
     };
   });
 
@@ -169,6 +169,10 @@ const MypageCart = () => {
     const price = detail?.price || 0;
     return sum + price * product.quantity;
   }, 0);
+
+  useEffect(() => {
+    console.log('isSelected', isSelected);
+  }, [isSelected]);
 
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
@@ -262,6 +266,9 @@ const MypageCart = () => {
               ))}
             </ProductTableMenu>
           </div>
+          <p className={cartStyles.totalprice}>
+            선택된 상품의 총 금액: {selectedTotalPrice}원
+          </p>
           <div className={cartStyles.button_box}>
             <Button
               className={cartStyles.button}

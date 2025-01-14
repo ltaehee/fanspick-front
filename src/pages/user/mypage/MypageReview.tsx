@@ -10,6 +10,7 @@ import { useUserContext } from '@context/UserContext';
 import MypageHeader from '@components/categories/MypageCategories';
 import cartStyles from '@css/mypage/mypageCart.module.css';
 import { toast } from 'react-toastify';
+import { json } from 'stream/consumers';
 
 interface Review {
   _id: string;
@@ -29,13 +30,14 @@ const MypageReviewPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalReviews, setTotalReviews] = useState(0);
   const reviewsPerPage = 2;
-  const { user} = useUserContext();
+  const { user } = useUserContext();
   const userId = user?.id;
 
   const fetchReviews = async (page: number) => {
     try {
       const response = await api.get(
-        `/review/user/${userId}?page=${page}&itemsPerPage=${reviewsPerPage}`);
+        `/review/user/${userId}?page=${page}&itemsPerPage=${reviewsPerPage}`,
+      );
       console.log(response.data);
       if (response.status === 200) {
         console.log(response.data.reviews);
@@ -46,6 +48,13 @@ const MypageReviewPage = () => {
       console.error('리뷰 불러오기 오류:', err);
     }
   };
+
+  const reviewsMap = reviews.map((item: any) => item.productId._id);
+  useEffect(() => {
+    console.log('reviewsMap', reviewsMap);
+  }, [reviewsMap]);
+
+  localStorage.setItem(`reviews_${userId}`, JSON.stringify(reviewsMap));
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
