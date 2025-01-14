@@ -38,11 +38,8 @@ const ProductDetail = () => {
 
   /* 장바구니 로컬 스토리지 저장 */
   const handleAddCart = () => {
-    const userId = user?.id;
-    if (!userId) {
-      toast.error('로그인이 필요합니다.');
-      return;
-    }
+    const userId = user?.id || 'guest';
+
     // 사용자별 장바구니 키 생성
     const cartKey = `cart_${userId}`;
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
@@ -121,7 +118,7 @@ const ProductDetail = () => {
   }, []);
 
   if (!getProduct) {
-    return <div>상품 정보를 찾을 수 없습니다.</div>;
+    return;
   }
 
   /* 상품 데이터 주문 페이지로 그대로 전달 */
