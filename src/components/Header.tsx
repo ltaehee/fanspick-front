@@ -17,15 +17,20 @@ const Header = () => {
   const navigate = useNavigate();
   console.log('헤더', user);
 
+  const fullPath =
+    window.location.pathname + decodeURIComponent(window.location.search);
+  const currentPath = decodeURIComponent(window.location.search); // URL에서 인코딩된 문자열을 디코딩
+
   // 메뉴 렌더링
   const renderMenu = () => {
     const menu: MenuItem[] = user?.role === 'manager' ? managerMenu : userMenu;
+
     return menu.map((item, index) => (
       <li key={index} className={styles.navItem}>
         <a
           href={item.path}
           className={`${
-            window.location.pathname === item.path
+            fullPath === item.path || currentPath === item.path
               ? styles.active
               : styles.navLink
           }`}
