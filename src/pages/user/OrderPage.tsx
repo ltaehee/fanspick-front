@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import api from '@utils/api';
 import ProductTableHeader from '@components/productTable/ProductTableHeader';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
@@ -44,14 +44,19 @@ interface OrderPageProps {
 const OrderPage = () => {
   const { user } = useUserContext();
   const userId = user?.id;
-
+  const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [user, navigate]);
   const { product, quantity, selectedTotalPrice } =
     location.state as OrderPageProps;
 
   const totalPrice = selectedTotalPrice || product[0].totalPrice;
-
-  const navigate = useNavigate();
 
   const [address, setAddress] = useState({
     roadAddress: user?.address?.roadAddress || '',
