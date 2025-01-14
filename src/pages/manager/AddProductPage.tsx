@@ -8,21 +8,14 @@ import {
 } from 'react';
 import styles from '@css/manager/addProductPage.module.css';
 import { Button, Input } from 'ys-project-ui';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import addImg from '/icons/addImg.png';
 import cancel from '/icons/cancel.png';
 import api from '@utils/api';
-import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '@context/UserContext';
 import { addCommas } from '@utils/util';
-
-/* 등록버튼 네비게이션ㅇ, 더블클릭막기ㅇ, 상세이미지 width 300px 이면 깨짐이슈, 이미지 등록 삭제 버튼추가ㅇ*/
-
-const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
-const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
-const REGION = import.meta.env.VITE_REGION;
 
 interface CheckedCategory {
   id: number;
@@ -46,26 +39,14 @@ const AddProductPage = () => {
   const imgDetailRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
   const { user } = useUserContext();
-  console.log('managerId ', managerId);
-  console.log('awsDetailImgAddress ', awsDetailImgAddress);
+  // console.log('managerId ', managerId);
+  // console.log('awsDetailImgAddress ', awsDetailImgAddress);
 
   useMemo(() => {
     if (user) {
       setManagerId(user.id);
     }
   }, [user]);
-
-  // console.log("상품상세이미지 ", predetailViewUrls);
-
-  // AWS S3 설정
-  const configAws = () => {
-    AWS.config.update({
-      accessKeyId: ACCESS_KEY_ID, // IAM 사용자 엑세스 키 변경
-      secretAccessKey: SECRET_ACCESS_KEY, // IAM 엑세스 시크릿키 변경
-      region: REGION,
-    });
-    return new AWS.S3();
-  };
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setproductName(e.target.value);
@@ -85,7 +66,6 @@ const AddProductPage = () => {
 
       const url = URL.createObjectURL(file);
       setImgUrl(url);
-      // setImgFile(file);
 
       const reader = new FileReader();
 
@@ -110,21 +90,23 @@ const AddProductPage = () => {
       };
       reader.readAsDataURL(file); // 실제로 파일을 읽어 onload 실행
 
-      const uploadToS3 = async (file: globalThis.File) => {
+      const uploadToS3 = async (file: File) => {
+        console.log('file ', file);
         try {
-          const s3 = configAws();
+          // 백엔드에서 presigned URL 가져오기
+          const response = await api.get('/aws/presigned-url');
+          const { url } = response.data;
 
-          // 업로드할 파일 정보 설정
-          const uploadParams = {
-            Bucket: 'fanspick',
-            Key: `product/${file.name}`,
-            Body: file,
-          };
+          // presigned URL을 이용해 S3에 파일 업로드
+          await axios.put(url, file, {
+            headers: {
+              'Content-Type': file.type,
+            },
+          });
+          // console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
+          console.log('url2 ', url);
 
-          // S3에 파일 업로드
-          const data = await s3.upload(uploadParams).promise();
-          console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
-          setAwsImgAddress(data.Location);
+          setAwsImgAddress(url.split('?')[0]); // presigned URL에서 파일 위치 추출
         } catch (err) {
           console.log('AWS S3 업로드 실패 : ', err);
         }
@@ -163,28 +145,29 @@ const AddProductPage = () => {
       const validFiles: globalThis.File[] = [];
       let checkFiles = 0;
 
-      const uploadToS3 = async (files: globalThis.File[]) => {
+      const uploadMultiToS3 = async (files: File[]) => {
         try {
-          const s3 = configAws();
-
-          const uploadFiles = files.map((file) => {
-            // 업로드할 파일 정보 설정
-            const uploadParams = {
-              Bucket: 'fanspick',
-              Key: `productDetail/${file.name}`,
-              Body: file,
-            };
-            // S3에 파일 업로드
-            return s3.upload(uploadParams).promise();
+          // 백엔드에서 presigned URL 가져오기
+          const response = await api.get('/aws/presigned-urls', {
+            params: { fileCount: files.length },
           });
+          const { urls }: { urls: string[] } = response.data;
+          console.log('urls ', urls);
+          // presigned URLS을 이용해 S3에 파일 업로드
+          const uploadFilesS3 = Array.from(files).map((file, index) =>
+            axios.put(urls[index], file, {
+              headers: {
+                'Content-Type': file.type,
+              },
+            }),
+          );
 
-          const results = await Promise.all(uploadFiles);
-          console.log('AWS S3 업로드 성공 ', results);
-          const detailImgLocation = results.map((item) => item.Location);
-          console.log('AWS S3 상세이미지 ', detailImgLocation);
-          setAwsDetailImgAddress(detailImgLocation);
+          await Promise.all(uploadFilesS3);
+
+          const uploadedUrls = urls.map((url) => url.split('?')[0]);
+          setAwsDetailImgAddress(uploadedUrls);
         } catch (err) {
-          console.log('AWS S3 업로드 실패 : ', err);
+          console.log('AWS S3 다중업로드 실패 : ', err);
         }
       };
 
@@ -209,7 +192,7 @@ const AddProductPage = () => {
             // 모든 파일 검증이 끝난 후 업로드
             if (checkFiles === filesArray.length) {
               if (validFiles.length === filesArray.length) {
-                uploadToS3(filesArray);
+                uploadMultiToS3(filesArray);
               }
             }
           };
