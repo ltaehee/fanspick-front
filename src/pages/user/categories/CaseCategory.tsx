@@ -10,8 +10,8 @@ const CaseCategory = () => {
 
   const getAllProducts = async () => {
     try {
-      const response = await api.get('/manager/get-all-product');
-      if (response.status === 201) {
+      const response = await api.get('/manager/products');
+      if (response.status === 200) {
         setProducts(response.data.product);
       }
     } catch (err) {
