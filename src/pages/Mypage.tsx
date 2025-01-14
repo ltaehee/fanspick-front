@@ -221,7 +221,7 @@ const Mypage = () => {
           ...response.data.user,
           provider: updatedUser.provider, // 기존 provider 유지
         };
-        
+
         updateUser(updatedUserData);
         localStorage.setItem('user', JSON.stringify(updatedUserData));
       }
@@ -282,18 +282,18 @@ const Mypage = () => {
               className={styles.ul_input}
             />
           </li>
-          {updatedUser.provider !== 'kakao' && (
-            <li className={styles.li}>
-              <label>이메일</label>
-              <Input
-                placeholder="이메일"
-                name="email"
-                value={updatedUser.email}
-                onChange={handleChange}
-                className={styles.ul_input}
-              />
-            </li>
-          )}
+          {/* {updatedUser.provider !== 'kakao' && ( */}
+          <li className={styles.li}>
+            <label>이메일</label>
+            <Input
+              placeholder="이메일"
+              name="email"
+              value={updatedUser.email}
+              onChange={handleChange}
+              className={styles.ul_input}
+            />
+          </li>
+          {/* )} */}
           {/* 사업자번호 (매니저만 표시) */}
           {updatedUser.role === 'manager' && (
             <li className={styles.li}>
