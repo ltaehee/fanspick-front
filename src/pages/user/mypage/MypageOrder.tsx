@@ -12,6 +12,7 @@ import api from '../../../utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
 import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
+import { addCommas } from '../../../utils/util';
 
 interface Product {
   productId: {
@@ -32,13 +33,15 @@ interface Order {
 
 const MypageOrder = () => {
   const { user } = useUserContext();
-  const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalOrder, setTotalOrder] = useState(0);
   const reviewsPerPage = 5;
   const userId = user?.id;
+
+  const getReviews = [localStorage.getItem(`reviews_${userId}` || '[]')];
+  console.log('가져온 리뷰', getReviews);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -71,6 +74,11 @@ const MypageOrder = () => {
   const handleReview = (order: Product) => {
     console.log(order);
     navigate('/add-review', { state: { order } });
+  };
+
+  const existOrderId = (order: any) => {
+    console.log('리뷰 작성한 orderid', order._id);
+    return getReviews.includes(order._id); //리뷰가 작성된 orderId이면 ture
   };
 
   return (
@@ -114,7 +122,9 @@ const MypageOrder = () => {
                           productName={order.productId.name}
                           image={order.productId.image}
                         />
-                        <ProductTableMenu.Content content={order.price} />
+                        <ProductTableMenu.Content
+                          content={addCommas(order.price)}
+                        />
                         <div className={tableStyles.quantity_wrap}>
                           <ProductTableMenu.Quantity
                             quantity={order.quantity}
@@ -123,7 +133,11 @@ const MypageOrder = () => {
                         <Button
                           label="리뷰 등록하기"
                           onClick={() => handleReview(order)}
-                          className={orderStyles.review_button}
+                          className={
+                            !existOrderId(order)
+                              ? orderStyles.review_button
+                              : orderStyles.none_review_button
+                          }
                         />
                       </div>
                     </div>

@@ -15,6 +15,7 @@ import cart from '/icons/cart_icon.png';
 import api from '../../../utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
+import { addCommas } from '../../../utils/util';
 
 interface Bookmark {
   productId: string;
@@ -23,7 +24,7 @@ interface Bookmark {
 interface Detail {
   _id: string;
   name: string;
-  price: number;
+  price: number | undefined;
   image: string;
 }
 
@@ -234,7 +235,7 @@ const MypageBookmark = () => {
                           image={product.isDetail?.image}
                         />
                         <ProductTableMenu.Content
-                          content={product.isDetail?.price}
+                          content={addCommas(product.isDetail?.price)}
                         />
                         <div className={cartStyles.bookmark_buttons_wrap}>
                           <ProductTableMenu.DeleteButton

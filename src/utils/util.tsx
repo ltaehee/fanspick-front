@@ -1,4 +1,4 @@
-export function addCommas(price: number) {
+export function addCommas(price: number | undefined) {
   if (price == null || isNaN(price)) {
     return '';
   }
