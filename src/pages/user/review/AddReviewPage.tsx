@@ -3,21 +3,23 @@ import styles from '@css/review.module.css';
 // import dummyImg2 from '/images/product/dog2.jpg';
 import uploadImg from '/icons/addImg.png';
 import { Button, Input } from 'ys-project-ui';
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
 import { useUserContext } from '@context/UserContext';
 import api from '@utils/api';
 import StarRating from '@components/review/StarRating';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // AWS S3 환경 변수
-const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
-const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
-const REGION = import.meta.env.VITE_REGION;
-const BUCKET_NAME = 'fanspick';
+// const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
+// const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
+// const REGION = import.meta.env.VITE_REGION;
+// const BUCKET_NAME = 'fanspick';
 
 const AddReviewPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { order } = location.state || {};
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -25,19 +27,18 @@ const AddReviewPage = () => {
   const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
   const [reviewTitle, setReviewTitle] = useState('');
   const [reviewText, setReviewText] = useState('');
-  const { token } = useUserContext();
 
   console.log('location.state', location.state);
 
   // AWS S3 설정
-  const configAws = () => {
-    AWS.config.update({
-      accessKeyId: ACCESS_KEY_ID,
-      secretAccessKey: SECRET_ACCESS_KEY,
-      region: REGION,
-    });
-    return new AWS.S3();
-  };
+  // const configAws = () => {
+  //   AWS.config.update({
+  //     accessKeyId: ACCESS_KEY_ID,
+  //     secretAccessKey: SECRET_ACCESS_KEY,
+  //     region: REGION,
+  //   });
+  //   return new AWS.S3();
+  // };
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -51,21 +52,40 @@ const AddReviewPage = () => {
   };
 
   /* 이미지 S3 업로드 */
+  // const uploadToS3 = async (file: File) => {
+  //   try {
+  //     const s3 = configAws();
+  //     const uploadParams = {
+  //       Bucket: BUCKET_NAME,
+  //       Key: `review/${file.name}`,
+  //       Body: file,
+  //       ACL: 'public-read',
+  //     };
+
+  //     const data = await s3.upload(uploadParams).promise();
+  //     return data.Location;
+  //   } catch (error) {
+  //     toast.error('이미지 업로드에 실패했습니다.');
+  //     return null;
+  //   }
+  // };
+
   const uploadToS3 = async (file: File) => {
     try {
-      const s3 = configAws();
-      const uploadParams = {
-        Bucket: BUCKET_NAME,
-        Key: `review/${file.name}`,
-        Body: file,
-        ACL: 'public-read',
-      };
+      const response = await api.get('/aws/presigned-url'); // S3 presigned URL 가져오기
+      const { url } = response.data;
 
-      const data = await s3.upload(uploadParams).promise();
-      return data.Location;
-    } catch (error) {
-      toast.error('이미지 업로드에 실패했습니다.');
-      return null;
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+
+      console.log('업로드된 이미지 URL:', url.split('?')[0]);
+      return url.split('?')[0]; // 업로드된 URL 반환
+    } catch (err) {
+      console.error('AWS S3 업로드 실패:', err);
+      return null; // 실패 시 null 반환
     }
   };
 
@@ -78,23 +98,28 @@ const AddReviewPage = () => {
   const handleClickAddReview = async () => {
     try {
       const s3UploadPromises = reviewPhotos.map((file) => uploadToS3(file));
-      const s3Urls = (await Promise.all(s3UploadPromises)).filter(
+      const uploadedUrls = (await Promise.all(s3UploadPromises)).filter(
         (url) => url !== null,
       );
+
+      console.log('최종 이미지 주소:', uploadedUrls);
+
       const reviewData = {
-        productId: order._id,
+        productId: order.productId._id,
         // productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
-        images: s3Urls,
+        images: uploadedUrls,
+        orderId: order._id,
       };
 
       console.log('reviewData:', reviewData);
-      console.log('사용자 토큰:', token);
+
       await api.post('/review/add', reviewData);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
+      navigate('/mypage-review');
     } catch (error) {
       console.error('리뷰 등록 중 오류가 발생했습니다.');
     }

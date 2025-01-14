@@ -1,17 +1,17 @@
 import { ChangeEvent, useState } from 'react';
-import api from '../../utils/api';
-import ProductTableHeader from '../../components/productTable/ProductTableHeader';
-import ProductTableMenu from '../../components/productTable/ProductTableMenu';
-import tableStyles from '../../css/productTable/productTable.module.css';
-import orderstyles from '../../css/order.module.css';
+import api from '@utils/api';
+import ProductTableHeader from '@components/productTable/ProductTableHeader';
+import ProductTableMenu from '@components/productTable/ProductTableMenu';
+import AddressSearch from '@components/AddressSearch';
+import tableStyles from '@css/productTable/productTable.module.css';
+import orderstyles from '@css/order.module.css';
 import { Button, Input } from 'ys-project-ui';
-import AddressSearch from '../../components/AddressSearch';
 import { Address } from 'react-daum-postcode';
-import { useUserContext } from '../../context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { addCommas } from '../../utils/util';
 import { toast } from 'react-toastify';
-import { emailPattern } from '../../consts/patterns';
+import { emailPattern } from '@consts/patterns';
+import { useUserContext } from '@context/UserContext';
+import { addCommas } from '../../utils/util';
 
 interface PaymentResponse {
   success: boolean;

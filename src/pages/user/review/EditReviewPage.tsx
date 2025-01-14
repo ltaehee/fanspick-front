@@ -6,13 +6,14 @@ import uploadImg from '/icons/addImg.png';
 import { Button } from 'ys-project-ui';
 import { toast } from 'react-toastify';
 import api from '@utils/api';
-import AWS from 'aws-sdk';
+import axios from 'axios';
+// import AWS from 'aws-sdk';
 
 // AWS S3 환경 변수
-const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
-const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
-const REGION = import.meta.env.VITE_REGION;
-const BUCKET_NAME = 'fanspick';
+// const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;
+// const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
+// const REGION = import.meta.env.VITE_REGION;
+// const BUCKET_NAME = 'fanspick';
 
 const EditReviewPage = () => {
   const { reviewId } = useParams<{ reviewId: string }>();
@@ -24,16 +25,17 @@ const EditReviewPage = () => {
   const [previewImg, setPreviewImg] = useState<string[]>([]);
   const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const [, setAwsImgAddress] = useState(''); // 저장된 S3 주소
 
   // AWS S3 설정
-  const configAws = () => {
-    AWS.config.update({
-      accessKeyId: ACCESS_KEY_ID,
-      secretAccessKey: SECRET_ACCESS_KEY,
-      region: REGION,
-    });
-    return new AWS.S3();
-  };
+  // const configAws = () => {
+  //   AWS.config.update({
+  //     accessKeyId: ACCESS_KEY_ID,
+  //     secretAccessKey: SECRET_ACCESS_KEY,
+  //     region: REGION,
+  //   });
+  //   return new AWS.S3();
+  // };
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -105,21 +107,42 @@ const EditReviewPage = () => {
     }
   };
 
-  const uploadToS3 = async (file: File) => {
-    try {
-      const s3 = configAws();
-      const uploadParams = {
-        Bucket: BUCKET_NAME,
-        Key: `review/${file.name}`,
-        Body: file,
-        ACL: 'public-read',
-      };
+  // const uploadToS3 = async (file: File) => {
+  //   try {
+  //     const s3 = configAws();
+  //     const uploadParams = {
+  //       Bucket: BUCKET_NAME,
+  //       Key: `review/${file.name}`,
+  //       Body: file,
+  //       ACL: 'public-read',
+  //     };
 
-      const data = await s3.upload(uploadParams).promise();
-      return data.Location;
-    } catch (error) {
-      toast.error('이미지 업로드에 실패했습니다.');
-      return null;
+  //     const data = await s3.upload(uploadParams).promise();
+  //     return data.Location;
+  //   } catch (error) {
+  //     toast.error('이미지 업로드에 실패했습니다.');
+  //     return null;
+  //   }
+  // };
+  const uploadToS3 = async (file: File) => {
+    console.log('file ', file);
+    try {
+      // 백엔드에서 presigned URL 가져오기
+      const response = await api.get('/aws/presigned-url');
+      const { url } = response.data;
+
+      // presigned URL을 이용해 S3에 파일 업로드
+      await axios.put(url, file, {
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+      // console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
+      console.log('url2 ', url);
+
+      setAwsImgAddress(url.split('?')[0]); // presigned URL에서 파일 위치 추출
+    } catch (err) {
+      console.log('AWS S3 업로드 실패 : ', err);
     }
   };
 
