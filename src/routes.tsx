@@ -11,13 +11,9 @@ import {
   UserProvider,
   EditReviewPage,
   AddReviewPage,
-  ClothingCategory,
-  GriptokCategory,
-  CaseCategory,
   AddProductPage,
   MainPage,
   ProductDetail,
-  StationeryCategory,
   Mypage,
   Layout,
   HomePage,
@@ -77,22 +73,6 @@ const router = createBrowserRouter([
       {
         path: '/cart/:userId',
         element: <MypageCart />,
-      },
-      {
-        path: '/griptok-category',
-        element: <GriptokCategory />,
-      },
-      {
-        path: '/clothing-category',
-        element: <ClothingCategory />,
-      },
-      {
-        path: '/stationery-category',
-        element: <StationeryCategory />,
-      },
-      {
-        path: '/case-category',
-        element: <CaseCategory />,
       },
       {
         path: '/product/:id',

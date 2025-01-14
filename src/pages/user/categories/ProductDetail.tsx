@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from '../../../css/product/productDetail.module.css';
+import styles from '@css/product/productDetail.module.css';
 import { Button, Tabs } from 'ys-project-ui';
 import { useEffect, useState } from 'react';
-import ProductCount from '../../../components/product/ProductCount';
+import ProductCount from '@components/product/ProductCount';
 // import ReviewBox from '../../../components/review/ReviewBox';
 // import profileImg from '/icons/user_icon.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useUserContext } from '../../../context/UserContext';
-import api from '../../../utils/api';
+import api from '@utils/api';
+import { useUserContext } from '@context/UserContext';
 import ProductReviewPage from '../review/ProductReviews';
 import { addCommas } from '../../../utils/util';
 
