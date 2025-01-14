@@ -25,21 +25,31 @@ interface PaymentResponse {
   amount: number;
 }
  */
+
+interface Product {
+  detail: {
+    name: string;
+    image: string;
+    price: number;
+    _id: string;
+    introduce: string;
+  };
+  totalPrice: number;
+}
+interface OrderPageProps {
+  product: Product[];
+  quantity: number[];
+  selectedTotalPrice?: number;
+}
 const OrderPage = () => {
   const { user, token } = useUserContext();
   const userId = user?.id;
 
   const location = useLocation();
-  const { product, quantity, selectedTotalPrice } = location.state;
-  // const productIdMap = {
-  //   ...product,
-  //   productId: product._id,
-  // };
+  const { product, quantity, selectedTotalPrice } =
+    location.state as OrderPageProps;
 
-  const products = Array.isArray(product) ? product : [product];
-  const quantities = Array.isArray(quantity) ? quantity : [quantity];
-
-  const totalPrice = selectedTotalPrice || product.price * quantity;
+  const totalPrice = selectedTotalPrice || product[0].totalPrice;
 
   const navigate = useNavigate();
 
@@ -93,7 +103,6 @@ const OrderPage = () => {
     if (
       !address.roadAddress.trim() ||
       !address.zoneCode.trim() ||
-      !address.jibunAddress.trim() ||
       !address.detailAddress.trim()
     ) {
       toast.error('주소를 입력해주세요.');
@@ -116,7 +125,9 @@ const OrderPage = () => {
       pay_method: 'card', // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
       amount: totalPrice, // 결제금액,(필수)
-      name: products.map((item) => item.name).join(', ') /* 상품 여러개일때 */,
+      name: product
+        .map((item) => item.detail.name)
+        .join(', ') /* 상품 여러개일때 */,
     };
     IMP.request_pay(paymentData, async (response: PaymentResponse) => {
       const { success, error_msg } = response;
@@ -129,15 +140,19 @@ const OrderPage = () => {
         }
         const orderData = {
           userId,
-          products: products.map((item, idx) => ({
-            ...item,
-            productId: item._id,
-            quantity: quantities[idx],
+          products: product.map((item, idx) => ({
+            productId: item.detail._id,
+            quantity: quantity[idx],
+            name: item.detail.name,
+            image: item.detail.image,
+            price: item.detail.price,
+            introduce: item.detail.introduce,
           })),
           orderAddress: address,
           imp_uid: impCode,
           totalPrice: totalPrice,
         };
+
         try {
           const response = await api.post('/purchase/order', orderData, {
             headers: {
@@ -177,24 +192,20 @@ const OrderPage = () => {
             />
           </ProductTableHeader>
           <ProductTableMenu>
-            {(Array.isArray(product) ? product : [product]).map(
-              (item, index) => (
-                <div key={item._id} className={orderstyles.content}>
-                  <ProductTableMenu.Detail
-                    productName={item.name}
-                    image={item.image}
-                  />
-                  <ProductTableMenu.Content content={addCommas(item.price)} />
-                  <div className={tableStyles.quantity_wrap}>
-                    <ProductTableMenu.Quantity
-                      quantity={
-                        Array.isArray(quantity) ? quantity[index] : quantity
-                      }
-                    />
-                  </div>
+            {product.map((item, index) => (
+              <div key={index} className={orderstyles.content}>
+                <ProductTableMenu.Detail
+                  productName={item.detail.name}
+                  image={item.detail.image}
+                />
+                <ProductTableMenu.Content
+                  content={addCommas(item.detail.price)}
+                />
+                <div className={tableStyles.quantity_wrap}>
+                  <ProductTableMenu.Quantity quantity={quantity[index]} />
                 </div>
-              ),
-            )}
+              </div>
+            ))}
           </ProductTableMenu>
         </div>
         <div className={orderstyles.totalPriceBox}>

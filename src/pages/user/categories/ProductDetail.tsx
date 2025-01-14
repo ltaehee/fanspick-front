@@ -48,13 +48,13 @@ const ProductDetail = () => {
     const cartItems = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
     const isAlreadyCart = cartItems.some(
-      (item: any) => item._id === getProduct?._id,
+      (item: any) => item.productId === getProduct?._id,
     );
 
     /* 장바구니에 만약 같은 상품이 있다면 수량을 더해서 저장*/
     if (isAlreadyCart) {
       const updatedCartItems = cartItems.map((product: any) =>
-        product._id === getProduct?._id
+        product.productId === getProduct?._id
           ? { ...product, quantity: product.quantity + quantity } // 수량 추가
           : product,
       );
@@ -127,7 +127,15 @@ const ProductDetail = () => {
   /* 상품 데이터 주문 페이지로 그대로 전달 */
   const handleBuyClick = () => {
     if (getProduct) {
-      navigate('/order', { state: { product: getProduct, quantity } });
+      const productDetails = [
+        { detail: getProduct, totalPrice: getProduct.price * quantity },
+      ];
+      /* navigate('/order', {
+        state: { product: [{ detail: getProduct, quantity }] },
+      }); */
+      navigate('/order', {
+        state: { product: productDetails, quantity: [quantity] },
+      });
     }
   };
 
