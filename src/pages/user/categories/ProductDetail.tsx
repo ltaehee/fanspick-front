@@ -23,6 +23,10 @@ interface ProductDetailProps {
   };
   detailImage: string[];
 }
+interface CartItem {
+  productId: string;
+  quantity: number;
+}
 
 const ProductDetail = () => {
   const [getProduct, setGetProduct] = useState<ProductDetailProps>();
@@ -203,6 +207,33 @@ const ProductDetail = () => {
       </Tabs>
     </div>
   );
+};
+
+export const handleCartMerge = (userId: string) => {
+  const guestCartKey = 'cart_guest';
+  const userCartKey = `cart_${userId}`;
+
+  const guestCart = JSON.parse(localStorage.getItem(guestCartKey) || '[]');
+  const userCart = JSON.parse(localStorage.getItem(userCartKey) || '[]');
+
+  const mergedCart: CartItem[] = [...userCart];
+
+  guestCart.forEach((guestItem: CartItem) => {
+    const existingItemIndex = mergedCart.findIndex(
+      (item) => item.productId === guestItem.productId,
+    );
+    /* findIndex는 일치하는 항목이 없으면 -1을 반환함 */
+
+    if (existingItemIndex >= 0) {
+      // 동일 상품이 있을 경우 수량을 합산
+      mergedCart[existingItemIndex].quantity += guestItem.quantity;
+    } else {
+      mergedCart.push(guestItem);
+    }
+  });
+
+  localStorage.setItem(userCartKey, JSON.stringify(mergedCart));
+  localStorage.removeItem(guestCartKey);
 };
 
 export default ProductDetail;

@@ -11,6 +11,7 @@ import naverLoginIcon from '/icons/naver_login.png';
 import { useUserContext } from '@context/UserContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { handleCartMerge } from './user/categories/ProductDetail';
 
 function Login() {
   const [user, setUser] = useState({
@@ -76,15 +77,17 @@ function Login() {
       if (response.status === 200) {
         const userData = response.data.user;
         const token = response.data.token;
-        const tokenExpiry = response.data.tokenExpiry; 
+        const tokenExpiry = response.data.tokenExpiry;
 
         localStorage.setItem('user', JSON.stringify(userData));
         localStorage.setItem('token', token);
-        localStorage.setItem('tokenExpiry', tokenExpiry.toString()); 
+        localStorage.setItem('tokenExpiry', tokenExpiry.toString());
 
         updateUser(userData);
+        console.log({ userData });
         updateToken(token);
         toast.info(`${userData.name}님 안녕하세요!`);
+        handleCartMerge(userData.id);
 
         if (userData.role === 'user') {
           navigate('/'); // 일반 사용자
