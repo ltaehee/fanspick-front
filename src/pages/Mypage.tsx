@@ -44,6 +44,7 @@ const Mypage = () => {
     role: '',
     profileImage: '',
     businessNumber: '',
+    provider: '',
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -61,6 +62,7 @@ const Mypage = () => {
 
   useEffect(() => {
     if (loggedInUser) {
+      console.log('LoggedIn User:', loggedInUser);
       setUpdatedUser({
         name: loggedInUser.name || '',
         email: loggedInUser.email || '',
@@ -68,6 +70,7 @@ const Mypage = () => {
         role: loggedInUser.role || '',
         profileImage: loggedInUser.profileImage || '',
         businessNumber: loggedInUser.businessNumber || '',
+        provider: loggedInUser.provider || 'local',
       });
       setAddress(
         loggedInUser.address || {
@@ -167,19 +170,25 @@ const Mypage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!updatedUser.password) {
+    if (updatedUser.provider === 'local' && !updatedUser.password) {
       toast.error('비밀번호를 입력해주세요.');
       return;
     }
 
-    if (!passwordPattern.test(updatedUser.password)) {
+    if (
+      updatedUser.provider === 'local' &&
+      !passwordPattern.test(updatedUser.password)
+    ) {
       toast.error(
         '비밀번호는 최소 8자, 문자, 숫자, 특수 문자를 포함해야 합니다.',
       );
       return;
     }
 
-    if (!emailPattern.test(updatedUser.email)) {
+    if (
+      updatedUser.provider !== 'kakao' &&
+      !emailPattern.test(updatedUser.email)
+    ) {
       toast.error('올바른 이메일 형식을 입력해주세요.');
       return;
     }
@@ -207,10 +216,12 @@ const Mypage = () => {
       });
       if (response.status === 200) {
         toast.success('회원정보 수정 성공');
+
         const updatedUserData = {
           ...response.data.user,
-          role: loggedInUser!.role, // 기존 역할 유지
+          provider: updatedUser.provider, // 기존 provider 유지
         };
+        
         updateUser(updatedUserData);
         localStorage.setItem('user', JSON.stringify(updatedUserData));
       }
@@ -222,56 +233,56 @@ const Mypage = () => {
   return (
     <div className={styles.total}>
       <MypageCategories />
-      <div className={styles.table_wrap}>
-        <div className={styles.edit_box}>
-          <div className={styles.imgupload_box}>
-            <div className={styles.previewImg_box}>
-              <img
-                src={previewImg}
-                onClick={handleClickFile}
-                className={styles.preview_img}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleChangeImg}
-                className={styles.img_input}
-              />
-            </div>
-            <div className={styles.imgupload_button_box}>
-              <Button
-                className={styles.imgupload_button}
-                onClick={handleClickFile}
-                label="사진 업로드"
-                style={{
-                  border: `2px solid ${
-                    updatedUser.role === 'manager' ? '#ffacac' : '#ffd700'
-                  }`,
-                }}
-              />
-              <Button
-                className={styles.imgupload_button}
-                onClick={handleDeleteImg}
-                label="사진 삭제"
-                style={{
-                  border: `2px solid ${
-                    updatedUser.role === 'manager' ? '#ffacac' : '#ffd700'
-                  }`,
-                }}
-              />
-            </div>
+      <div className={styles.edit_box}>
+        <div className={styles.imgupload_box}>
+          <div className={styles.previewImg_box}>
+            <img
+              src={previewImg}
+              onClick={handleClickFile}
+              className={styles.preview_img}
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleChangeImg}
+              className={styles.img_input}
+            />
           </div>
-          <ul className={styles.ul}>
-            <li className={styles.li}>
-              <label>이름</label>
-              <Input
-                placeholder="이름"
-                name="name"
-                value={updatedUser.name}
-                onChange={handleChange}
-                className={styles.ul_input}
-              />
-            </li>
+          <div className={styles.imgupload_button_box}>
+            <Button
+              className={styles.imgupload_button}
+              onClick={handleClickFile}
+              label="사진 업로드"
+              style={{
+                border: `2px solid ${
+                  updatedUser.role === 'manager' ? '#ffacac' : '#ffd700'
+                }`,
+              }}
+            />
+            <Button
+              className={styles.imgupload_button}
+              onClick={handleDeleteImg}
+              label="사진 삭제"
+              style={{
+                border: `2px solid ${
+                  updatedUser.role === 'manager' ? '#ffacac' : '#ffd700'
+                }`,
+              }}
+            />
+          </div>
+        </div>
+        <ul className={styles.ul}>
+          <li className={styles.li}>
+            <label>이름</label>
+            <Input
+              placeholder="이름"
+              name="name"
+              value={updatedUser.name}
+              onChange={handleChange}
+              className={styles.ul_input}
+            />
+          </li>
+          {updatedUser.provider !== 'kakao' && (
             <li className={styles.li}>
               <label>이메일</label>
               <Input
@@ -282,67 +293,69 @@ const Mypage = () => {
                 className={styles.ul_input}
               />
             </li>
-            {/* 사업자번호 (매니저만 표시) */}
-            {updatedUser.role === 'manager' && (
-              <li className={styles.li}>
-                <label>사업자번호</label>
-                <Input
-                  placeholder="사업자번호"
-                  name="businessNumber"
-                  value={updatedUser.businessNumber}
-                  onChange={handleChange}
-                  className={styles.ul_input}
-                />
-                <p style={{ fontSize: '12px', color: 'blue' }}>
-                  사업자등록번호는 10자리 숫자여야 합니다.ex) 123-45-67890
-                </p>
-              </li>
-            )}
+          )}
+          {/* 사업자번호 (매니저만 표시) */}
+          {updatedUser.role === 'manager' && (
+            <li className={styles.li}>
+              <label>사업자번호</label>
+              <Input
+                placeholder="사업자번호"
+                name="businessNumber"
+                value={updatedUser.businessNumber}
+                onChange={handleChange}
+                className={styles.ul_input}
+              />
+              <p style={{ fontSize: '12px', color: 'blue' }}>
+                사업자등록번호는 10자리 숫자여야 합니다.ex) 123-45-67890
+              </p>
+            </li>
+          )}
 
-            <li className={styles.li}>
-              <label>주소</label>
-              <div className={styles.search_box}>
-                <Input
-                  className={styles.ul_input}
-                  placeholder="우편번호"
-                  name="zoneCode"
-                  value={address.zoneCode || ''}
-                  onChange={handleChange}
-                />
-                <Button
-                  className={styles.edit_button}
-                  onClick={() => setIsOpen(true)}
-                  label="주소 검색"
-                  style={{
-                    backgroundColor:
-                      updatedUser.role === 'manager' ? '#ffacac' : '#ffd700',
-                  }}
-                />
-              </div>
-              <AddressSearch
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                onComplete={handleDaumPost}
-              />
-            </li>
-            <li className={styles.li}>
+          <li className={styles.li}>
+            <label>주소</label>
+            <div className={styles.search_box}>
               <Input
                 className={styles.ul_input}
-                placeholder="도로명 주소"
-                name="roadAddress"
-                value={address.roadAddress || ''}
+                placeholder="우편번호"
+                name="zoneCode"
+                value={address.zoneCode || ''}
                 onChange={handleChange}
               />
-            </li>
-            <li className={styles.li}>
-              <Input
-                className={styles.ul_input}
-                placeholder="상세 주소"
-                name="detailAddress"
-                value={address.detailAddress || ''}
-                onChange={handleChange}
+              <Button
+                className={styles.edit_button}
+                onClick={() => setIsOpen(true)}
+                label="주소 검색"
+                style={{
+                  backgroundColor:
+                    updatedUser.role === 'manager' ? '#ffacac' : '#ffd700',
+                }}
               />
-            </li>
+            </div>
+            <AddressSearch
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              onComplete={handleDaumPost}
+            />
+          </li>
+          <li className={styles.li}>
+            <Input
+              className={styles.ul_input}
+              placeholder="도로명 주소"
+              name="roadAddress"
+              value={address.roadAddress || ''}
+              onChange={handleChange}
+            />
+          </li>
+          <li className={styles.li}>
+            <Input
+              className={styles.ul_input}
+              placeholder="상세 주소"
+              name="detailAddress"
+              value={address.detailAddress || ''}
+              onChange={handleChange}
+            />
+          </li>
+          {updatedUser.provider === 'local' && (
             <li className={styles.li}>
               <label>비밀번호</label>
               <Input
@@ -357,19 +370,19 @@ const Mypage = () => {
                 안전한 회원정보 수정을 위해 비밀번호를 입력해주세요.
               </p>
             </li>
-          </ul>
-        </div>
-        <div className={styles.edit_button_box}>
-          <Button
-            onClick={handleSubmit}
-            className={styles.edit_button}
-            label="회원정보 수정"
-            style={{
-              backgroundColor:
-                updatedUser.role === 'manager' ? '#ffacac' : undefined,
-            }}
-          />
-        </div>
+          )}
+        </ul>
+      </div>
+      <div className={styles.edit_button_box}>
+        <Button
+          onClick={handleSubmit}
+          className={styles.edit_button}
+          label="회원정보 수정"
+          style={{
+            backgroundColor:
+              updatedUser.role === 'manager' ? '#ffacac' : undefined,
+          }}
+        />
       </div>
     </div>
   );
