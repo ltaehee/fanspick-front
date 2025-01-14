@@ -40,7 +40,9 @@ const MypageOrder = () => {
   const reviewsPerPage = 5;
   const userId = user?.id;
 
-  const getReviews = [localStorage.getItem(`reviews_${userId}` || '[]')];
+  const getReviews = JSON.parse(
+    localStorage.getItem(`reviews_${userId}`) || '[]',
+  );
   console.log('가져온 리뷰', getReviews);
 
   const handlePageChange = (page: number) => {
@@ -72,12 +74,12 @@ const MypageOrder = () => {
   }, [currentPage, userId]);
 
   const handleReview = (order: Product) => {
-    console.log(order);
+    console.log('order', order);
     navigate('/add-review', { state: { order } });
   };
 
   const existOrderId = (order: any) => {
-    console.log('리뷰 작성한 orderid', order._id);
+    console.log(getReviews);
     return getReviews.includes(order._id); //리뷰가 작성된 orderId이면 ture
   };
 
@@ -134,7 +136,7 @@ const MypageOrder = () => {
                           label="리뷰 등록하기"
                           onClick={() => handleReview(order)}
                           className={
-                            !existOrderId(order)
+                            existOrderId(order)
                               ? orderStyles.review_button
                               : orderStyles.none_review_button
                           }

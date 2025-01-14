@@ -70,7 +70,7 @@ const Header = () => {
               </a>
               {user.role !== 'manager' && (
                 <>
-                  <a onClick={() => navigate(`/cart/${user.id}`)}>
+                  <a onClick={() => navigate(`/cart`)}>
                     <img
                       src={cartIcon}
                       alt="Shopping Cart"
