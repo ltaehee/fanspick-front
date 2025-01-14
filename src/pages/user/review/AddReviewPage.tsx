@@ -18,7 +18,7 @@ const BUCKET_NAME = 'fanspick';
 
 const AddReviewPage = () => {
   const location = useLocation();
-  const { productId } = location.state || {};
+  const { product } = location.state || {};
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
@@ -27,6 +27,7 @@ const AddReviewPage = () => {
   const [reviewText, setReviewText] = useState('');
   const { token } = useUserContext();
 
+  console.log("fh",location.state)
   // AWS S3 설정
   const configAws = () => {
     AWS.config.update({
@@ -80,8 +81,8 @@ const AddReviewPage = () => {
         (url) => url !== null,
       );
       const reviewData = {
-        productId: productId._id,
-        productName: productId.title,
+        productId: product._id,
+        productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
@@ -113,13 +114,13 @@ const AddReviewPage = () => {
       <div className={styles.productInfoBox}>
         <img
           className={styles.productImg}
-          src={productId.image}
+          src={product?.image}
           alt="상품 이미지"
         />
         <div className={styles.productInfo}>
-          <p className={styles.productTitle}>{productId.title}</p>
-          <p className={styles.productCount}>수량: {productId.count}</p>
-          <p className={styles.productPrice}>{productId.price}</p>
+          <p className={styles.productTitle}>{product?.title}</p>
+          <p className={styles.productCount}>수량: {product?.quantity}</p>
+          <p className={styles.productPrice}>{product?.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
