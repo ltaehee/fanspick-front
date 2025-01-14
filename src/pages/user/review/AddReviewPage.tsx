@@ -42,18 +42,18 @@ const AddReviewPage = () => {
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-  
+
     const fileArray = Array.from(files);
     const remainingSlots = 3 - previewImg.length; // 3개 제한에서 남은 슬롯 계산
-  
+
     if (remainingSlots <= 0) {
       toast.warning('최대 3개의 이미지만 업로드 가능합니다.');
       return;
     }
-  
+
     const filesToAdd = fileArray.slice(0, remainingSlots); // 남은 슬롯만큼 파일 제한
     const previewArray = filesToAdd.map((file) => URL.createObjectURL(file));
-  
+
     setReviewPhotos((prev) => [...prev, ...filesToAdd]);
     setPreviewImg((prev) => [...prev, ...previewArray]);
   };
@@ -92,7 +92,7 @@ const AddReviewPage = () => {
       return url.split('?')[0];
     } catch (err) {
       console.error('AWS S3 업로드 실패:', err);
-      return null; 
+      return null;
     }
   };
 

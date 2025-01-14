@@ -79,8 +79,9 @@ const MypageOrder = () => {
   };
 
   const existOrderId = (order: any) => {
-    console.log(getReviews);
-    return getReviews.includes(order._id); //리뷰가 작성된 orderId이면 ture
+    return getReviews
+      .map((item: any) => item.trim().toLowerCase())
+      .includes(order._id.trim().toLowerCase());
   };
 
   return (
@@ -136,7 +137,7 @@ const MypageOrder = () => {
                           label="리뷰 등록하기"
                           onClick={() => handleReview(order)}
                           className={
-                            existOrderId(order)
+                            !existOrderId(order)
                               ? orderStyles.review_button
                               : orderStyles.none_review_button
                           }
