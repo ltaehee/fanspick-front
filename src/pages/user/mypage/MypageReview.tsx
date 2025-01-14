@@ -29,19 +29,13 @@ const MypageReviewPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalReviews, setTotalReviews] = useState(0);
   const reviewsPerPage = 2;
-  const { user, token } = useUserContext();
+  const { user} = useUserContext();
   const userId = user?.id;
 
   const fetchReviews = async (page: number) => {
     try {
       const response = await api.get(
-        `/review/user/${userId}?page=${page}&itemsPerPage=${reviewsPerPage}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+        `/review/user/${userId}?page=${page}&itemsPerPage=${reviewsPerPage}`);
       console.log(response.data);
       if (response.status === 200) {
         setReviews(response.data.reviews);
@@ -64,11 +58,7 @@ const MypageReviewPage = () => {
     const confirmDelete = window.confirm('정말로 이 리뷰를 삭제하시겠습니까?');
     if (confirmDelete) {
       try {
-        await api.delete(`/review/${reviewId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await api.delete(`/review/${reviewId}`);
         toast.success('리뷰가 성공적으로 삭제되었습니다.');
         fetchReviews(currentPage);
       } catch (err) {

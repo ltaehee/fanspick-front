@@ -83,7 +83,6 @@ const AddReviewPage = () => {
       );
       const reviewData = {
         productId: product._id,
-        productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
@@ -91,11 +90,7 @@ const AddReviewPage = () => {
       };
 
       console.log('사용자 토큰:', token);
-      await api.post('/review/add', reviewData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.post('/review/add', reviewData);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
     } catch (error) {
@@ -121,7 +116,7 @@ const AddReviewPage = () => {
         <div className={styles.productInfo}>
           <p className={styles.productTitle}>{product?.name}</p>
           <p className={styles.productCount}>수량: {product.quantity}</p>
-          <p className={styles.productPrice}>{product.price}</p>
+          <p className={styles.productPrice}>가격: {product.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
