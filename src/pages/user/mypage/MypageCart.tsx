@@ -160,15 +160,19 @@ const MypageCart = () => {
   }, [cart]);
 
   //mypageCart의 return부분
-  const productDetailMap = cart.map((product) => {
-    const detail = isDetail.find((detail) => detail._id === product.productId);
-    const price = detail?.price || 0;
-    return {
-      ...product,
-      detail,
-      totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
-    };
-  });
+  const productDetailMap = cart
+    .map((product) => {
+      const detail = isDetail.find(
+        (detail) => detail._id === product.productId,
+      );
+      const price = detail?.price || 0;
+      return {
+        ...product,
+        detail,
+        totalPrice: price * product.quantity, // 수량버튼을 누를때마다 변경되는 가격
+      };
+    })
+    .reverse();
 
   //구매버튼 누를 때 보낼 상품의 상세 정보
   const selectedDetail = isSelected.map((product) => {

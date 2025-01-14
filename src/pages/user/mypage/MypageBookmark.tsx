@@ -148,10 +148,12 @@ const MypageBookmark = () => {
   }, [isFavorite]);
 
   //로컬과 서버에서 받아온 값 합치기
-  const productDetailMap = isFavorite.map((product) => ({
-    ...product,
-    isDetail: isDetail.find((detail) => product.productId === detail._id),
-  }));
+  const productDetailMap = isFavorite
+    .map((product) => ({
+      ...product,
+      isDetail: isDetail.find((detail) => product.productId === detail._id),
+    }))
+    .reverse();
 
   console.log('productDetail', productDetailMap);
 
