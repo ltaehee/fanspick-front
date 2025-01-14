@@ -16,17 +16,9 @@ const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
 const REGION = import.meta.env.VITE_REGION;
 const BUCKET_NAME = 'fanspick';
 
-// const mockProduct = {
-//   id: 1,
-//   title: '상품12321',
-//   price: '100,000원',
-//   count: 1,
-//   imageUrl: dummyImg2,
-// };
-
 const AddReviewPage = () => {
   const location = useLocation();
-  const { product } = location.state || {};
+  const { productId } = location.state || {};
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
@@ -88,8 +80,8 @@ const AddReviewPage = () => {
         (url) => url !== null,
       );
       const reviewData = {
-        productId: product.id,
-        productName: product.title,
+        productId: productId._id,
+        productName: productId.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
@@ -121,13 +113,13 @@ const AddReviewPage = () => {
       <div className={styles.productInfoBox}>
         <img
           className={styles.productImg}
-          src={product.imageUrl}
+          src={productId.image}
           alt="상품 이미지"
         />
         <div className={styles.productInfo}>
-          <p className={styles.productTitle}>{product.title}</p>
-          <p className={styles.productCount}>수량: {product.count}</p>
-          <p className={styles.productPrice}>{product.price}</p>
+          <p className={styles.productTitle}>{productId.title}</p>
+          <p className={styles.productCount}>수량: {productId.count}</p>
+          <p className={styles.productPrice}>{productId.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />

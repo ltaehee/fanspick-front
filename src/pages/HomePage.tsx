@@ -20,8 +20,8 @@ const HomePage = () => {
   const [getProduct, setGetProduct] = useState<ProductProps[]>([]);
   const getAllProduct = async () => {
     try {
-      const response = await api.get('/manager/get-all-product');
-      if (response.status === 201) {
+      const response = await api.get('/manager/products');
+      if (response.status === 200) {
         setGetProduct(response.data.product);
       }
     } catch (err) {
