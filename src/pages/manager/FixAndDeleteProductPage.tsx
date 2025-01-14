@@ -281,7 +281,7 @@ const FixAndDeleteProductPage = () => {
         detailImage: awsDetailImgAddress,
       };
 
-      const response = await api.put('/manager/update', data);
+      const response = await api.put('/manager/product', data);
       // console.log('response data ', response.data);
 
       if (response.status === 204) {
@@ -339,7 +339,7 @@ const FixAndDeleteProductPage = () => {
     e.preventDefault();
 
     try {
-      const response = await api.delete(`/manager/delete/${productId}`);
+      const response = await api.delete(`/manager/product/${productId}`);
       if (response.status === 204) {
         toast.success('상품 삭제가 완료되었습니다.');
         navigator('/select-product');

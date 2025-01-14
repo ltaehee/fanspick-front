@@ -24,6 +24,9 @@ const SelectProductPage = () => {
   const [userId, setUserId] = useState('');
   const { user } = useUserContext();
   const navigator = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const productsPerPage = 2;
   // console.log('userId ', userId);
 
   useMemo(() => {
@@ -39,13 +42,21 @@ const SelectProductPage = () => {
 
   const getAllProduct = async () => {
     try {
-      const response = await api.get('/manager/get-all-product');
-      if (response.status === 201) {
-        // console.log('전체 상품 가져오기 성공', response.data.product);
+      const response = await api.get('/manager/products');
+      if (response.status === 200) {
+        console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const getAllProductByUserId = async () => {
+    try {
+      const response = await api.get(`/manager/product/`);
+    } catch (err) {
+      console.log('전체 상품 불러오기 에러', err);
     }
   };
 
