@@ -42,7 +42,7 @@ interface OrderPageProps {
   selectedTotalPrice?: number;
 }
 const OrderPage = () => {
-  const { user, token } = useUserContext();
+  const { user } = useUserContext();
   const userId = user?.id;
 
   const location = useLocation();

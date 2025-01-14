@@ -23,7 +23,7 @@ export interface ProductProps {
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProduct, setTotalProduct] = useState(0);
-  const productPerPage = 8;
+  const productPerPage = 4;
 
   const [products, setProducts] = useState<ProductProps[]>([]);
   const location = useLocation();
@@ -37,7 +37,9 @@ const HomePage = () => {
   const getAllProducts = async (page: number) => {
     try {
       const response = await api.get(
-        `/manager/products?page=${page}&itemsPerPage=${productPerPage}` /* /manager/products?page=${page}&itemsPerPage=${productPerPage} */,
+        `/manager/products?page=${page}&itemsPerPage=${productPerPage}&category=${
+          categoryFilter || ''
+        }`,
       );
       console.log('response.data', response.data);
       if (response.status === 200) {
@@ -51,11 +53,11 @@ const HomePage = () => {
   };
 
   // 카테고리 필터링
-  const filteredProducts = categoryFilter
+  /* const filteredProducts = categoryFilter
     ? products.filter((product) =>
         product.category?.name.includes(categoryFilter),
       )
-    : products;
+    : products; */
 
   useEffect(() => {
     getAllProducts(currentPage);
@@ -81,10 +83,10 @@ const HomePage = () => {
         )}
       </h1>
       <div className={styles.productListWrap}>
-        {filteredProducts.length === 0 ? (
+        {products.length === 0 ? (
           <p>해당 카테고리에 상품이 없습니다.</p>
         ) : (
-          filteredProducts.map((product) => (
+          products.map((product) => (
             <ProductCard
               key={product._id}
               _id={product._id}
