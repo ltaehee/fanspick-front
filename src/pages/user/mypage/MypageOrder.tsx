@@ -68,9 +68,9 @@ const MypageOrder = () => {
     }
   }, [currentPage, userId]);
 
-  const handleReview = (product: Product) => {
-    console.log(product);
-    navigate('/add-review', { state: { product } });
+  const handleReview = (order: Product) => {
+    console.log(order);
+    navigate('/add-review', { state: { order } });
   };
 
   return (
@@ -80,10 +80,10 @@ const MypageOrder = () => {
         <div>
           <div className={orderStyles.Table_wrap}>
             <ProductTableMenu>
-              {orderList.map((order) => (
-                <div key={order._id} className={orderStyles.order_wrap}>
+              {orderList.map((orders) => (
+                <div key={orders._id} className={orderStyles.order_wrap}>
                   <div className={orderStyles.day}>
-                    {new Date(order.createdAt).toLocaleDateString()} 결제내역
+                    {new Date(orders.createdAt).toLocaleDateString()} 결제내역
                   </div>
                   <ProductTableHeader className={tableStyles.Header_wrap}>
                     <ProductTableHeader.Menu
@@ -103,26 +103,26 @@ const MypageOrder = () => {
                       className={tableStyles.Header_menu}
                     />
                   </ProductTableHeader>
-                  {order.products.map((product) => (
+                  {orders.products.map((order) => (
                     <div
-                      key={product.productId._id}
+                      key={order.productId._id}
                       className={orderStyles.content}
                     >
                       <div className={orderStyles.table_wrap}>
                         <ProductTableMenu.Detail
                           onClick={() => navigate('/')}
-                          productName={product.productId.name}
-                          image={product.productId.image}
+                          productName={order.productId.name}
+                          image={order.productId.image}
                         />
-                        <ProductTableMenu.Content content={product.price} />
+                        <ProductTableMenu.Content content={order.price} />
                         <div className={tableStyles.quantity_wrap}>
                           <ProductTableMenu.Quantity
-                            quantity={product.quantity}
+                            quantity={order.quantity}
                           />
                         </div>
                         <Button
                           label="리뷰 등록하기"
-                          onClick={() => handleReview(product)}
+                          onClick={() => handleReview(order)}
                           className={orderStyles.review_button}
                         />
                       </div>

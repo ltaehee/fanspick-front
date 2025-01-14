@@ -18,7 +18,7 @@ const BUCKET_NAME = 'fanspick';
 
 const AddReviewPage = () => {
   const location = useLocation();
-  const { product } = location.state || {};
+  const { order } = location.state || {};
   const [rating, setRating] = useState(3);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [previewImg, setPreviewImg] = useState<string[]>([]);
@@ -82,7 +82,7 @@ const AddReviewPage = () => {
         (url) => url !== null,
       );
       const reviewData = {
-        productId: product._id,
+        productId: order._id,
         // productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
@@ -112,13 +112,13 @@ const AddReviewPage = () => {
       <div className={styles.productInfoBox}>
         <img
           className={styles.productImg}
-          src={product?.image}
+          src={order?.image}
           alt="상품 이미지"
         />
         <div className={styles.productInfo}>
-          <p className={styles.productTitle}>{product?.name}</p>
-          <p className={styles.productCount}>수량: {product.quantity}</p>
-          <p className={styles.productPrice}>가격: {product.price}</p>
+          <p className={styles.productTitle}>{order?.name}</p>
+          <p className={styles.productCount}>수량: {order.quantity}</p>
+          <p className={styles.productPrice}>가격: {order.price}</p>
         </div>
       </div>
       <StarRating rating={rating} onRatingChange={setRating} />
