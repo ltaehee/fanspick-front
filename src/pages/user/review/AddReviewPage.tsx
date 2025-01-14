@@ -83,12 +83,14 @@ const AddReviewPage = () => {
       );
       const reviewData = {
         productId: product._id,
+        // productName: product.title,
         title: reviewTitle, // 리뷰 제목
         content: reviewText, // 리뷰 본문
         starpoint: rating,
         images: s3Urls,
       };
 
+      console.log('reviewData:', reviewData);
       console.log('사용자 토큰:', token);
       await api.post('/review/add', reviewData);
 

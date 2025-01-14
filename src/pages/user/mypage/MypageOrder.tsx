@@ -49,11 +49,6 @@ const MypageOrder = () => {
       if (user) {
         const response = await api.get(
           `/purchase/order/list/${userId}?page=${page}&itemsPerPage=${totalOrder}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // 헤더에 토큰을 포함
-            },
-          },
         );
 
         console.log('주문 목록', response.data.orderList);
