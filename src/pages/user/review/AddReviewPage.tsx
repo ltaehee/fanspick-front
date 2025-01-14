@@ -5,7 +5,6 @@ import uploadImg from '/icons/addImg.png';
 import { Button, Input } from 'ys-project-ui';
 // import AWS from 'aws-sdk';
 import { toast } from 'react-toastify';
-import { useUserContext } from '@context/UserContext';
 import api from '@utils/api';
 import StarRating from '@components/review/StarRating';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -43,12 +42,20 @@ const AddReviewPage = () => {
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-
-    const fileArray = Array.from(files).slice(0, 3); // 최대 3개 제한
-    const previewArray = fileArray.map((file) => URL.createObjectURL(file));
-
-    setReviewPhotos(fileArray);
-    setPreviewImg(previewArray);
+  
+    const fileArray = Array.from(files);
+    const remainingSlots = 3 - previewImg.length; // 3개 제한에서 남은 슬롯 계산
+  
+    if (remainingSlots <= 0) {
+      toast.warning('최대 3개의 이미지만 업로드 가능합니다.');
+      return;
+    }
+  
+    const filesToAdd = fileArray.slice(0, remainingSlots); // 남은 슬롯만큼 파일 제한
+    const previewArray = filesToAdd.map((file) => URL.createObjectURL(file));
+  
+    setReviewPhotos((prev) => [...prev, ...filesToAdd]);
+    setPreviewImg((prev) => [...prev, ...previewArray]);
   };
 
   /* 이미지 S3 업로드 */
@@ -82,10 +89,10 @@ const AddReviewPage = () => {
       });
 
       console.log('업로드된 이미지 URL:', url.split('?')[0]);
-      return url.split('?')[0]; // 업로드된 URL 반환
+      return url.split('?')[0];
     } catch (err) {
       console.error('AWS S3 업로드 실패:', err);
-      return null; // 실패 시 null 반환
+      return null; 
     }
   };
 
