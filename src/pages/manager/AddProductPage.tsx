@@ -39,8 +39,6 @@ const AddProductPage = () => {
   const imgDetailRef = useRef<HTMLInputElement>(null);
   const navigator = useNavigate();
   const { user } = useUserContext();
-  // console.log('managerId ', managerId);
-  // console.log('awsDetailImgAddress ', awsDetailImgAddress);
 
   useMemo(() => {
     if (user) {
@@ -292,7 +290,6 @@ const AddProductPage = () => {
       console.log('data ', data);
       const response = await api.post('/manager/product', data);
       console.log('response data ', response.data);
-      console.log('response status ', response.status);
 
       if (response.status === 201) {
         toast.success('상품 등록이 완료되었습니다.');

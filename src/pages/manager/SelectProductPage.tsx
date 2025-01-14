@@ -4,6 +4,9 @@ import styles from '@css/manager/selectProductPage.module.css';
 import { useUserContext } from '@context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { addCommas } from '@utils/util';
+import { Pagination } from 'ys-project-ui';
+import paginationStyles from '@/css/pagination.module.css';
+import managerPaginationStyles from '@/css/managerPagination.module.css';
 
 /* 상품이미지 클릭하면 상품상세페이지로 네비 넣기 */
 interface ProductProps {
@@ -26,8 +29,8 @@ const SelectProductPage = () => {
   const navigator = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
-  const productsPerPage = 2;
-  // console.log('userId ', userId);
+  const productsPerPage = 4;
+  console.log('userId ', userId);
 
   useMemo(() => {
     if (user) {
@@ -40,30 +43,30 @@ const SelectProductPage = () => {
     navigator('/fix-product');
   };
 
-  const getAllProduct = async () => {
+  const getAllProduct = async (page: number) => {
     try {
-      const response = await api.get('/manager/products');
+      const response = await api.get(
+        `/manager/products?page=${page}&itemsPerPage=${productsPerPage}`,
+      );
+      console.log('response.data', response.data);
       if (response.status === 200) {
         console.log('전체 상품 가져오기 성공', response.data.product);
         setGetProduct(response.data.product);
+        setTotalProducts(response.data.totalCount);
       }
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getAllProductByUserId = async () => {
-    try {
-      const response = await api.get(`/manager/product/`);
-    } catch (err) {
-      console.log('전체 상품 불러오기 에러', err);
+      console.log('전체 상품 가져오기 실패');
     }
   };
 
   useEffect(() => {
-    getAllProduct();
-  }, []);
+    getAllProduct(currentPage);
+  }, [currentPage]);
 
+  /* 페이지네이션 */
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <div className={styles.container}>
       <h1>상품 조회</h1>
@@ -86,6 +89,28 @@ const SelectProductPage = () => {
             </div>
           ))}
       </div>
+
+      <Pagination
+        itemLength={totalProducts}
+        value={currentPage}
+        itemCountPerPage={productsPerPage}
+        onPageChange={handlePageChange}
+        className={paginationStyles.pagination}
+      >
+        <div className={paginationStyles.pageContainer}>
+          <Pagination.Navigator
+            type="prev"
+            className={`${paginationStyles.pageNavigate} ${managerPaginationStyles.pageNavigate}`}
+          />
+          <Pagination.PageButtons
+            className={`${paginationStyles.pageButton} ${managerPaginationStyles.pageButton}`}
+          />
+          <Pagination.Navigator
+            type="next"
+            className={`${paginationStyles.pageNavigate} ${managerPaginationStyles.pageNavigate}`}
+          />
+        </div>
+      </Pagination>
     </div>
   );
 };
