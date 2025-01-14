@@ -22,6 +22,8 @@ const MypageHeader: FC<Header> = (props) => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  console.log('Logged-in User:', user);
+
   const categories: Category[] =
     user?.role === 'user' ? userCategories(user?.id) : [];
 

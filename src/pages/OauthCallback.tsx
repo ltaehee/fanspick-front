@@ -12,10 +12,14 @@ function OauthCallback() {
     const fetchUserData = () => {
       const queryParams = new URLSearchParams(location.search);
       const token = queryParams.get('token');
-      const id = queryParams.get('id'); 
-      const name = queryParams.get('name'); 
-      const email = queryParams.get('email'); 
+      const id = queryParams.get('id');
+      const name = queryParams.get('name');
+      const email = queryParams.get('email');
+      const role = queryParams.get('role');
       const provider = queryParams.get('provider');
+      const profileImage = queryParams.get('profileImage');
+
+      console.log('Fetched Provider:', provider);
 
       if (!token) {
         toast.error('로그인 실패. 다시 시도해주세요.');
@@ -27,11 +31,15 @@ function OauthCallback() {
       updateToken(token);
 
       const user = {
-        id: id || 'unknown_id', 
+        id: id || 'unknown_id',
         name: name || '',
         email: email || '',
-        provider,
+        role: role || 'user',
+        profileImage: profileImage || '',
+        provider: provider || 'unknown',
       };
+      console.log('User to be saved:', user);
+
       localStorage.setItem('user', JSON.stringify(user));
       console.log('User saved to localStorage:', user);
       updateUser(user);

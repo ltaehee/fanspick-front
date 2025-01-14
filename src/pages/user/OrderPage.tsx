@@ -157,7 +157,6 @@ const OrderPage = () => {
           imp_uid: impCode,
           totalPrice: totalPrice,
         };
-        console.log('orderData', orderData);
 
         try {
           const response = await api.post('/purchase/order', orderData);

@@ -28,6 +28,7 @@ interface User {
   profileImage?: string;
   businessNumber?: string;
   address?: Address;
+  
 }
 
 interface UserContextType {
@@ -73,7 +74,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
       handleTokenExpiry();
     }, timeLeft);
 
-    setUser(JSON.parse(storedUser));
+    setUser({ ...JSON.parse(storedUser), tokenExpiry: Number(tokenExpiry) });
     setToken(storedToken);
     setIsLoading(false);
 
