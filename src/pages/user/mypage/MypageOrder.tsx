@@ -21,6 +21,7 @@ interface Product {
   };
   quantity: number;
   price: number;
+  image: string;
 }
 
 interface Order {
@@ -72,9 +73,9 @@ const MypageOrder = () => {
     }
   }, [currentPage, userId]);
 
-  const handleReview = (productId: string) => {
-    console.log(productId);
-    navigate('/add-review', { state: { productId } });
+  const handleReview = (product: Product) => {
+    console.log(product);
+    navigate('/add-review', { state: { product } });
   };
 
   return (
@@ -126,7 +127,7 @@ const MypageOrder = () => {
                         </div>
                         <Button
                           label="리뷰 등록하기"
-                          onClick={() => handleReview(product.productId._id)}
+                          onClick={() => handleReview(product)}
                           className={orderStyles.review_button}
                         />
                       </div>
