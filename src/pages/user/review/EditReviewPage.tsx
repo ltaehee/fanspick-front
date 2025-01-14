@@ -25,7 +25,6 @@ const EditReviewPage = () => {
   const [previewImg, setPreviewImg] = useState<string[]>([]);
   const [reviewPhotos, setReviewPhotos] = useState<File[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const [, setAwsImgAddress] = useState(''); // 저장된 S3 주소
 
   // AWS S3 설정
   // const configAws = () => {
@@ -67,11 +66,19 @@ const EditReviewPage = () => {
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-
-    const fileArray = Array.from(files).slice(0, 3 - previewImg.length);
-    const previewArray = fileArray.map((file) => URL.createObjectURL(file));
-
-    setReviewPhotos((prev) => [...prev, ...fileArray]);
+  
+    const fileArray = Array.from(files);
+    const remainingSlots = 3 - previewImg.length; // 3개 제한에서 남은 슬롯 계산
+  
+    if (remainingSlots <= 0) {
+      toast.warning('최대 3개의 이미지만 업로드 가능합니다.');
+      return;
+    }
+  
+    const filesToAdd = fileArray.slice(0, remainingSlots); // 남은 슬롯만큼 파일 제한
+    const previewArray = filesToAdd.map((file) => URL.createObjectURL(file));
+  
+    setReviewPhotos((prev) => [...prev, ...filesToAdd]);
     setPreviewImg((prev) => [...prev, ...previewArray]);
   };
 
@@ -87,18 +94,22 @@ const EditReviewPage = () => {
   const handleReviewUpdate = async () => {
     try {
       const s3UploadPromises = reviewPhotos.map((file) => uploadToS3(file));
-      const s3Urls = (await Promise.all(s3UploadPromises)).filter(
-        (url) => url !== null,
-      );
-
+      const s3Urls = (await Promise.all(s3UploadPromises)).filter((url) => url);
+  
+      // 기존 previewImg에서 blob이 아닌 S3 URL만 남기고 새로 업로드된 S3 URL 추가
+      const updatedImages = [
+        ...previewImg.filter((img) => !img.startsWith('blob:')),
+        ...s3Urls,
+      ];
+  
       const updatedReview = {
         title: reviewTitle,
         content: reviewContent,
         starpoint: rating,
-        image: [...previewImg, ...s3Urls],
+        image: updatedImages,
       };
-
-      await api.put(`/review/${reviewId}`, updatedReview); 
+  
+      await api.put(`/review/${reviewId}`, updatedReview);
       toast.success('리뷰가 성공적으로 수정되었습니다!');
       navigate('/mypage-review');
     } catch (error) {
@@ -125,24 +136,21 @@ const EditReviewPage = () => {
   //   }
   // };
   const uploadToS3 = async (file: File) => {
-    console.log('file ', file);
     try {
-      // 백엔드에서 presigned URL 가져오기
-      const response = await api.get('/aws/presigned-url');
+      const response = await api.get('/aws/presigned-url'); // S3 presigned URL 가져오기
       const { url } = response.data;
 
-      // presigned URL을 이용해 S3에 파일 업로드
       await axios.put(url, file, {
         headers: {
           'Content-Type': file.type,
         },
       });
-      // console.log('AWS S3 상품메인이미지 업로드 성공 ', data);
-      console.log('url2 ', url);
 
-      setAwsImgAddress(url.split('?')[0]); // presigned URL에서 파일 위치 추출
+      console.log('업로드된 이미지 URL:', url.split('?')[0]);
+      return url.split('?')[0]; 
     } catch (err) {
-      console.log('AWS S3 업로드 실패 : ', err);
+      console.error('AWS S3 업로드 실패:', err);
+      return null; 
     }
   };
 

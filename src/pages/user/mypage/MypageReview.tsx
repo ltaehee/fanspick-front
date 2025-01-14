@@ -10,7 +10,7 @@ import { useUserContext } from '@context/UserContext';
 import MypageHeader from '@components/categories/MypageCategories';
 import cartStyles from '@css/mypage/mypageCart.module.css';
 import { toast } from 'react-toastify';
-import { json } from 'stream/consumers';
+import noticeImg from '/icons/alert-circle.png';
 
 interface Review {
   _id: string;
@@ -104,7 +104,12 @@ const MypageReviewPage = () => {
             />
           ))
         ) : (
-          <p>등록된 리뷰가 없습니다.</p>
+          <div>
+            <div className={cartStyles.none_wrap}>
+              <img src={noticeImg} className={cartStyles.alertImg} />
+              <p className={cartStyles.p1}>등록한 리뷰 내역이 없습니다.</p>
+            </div>
+          </div>
         )}
       </div>
 
