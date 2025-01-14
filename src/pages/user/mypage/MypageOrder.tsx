@@ -4,11 +4,14 @@ import tableStyles from '@css/productTable/productTable.module.css';
 import cartStyles from '@css/mypage/mypageCart.module.css';
 import ProductTableMenu from '@components/productTable/ProductTableMenu';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'ys-project-ui';
+import { Button, Pagination } from 'ys-project-ui';
 import { useEffect, useState } from 'react';
 import noticeImg from '/icons/alert-circle.png';
 import { useUserContext } from '@context/UserContext';
 import api from '../../../utils/api';
+import paginationStyles from '@/css/pagination.module.css';
+import userPaginationStyles from '@/css/userPagination.module.css';
+import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
 
 interface Product {
   productId: {
@@ -29,16 +32,22 @@ interface Order {
 const MypageOrder = () => {
   const { user } = useUserContext();
   const token = localStorage.getItem('token');
-
   const navigate = useNavigate();
-
   const [orderList, setOrderList] = useState<Order[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const reviewsPerPage = 5;
+  const userId = user?.id;
 
-  const handleOrderList = async () => {
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleOrderList = async (page: number) => {
     try {
       if (user) {
-        const response = await api.get<{ orderList: Order[] }>(
-          '/purchase/order/list',
+        const response = await api.get(
+          `/purchase/order/list/${userId}?page=${page}&itemsPerPage=${totalOrder}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // 헤더에 토큰을 포함
@@ -47,7 +56,10 @@ const MypageOrder = () => {
         );
 
         console.log('주문 목록', response.data.orderList);
-        setOrderList(response.data.orderList);
+        if (response.status === 200) {
+          setOrderList(response.data.orderList);
+          setTotalOrder(response.data.totalCount);
+        }
       }
     } catch (err) {
       console.error('주문 내역 조회 실패', err);
@@ -55,8 +67,10 @@ const MypageOrder = () => {
   };
 
   useEffect(() => {
-    handleOrderList();
-  }, []);
+    if (userId) {
+      handleOrderList(currentPage);
+    }
+  }, [currentPage, userId]);
 
   const handleReview = (order: Order) => {
     navigate('/add-review', { state: { order } });
@@ -72,8 +86,26 @@ const MypageOrder = () => {
               {orderList.map((order) => (
                 <div key={order._id} className={orderStyles.order_wrap}>
                   <div className={orderStyles.day}>
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {new Date(order.createdAt).toLocaleDateString()} 결제내역
                   </div>
+                  <ProductTableHeader className={tableStyles.Header_wrap}>
+                    <ProductTableHeader.Menu
+                      menu="상품정보"
+                      className={tableStyles.Header_menu_first}
+                    />
+                    <ProductTableHeader.Menu
+                      menu="판매 금액"
+                      className={tableStyles.Header_menu2}
+                    />
+                    <ProductTableHeader.Menu
+                      menu="수량"
+                      className={tableStyles.Header_menu2}
+                    />
+                    <ProductTableHeader.Menu
+                      menu=""
+                      className={tableStyles.Header_menu}
+                    />
+                  </ProductTableHeader>
                   {order.products.map((product) => (
                     <div
                       key={product.productId._id}
@@ -111,6 +143,29 @@ const MypageOrder = () => {
             <p className={cartStyles.p1}>주문 내역이 없습니다.</p>
           </div>
         </div>
+      )}
+      {totalOrder > 0 && (
+        <Pagination
+          itemLength={totalOrder}
+          value={currentPage}
+          itemCountPerPage={reviewsPerPage}
+          onPageChange={handlePageChange}
+          className={paginationStyles.pagination}
+        >
+          <div className={paginationStyles.pageContainer}>
+            <Pagination.Navigator
+              type="prev"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+            <Pagination.PageButtons
+              className={`${paginationStyles.pageButton} ${userPaginationStyles.pageButton}`}
+            />
+            <Pagination.Navigator
+              type="next"
+              className={`${paginationStyles.pageNavigate} ${userPaginationStyles.pageNavigate}`}
+            />
+          </div>
+        </Pagination>
       )}
     </div>
   );
