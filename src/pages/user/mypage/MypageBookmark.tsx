@@ -230,7 +230,9 @@ const MypageBookmark = () => {
                         className={tableStyles.bookmark_content}
                       >
                         <ProductTableMenu.Detail
-                          onClick={() => navigate('/add-review')}
+                          onClick={() =>
+                            navigate(`/product/${product.isDetail?._id}`)
+                          }
                           productName={product.isDetail?.name}
                           image={product.isDetail?.image}
                         />
