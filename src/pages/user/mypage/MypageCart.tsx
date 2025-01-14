@@ -37,24 +37,21 @@ const MypageCart = () => {
   const cartsPerPage = 5;
 
   const userId = user?.id;
+  const cartKey = userId ? `cart_${userId}` : 'cart_guest';
 
   useEffect(() => {
     if (userId) {
-      const localCart = JSON.parse(
-        localStorage.getItem(`cart_${userId}`) || '[]',
-      );
+      const localCart = JSON.parse(localStorage.getItem(cartKey) || '[]');
       setCart(localCart); // 로컬 스토리지에서 데이터를 가져와 상태에 설정
+    } else {
+      const guestCart = JSON.parse(localStorage.getItem('cart_guest') || '[]');
+      setCart(guestCart);
     }
     console.log(userId);
   }, []);
 
-  if (!userId) {
-    toast.error('로그인이 필요합니다.');
-    return;
-  }
-
   //장바구니 내역 가져오기
-  const localCart = JSON.parse(localStorage.getItem(`cart_${userId}`) || '[]');
+  const localCart = JSON.parse(localStorage.getItem(cartKey) || '[]');
 
   useEffect(() => {
     if (localCart) {
@@ -77,6 +74,7 @@ const MypageCart = () => {
           params: { ids },
         }); //장바구니에 담긴 상품의 id를 전달
 
+        console.log(response.data.productDetail);
         setIsDetail(response.data.productDetail);
       } catch (err) {
         console.error('장바구니 상품 조회 실패', err);
@@ -183,7 +181,12 @@ const MypageCart = () => {
   });
 
   //선택된 상품의 총 금액
-  const selectedTotalPrice = selectedDetail.map((item) => item.totalPrice);
+  const selectedTotalPriceMap = selectedDetail.map((item) => item.totalPrice);
+
+  const selectedTotalPrice = selectedTotalPriceMap.reduce(
+    (sum, price) => sum + price,
+    0,
+  );
 
   useEffect(() => {
     console.log(selectedTotalPrice);

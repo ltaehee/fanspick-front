@@ -93,7 +93,7 @@ const Header = () => {
               >
                 Login
               </span>
-              <a href="#cart">
+              <a href="/cart">
                 <img
                   src={cartIcon}
                   alt="Shopping Cart"
