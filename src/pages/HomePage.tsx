@@ -41,11 +41,9 @@ const HomePage = () => {
           categoryFilter || ''
         }`,
       );
-      console.log('response.data', response.data);
       if (response.status === 200) {
         setProducts(response.data.product);
         setTotalProduct(response.data.totalCount);
-        console.log(response.data);
       }
     } catch (err) {
       console.error('상품 가져오기 실패');

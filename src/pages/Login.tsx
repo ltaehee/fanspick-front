@@ -84,7 +84,6 @@ function Login() {
         localStorage.setItem('tokenExpiry', tokenExpiry.toString());
 
         updateUser(userData);
-        console.log({ userData });
         updateToken(token);
         toast.info(`${userData.name}님 안녕하세요!`);
         handleCartMerge(userData.id);
