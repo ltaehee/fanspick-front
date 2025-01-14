@@ -71,7 +71,7 @@ const router = createBrowserRouter([
         element: <UserFaq />,
       },
       {
-        path: '/cart/:userId',
+        path: '/cart',
         element: <MypageCart />,
       },
       {

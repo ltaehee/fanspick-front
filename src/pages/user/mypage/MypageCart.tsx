@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import cartStyles from '@css/mypage/mypageCart.module.css';
 import tableStyles from '@css/productTable/productTable.module.css';
 import noticeImg from '/icons/alert-circle.png';
@@ -13,6 +13,7 @@ import api from '../../../utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
 import { addCommas } from '../../../utils/util';
+import { useUserContext } from '../../../context/UserContext';
 
 interface Cart {
   productId: string;
@@ -29,11 +30,13 @@ interface Detail {
 const MypageCart = () => {
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState<Cart[]>([]);
-  const { userId } = useParams<{ userId: string }>();
+  const { user } = useUserContext();
   const [cart, setCart] = useState<Cart[]>([]); //로컬에서 가져온 장바구니 내역
   const [isDetail, setIsDetail] = useState<Detail[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cartsPerPage = 5;
+
+  const userId = user?.id;
 
   useEffect(() => {
     if (userId) {

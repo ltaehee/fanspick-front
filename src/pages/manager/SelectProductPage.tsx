@@ -30,7 +30,7 @@ const SelectProductPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const productsPerPage = 4;
-  console.log('userId ', userId);
+  console.log('totalProducts ', totalProducts);
 
   useMemo(() => {
     if (user) {
@@ -46,11 +46,11 @@ const SelectProductPage = () => {
   const getAllProduct = async (page: number) => {
     try {
       const response = await api.get(
-        `/manager/products?page=${page}&itemsPerPage=${productsPerPage}`,
+        `/manager/products?userId=${userId}&page=${page}&itemsPerPage=${productsPerPage}`,
       );
       console.log('response.data', response.data);
       if (response.status === 200) {
-        console.log('전체 상품 가져오기 성공', response.data.product);
+        console.log('전체 상품 가져오기 성공', response.data);
         setGetProduct(response.data.product);
         setTotalProducts(response.data.totalCount);
       }
@@ -71,23 +71,21 @@ const SelectProductPage = () => {
     <div className={styles.container}>
       <h1>상품 조회</h1>
       <div className={styles.productList}>
-        {getProduct
-          .filter((product) => product.userId === userId)
-          .map((product, index) => (
-            <div
-              key={index}
-              onClick={() => handleClickCard(product)}
-              className={styles.productCard}
-            >
-              <img
-                src={product.image}
-                alt="상품이미지"
-                className={styles.productImage}
-              />
-              <h3>{product.name}</h3>
-              <p>{addCommas(Number(product.price))}원</p>
-            </div>
-          ))}
+        {getProduct.map((product, index) => (
+          <div
+            key={index}
+            onClick={() => handleClickCard(product)}
+            className={styles.productCard}
+          >
+            <img
+              src={product.image}
+              alt="상품이미지"
+              className={styles.productImage}
+            />
+            <h3>{product.name}</h3>
+            <p>{addCommas(Number(product.price))}원</p>
+          </div>
+        ))}
       </div>
 
       <Pagination

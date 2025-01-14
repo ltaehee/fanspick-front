@@ -49,7 +49,7 @@ const MypageReviewPage = () => {
     }
   };
 
-  const reviewsMap = reviews.map((item: any) => item.productId._id);
+  const reviewsMap = reviews.map((item: any) => item.orderId);
   useEffect(() => {
     console.log('reviewsMap', reviewsMap);
   }, [reviewsMap]);
