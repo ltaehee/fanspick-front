@@ -111,7 +111,7 @@ const OrderPage = () => {
 
     /* 결제 창 호출*/
     const { IMP } = window;
-    const impCode = import.meta.env.VITE_IMP_CODE;
+    const impCode = 'imp21152357';
 
     if (!impCode) {
       toast.error('IMP 가맹점 식별 코드가 설정되지 않았습니다.');
@@ -152,6 +152,7 @@ const OrderPage = () => {
           imp_uid: impCode,
           totalPrice: totalPrice,
         };
+        console.log('orderData', orderData);
 
         try {
           const response = await api.post('/purchase/order', orderData, {
