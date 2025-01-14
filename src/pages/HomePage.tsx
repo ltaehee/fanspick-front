@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import ProductCard from '../components/product/ProductCard';
-import styles from '../css/homepage.module.css';
-import api from '../utils/api';
+import ProductCard from '@components/product/ProductCard';
+import styles from '@css/homepage.module.css';
+import api from '@utils/api';
 import { useLocation } from 'react-router-dom';
 import { Pagination } from 'ys-project-ui';
 import paginationStyles from '@/css/pagination.module.css';
