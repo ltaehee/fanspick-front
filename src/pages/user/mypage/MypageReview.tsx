@@ -5,7 +5,7 @@ import userPaginationStyles from '@/css/userPagination.module.css';
 import styles from '@css/review.module.css';
 import defaultProfile from '/icons/user_icon.png';
 import api from '@utils/api';
-import { Pagination } from 'ys-project-ui';
+import { Button, Pagination } from 'ys-project-ui';
 import { useUserContext } from '@context/UserContext';
 import MypageHeader from '@components/categories/MypageCategories';
 import cartStyles from '@css/mypage/mypageCart.module.css';
@@ -65,15 +65,26 @@ const MypageReviewPage = () => {
   };
 
   const handleDeleteReview = async (reviewId: string) => {
-    const confirmDelete = window.confirm('정말로 이 리뷰를 삭제하시겠습니까?');
-    if (confirmDelete) {
-      try {
-        await api.delete(`/review/${reviewId}`);
-        toast.success('리뷰가 성공적으로 삭제되었습니다.');
-        fetchReviews(currentPage);
-      } catch (err) {
-        console.error('리뷰 삭제 중 오류가 발생했습니다.');
-      }
+    toast.info(
+      <div className={styles.customToastDiv}>
+        <p>정말로 삭제하시겠습니까?</p>
+        <Button onClick={() => confirmDelete(reviewId)} label="삭제" />
+        <Button onClick={() => toast.dismiss()} label="취소" />
+      </div>,
+      { autoClose: false, draggable: false }
+    );
+  };
+  
+  const confirmDelete = async (reviewId: string) => {
+    try {
+      await api.delete(`/review/${reviewId}`);
+      toast.success('리뷰가 성공적으로 삭제되었습니다.');
+      fetchReviews(currentPage);
+    } catch (err) {
+      console.error('리뷰 삭제 중 오류가 발생했습니다.');
+      toast.error('리뷰 삭제 중 오류가 발생했습니다.');
+    } finally {
+      toast.dismiss(); // Toast 닫기
     }
   };
 
