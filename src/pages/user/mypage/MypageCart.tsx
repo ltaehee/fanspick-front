@@ -209,7 +209,7 @@ const MypageCart = () => {
 
   //구매하기 버튼 누를 때
   const handleBuyClick = () => {
-    if (productDetailMap.length > 0) {
+    if (selectedDetail.length > 0) {
       const quantities = isSelected.map((item) => item.quantity);
 
       const dataToSend = {
@@ -222,7 +222,7 @@ const MypageCart = () => {
         state: dataToSend,
       });
     } else {
-      toast.error('구매할 상품이 없습니다.');
+      toast.error('선택된 상품이 없습니다.');
     }
   };
 
