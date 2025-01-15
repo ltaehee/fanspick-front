@@ -28,6 +28,7 @@ interface User {
   profileImage?: string;
   businessNumber?: string;
   address?: Address;
+  provider?: string;
 }
 
 interface UserContextType {
