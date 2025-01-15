@@ -129,11 +129,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/order',
-        element: (
-          <AuthRoute>
-            <OrderPage />
-          </AuthRoute>
-        ),
+        element: <OrderPage />,
       },
       {
         path: '/oauth/callback',
