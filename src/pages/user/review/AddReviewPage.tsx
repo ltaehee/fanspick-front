@@ -128,7 +128,7 @@ const AddReviewPage = () => {
       await api.post('/review/add', reviewData);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');
-      navigate('/mypage-rsssseview');
+      navigate('/mypage-review');
     } catch (error) {
       console.error('리뷰 등록 중 오류가 발생했습니다.');
     }

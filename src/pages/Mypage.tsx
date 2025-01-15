@@ -219,7 +219,7 @@ const Mypage = () => {
 
         const updatedUserData = {
           ...response.data.user,
-          provider: updatedUser.provider, // 기존 provider 유지
+          role: loggedInUser?.role || response.data.user.role,  // 기존 provider 유지
         };
 
         updateUser(updatedUserData);
