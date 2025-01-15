@@ -91,7 +91,7 @@ function Login() {
         if (userData.role === 'user') {
           navigate('/'); // 일반 사용자
         } else if (userData.role === 'manager') {
-          navigate('/main'); // 관리자
+          navigate('/'); // 관리자
         } else {
           console.log('알 수 없는 사용자입니다.');
         }
