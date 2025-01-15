@@ -68,15 +68,16 @@ const HomePage = () => {
   const categoryName = categoryFilter ? categoryFilter : '';
   return (
     <div className={styles.container}>
-      <h2>{categoryName ? `` : '이달의 한정판 굿즈'}</h2>
+      <h2>{categoryName ? `` : '다양한 굿즈를 만나보세요!'}</h2>
 
       <h1>
         {categoryName ? (
           `${categoryName} 카테고리`
         ) : (
           <>
-            한정 수량으로 준비된 이달의 인기 굿즈!
-            <br /> 이달만 만날 수 있는 특별한 굿즈를 확인하세요.
+            다양한 굿즈와 함께 당신만의 특별한 아이템을 찾아보세요.
+            <br /> 인기 상품부터 최신 아이템까지, 원하는 굿즈를 손쉽게 만나실 수
+            있습니다.
           </>
         )}
       </h1>
