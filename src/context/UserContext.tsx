@@ -28,7 +28,6 @@ interface User {
   profileImage?: string;
   businessNumber?: string;
   address?: Address;
-  
 }
 
 interface UserContextType {
@@ -66,6 +65,12 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     if (now > Number(tokenExpiry)) {
       handleTokenExpiry();
       return;
+    }
+
+    const parsedUser = JSON.parse(storedUser);
+
+    if (!parsedUser.role) {
+      console.error('User data is missing the role field.');
     }
 
     // 토큰 남은시간 계산
