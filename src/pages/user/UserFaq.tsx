@@ -27,7 +27,7 @@ const UserFaq = () => {
           <Accordion.Content id={0} className={styles.accordionContent}>
             <p>고객센터 전화번호: 1588-0000</p>
             <p>
-              상담 시간: 평일 오전 9시 30분 ~ 오후 6시 (점심시간: 오전 11시 30분
+              상담 시간: 평일 오전 9시 30분 ~ 오후 6시 (점심 시간: 오전 11시 30분
               ~ 오후 1시 30분, 주말 및 공휴일 휴무)
             </p>
             <br />
