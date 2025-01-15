@@ -121,7 +121,9 @@ const MypageOrder = () => {
                     >
                       <div className={orderStyles.table_wrap}>
                         <ProductTableMenu.Detail
-                          onClick={() => navigate('/')}
+                          onClick={() =>
+                            navigate(`/product/${order.productId._id}`)
+                          }
                           productName={order.productId.name}
                           image={order.productId.image}
                         />

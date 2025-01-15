@@ -52,9 +52,7 @@ const MypageCart = () => {
   };
 
   useEffect(() => {
-    if (cart.length > 0) {
-      saveCartToLocalStorage();
-    }
+    saveCartToLocalStorage();
   }, [cart]); // cart 상태 변경시마다 로컬스토리지에 반영
 
   //장바구니 내역 가져오기
@@ -233,9 +231,9 @@ const MypageCart = () => {
 
   return (
     <div className={cartStyles.content_wrap}>
+      <MypageHeader />
       {cart.length !== 0 ? (
         <div>
-          <MypageHeader />
           <div className={cartStyles.Table_wrap}>
             <Button
               onClick={deleteCart}
