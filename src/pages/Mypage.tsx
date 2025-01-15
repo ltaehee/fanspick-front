@@ -87,7 +87,15 @@ const Mypage = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (
+
+    if (name === 'businessNumber') {
+      const numericValue = value.replace(/\D/g, '');
+      const formattedValue = numericValue
+        .replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3')
+        .slice(0, 12);
+
+      setUpdatedUser((prev) => ({ ...prev, businessNumber: formattedValue }));
+    } else if (
       ['roadAddress', 'zoneCode', 'jibunAddress', 'detailAddress'].includes(
         name,
       )
@@ -303,6 +311,7 @@ const Mypage = () => {
             <li className={styles.li}>
               <label>사업자번호</label>
               <Input
+                type="text"
                 placeholder="사업자번호"
                 name="businessNumber"
                 value={updatedUser.businessNumber}

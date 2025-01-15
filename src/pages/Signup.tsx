@@ -33,7 +33,7 @@ function Signup() {
   };
 
   const handleSignup = async () => {
-    const { name, email, password, confirmPassword, role } = user;
+    const { name, email, password, confirmPassword, role,  } = user;
 
     if (!name.trim()) {
       toast.error('이름을 입력해주세요.');
