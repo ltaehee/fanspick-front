@@ -23,47 +23,27 @@
     margin-bottom: 20px;
 }
 
-.menu {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    padding: 15px;
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.accordionHeader {
+    border: 3px solid #ffd700;
     border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 5px; 
 }
 
-.menu.active {
-    background-color: #ffd700;
-    color: #000000;
-    font-weight: bold;
+.accordionTrigger {
+    font-size: 16px;
+    cursor: pointer;
 }
 
-.icon {
-    width: 16px; 
-    height: 16px;
-    margin-left: 10px;
-}
-
-.pannel {
+.accordionContent {
     padding: 20px;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     border-radius: 5px;
     margin-top: 10px;
     font-size: 0.95rem;
     color: #444;
     line-height: 1.6;
-    display: none; 
 }
 
-.pannel.active {
-    display: block;
-}
 
 .buttonContainer {
     display: flex;
