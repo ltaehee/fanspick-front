@@ -29,9 +29,6 @@ const MypageHeader: FC<Header> = (props) => {
 
   return (
     <div className={className}>
-      <div className={styles.h1_box}>
-        <h1 className={styles.h1}>마이페이지</h1>
-      </div>
       <div className={styles.button_box}>
         {categories.map((category) => (
           <Button
