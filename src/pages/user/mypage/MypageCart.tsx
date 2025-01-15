@@ -40,15 +40,22 @@ const MypageCart = () => {
   const cartKey = userId ? `cart_${userId}` : 'cart_guest';
 
   useEffect(() => {
-    if (userId) {
-      const localCart = JSON.parse(localStorage.getItem(cartKey) || '[]');
-      setCart(localCart); // 로컬 스토리지에서 데이터를 가져와 상태에 설정
-    } else {
-      const guestCart = JSON.parse(localStorage.getItem('cart_guest') || '[]');
-      setCart(guestCart);
+    // 로그인 상태와 비로그인 상태 일때
+    const cartData = localStorage.getItem(cartKey);
+    if (cartData) {
+      setCart(JSON.parse(cartData));
     }
-    console.log(userId);
-  }, []);
+  }, [userId]); // userId가 변경될 때마다 실행
+
+  const saveCartToLocalStorage = () => {
+    localStorage.setItem(cartKey, JSON.stringify(cart)); // 장바구니 상태 로컬스토리지에 저장
+  };
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      saveCartToLocalStorage();
+    }
+  }, [cart]); // cart 상태 변경시마다 로컬스토리지에 반영
 
   //장바구니 내역 가져오기
   const localCart = JSON.parse(localStorage.getItem(cartKey) || '[]');
