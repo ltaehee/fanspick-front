@@ -1,4 +1,4 @@
-import styles from '../css/faq.module.css';
+import styles from '@css/faq.module.css';
 
 const FaqPage = () => {
   return (

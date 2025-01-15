@@ -12,10 +12,10 @@ import { toast } from 'react-toastify';
 import { useUserContext } from '@context/UserContext';
 import trash from '/icons/trash.png';
 import cart from '/icons/cart_icon.png';
-import api from '../../../utils/api';
+import api from '@utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
-import { addCommas } from '../../../utils/util';
+import { addCommas } from '@utils/util';
 
 interface Bookmark {
   productId: string;

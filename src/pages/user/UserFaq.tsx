@@ -1,5 +1,5 @@
 import { Button, Tabs } from 'ys-project-ui';
-import styles from '../../css/faq/user_faq.module.css';
+import styles from '@css/faq/user_faq.module.css';
 import { useState } from 'react';
 import plusIcon from '/icons/plus_icon.png';
 import minusIcon from '/icons/minus_icon.png';

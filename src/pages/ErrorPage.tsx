@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from '@css/ErrorPage.module.css';
-import { useUserContext } from '../context/UserContext';
+import { useUserContext } from '@context/UserContext';
 
 const ErrorPage = ({}) => {
   const navigate = useNavigate();
