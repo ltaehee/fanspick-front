@@ -204,6 +204,8 @@ const Mypage = () => {
 
     const userData = {
       ...updatedUser,
+      role: loggedInUser?.role, // 기존 role 유지
+      provider: loggedInUser?.provider, // 기존 provider 유지
       profileImage: awsImgAddress || updatedUser.profileImage, // S3 URL 사용
       address,
     };
@@ -214,12 +216,14 @@ const Mypage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Response Data:', response.data);
       if (response.status === 200) {
         toast.success('회원정보 수정 성공');
 
         const updatedUserData = {
           ...response.data.user,
-          role: loggedInUser?.role || response.data.user.role,  // 기존 provider 유지
+          role: loggedInUser?.role || response.data.user.role, // 기존 role 유지
+          provider: loggedInUser?.provider || response.data.user.provider, // 기존 provider 유지
         };
 
         updateUser(updatedUserData);
