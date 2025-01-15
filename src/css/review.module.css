@@ -223,3 +223,11 @@
 .deleteIcon:hover {
   transform: scale(1.1);
 }
+
+.customToastDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
