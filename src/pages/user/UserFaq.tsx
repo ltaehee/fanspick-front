@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-import { Button, Tabs } from 'ys-project-ui';
-import styles from '@css/faq/user_faq.module.css';
-import { useState } from 'react';
-import plusIcon from '/icons/plus_icon.png';
-import minusIcon from '/icons/minus_icon.png';
-=======
 import { Accordion } from 'ys-project-ui';
 import styles from '@/css/faq/user_faq.module.css';
->>>>>>> origin/develop
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'ys-project-ui';
 
 const UserFaq = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //
 
   const handleSignup = () => {
     navigate('/signup');
