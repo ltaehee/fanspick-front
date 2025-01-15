@@ -10,7 +10,7 @@ import api from '@utils/api';
 import StarRating from '@components/review/StarRating';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { addCommas } from '../../../utils/util';
+import { addCommas } from '@utils/util';
 
 // AWS S3 환경 변수
 // const ACCESS_KEY_ID = import.meta.env.VITE_ACCESS_KEY_ID;

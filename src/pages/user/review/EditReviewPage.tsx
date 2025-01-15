@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Star from '../../../components/review/Star';
-import styles from '../../../css/review.module.css';
+import Star from '@components/review/Star';
+import styles from '@css/review.module.css';
 import uploadImg from '/icons/addImg.png';
 import { Button } from 'ys-project-ui';
 import { toast } from 'react-toastify';

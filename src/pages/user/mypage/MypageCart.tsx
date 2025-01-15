@@ -9,11 +9,11 @@ import { Button, Pagination } from 'ys-project-ui';
 import MypageHeader from '@components/categories/MypageCategories';
 import { toast } from 'react-toastify';
 import trash from '/icons/trash.png';
-import api from '../../../utils/api';
+import api from '@utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
-import { addCommas } from '../../../utils/util';
-import { useUserContext } from '../../../context/UserContext';
+import { addCommas } from '@utils/util';
+import { useUserContext } from '@context/UserContext';
 
 interface Cart {
   productId: string;

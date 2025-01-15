@@ -8,11 +8,11 @@ import { Button, Pagination } from 'ys-project-ui';
 import { useEffect, useState } from 'react';
 import noticeImg from '/icons/alert-circle.png';
 import { useUserContext } from '@context/UserContext';
-import api from '../../../utils/api';
+import api from '@utils/api';
 import paginationStyles from '@/css/pagination.module.css';
 import userPaginationStyles from '@/css/userPagination.module.css';
-import ProductTableHeader from '../../../components/productTable/ProductTableHeader';
-import { addCommas } from '../../../utils/util';
+import ProductTableHeader from '@components/productTable/ProductTableHeader';
+import { addCommas } from '@utils/util';
 
 interface Product {
   productId: {

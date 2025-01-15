@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { emailPattern } from '@consts/patterns';
 import { useUserContext } from '@context/UserContext';
-import { addCommas } from '../../utils/util';
+import { addCommas } from '@utils/util';
 
 interface PaymentResponse {
   success: boolean;
