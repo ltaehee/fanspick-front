@@ -23,7 +23,6 @@ import {
   FixAndDeleteProductPage,
 } from '@utils/index.ts';
 import OauthCallback from './pages/OauthCallback';
-import { AuthRoute, PrivateRoute } from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -37,19 +36,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: (
-          <PrivateRoute isManager={true}>
-            <HomePage />
-          </PrivateRoute>
-        ),
+        element: <HomePage />,
       },
       {
         path: '/mypage',
-        element: (
-          <AuthRoute>
-            <Mypage />
-          </AuthRoute>
-        ),
+        element: <Mypage />,
       },
       {
         path: '/main',
@@ -57,28 +48,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/add-product',
-
-        element: (
-          <PrivateRoute isManager={false}>
-            <AddProductPage />
-          </PrivateRoute>
-        ),
+        element: <AddProductPage />,
       },
       {
         path: '/select-product',
-        element: (
-          <PrivateRoute isManager={false}>
-            <SelectProductPage />
-          </PrivateRoute>
-        ),
+        element: <SelectProductPage />,
       },
       {
         path: '/fix-product',
-        element: (
-          <PrivateRoute isManager={false}>
-            <FixAndDeleteProductPage />
-          </PrivateRoute>
-        ),
+        element: <FixAndDeleteProductPage />,
       },
       {
         path: '/login',
@@ -122,11 +100,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/order',
-        element: (
-          <AuthRoute>
-            <OrderPage />
-          </AuthRoute>
-        ),
+        element: <OrderPage />,
       },
       {
         path: '/oauth/callback',
