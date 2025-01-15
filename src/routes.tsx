@@ -33,7 +33,11 @@ const router = createBrowserRouter([
         <Layout />
       </UserProvider>
     ),
-    errorElement: <ErrorPage />,
+    errorElement: (
+      <UserProvider>
+        <ErrorPage />
+      </UserProvider>
+    ),
     children: [
       {
         path: '/',
@@ -136,7 +140,11 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <ErrorPage />,
+    element: (
+      <UserProvider>
+        <ErrorPage />
+      </UserProvider>
+    ),
   },
 ]);
 
