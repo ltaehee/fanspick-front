@@ -181,8 +181,8 @@ const FixAndDeleteProductPage = () => {
           image.onload = () => {
             const width = image.width;
             // console.log(width);
-            if (width < 300) {
-              toast.error('이미지의 가로길이는 최소 300px 이상이어야 합니다. ');
+            if (width < 900) {
+              toast.error('이미지의 가로길이는 최소 900px 이상이어야 합니다. ');
               setPreDetailViewUrls([]);
               // setDetailImageFiles([]);
             } else {
@@ -391,7 +391,9 @@ const FixAndDeleteProductPage = () => {
         <div className={styles.addProduct}>
           <section className={styles.addProductInfo}>
             <div className={styles.addProductPhoto}>
-              <Input.Label>상품이미지</Input.Label>
+              <Input.Label>
+                상품이미지 (가로와 세로 크기가 같아야 등록가능)
+              </Input.Label>
               {!imgUrl && (
                 <div className={styles.addProductPhotoDiv}>
                   <img
@@ -487,7 +489,9 @@ const FixAndDeleteProductPage = () => {
               ))}
             </div>
             <div className={styles.input}>
-              <label>상품상세이미지 (최대3개)</label>
+              <label>
+                상품상세이미지 (최대3개, 이미지는 최소 가로 900px 이상)
+              </label>
               {predetailViewUrls.length < 1 && (
                 <div className={styles.addProductPhotoDiv}>
                   <img

@@ -29,7 +29,7 @@ const SelectProductPage = () => {
   const navigator = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
-  const productsPerPage = 4;
+  const productsPerPage = 8;
   console.log('totalProducts ', totalProducts);
 
   useMemo(() => {
