@@ -89,11 +89,11 @@ const AddProductPage = () => {
       reader.readAsDataURL(file); // 실제로 파일을 읽어 onload 실행
 
       const uploadToS3 = async (file: File) => {
-        console.log('file ', file);
         try {
           // 백엔드에서 presigned URL 가져오기
           const response = await api.get('/aws/presigned-url');
           const { url } = response.data;
+          console.log('response url ', url);
 
           // presigned URL을 이용해 S3에 파일 업로드
           await axios.put(url, file, {
@@ -161,7 +161,7 @@ const AddProductPage = () => {
           );
 
           await Promise.all(uploadFilesS3);
-
+          console.log('uploadFilesS3 ', uploadFilesS3);
           const uploadedUrls = urls.map((url) => url.split('?')[0]);
           setAwsDetailImgAddress(uploadedUrls);
         } catch (err) {
@@ -210,11 +210,11 @@ const AddProductPage = () => {
         const image = window.URL.createObjectURL(file);
         // 생성된 미리보기URL을 임시 배열에 추가
         newPreviewUrls.push(image);
-        setPreDetailViewUrls(newPreviewUrls);
         // if (newPreviewUrls.length === newImageFiles.length) {
         //   setPreDetailViewUrls(newPreviewUrls);
         // }
       });
+      setPreDetailViewUrls(newPreviewUrls);
     }
   };
 
