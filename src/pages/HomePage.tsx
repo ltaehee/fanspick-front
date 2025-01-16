@@ -82,19 +82,15 @@ const HomePage = () => {
         )}
       </h1>
       <div className={styles.productListWrap}>
-        {products.length === 0 ? (
-          <p>해당 카테고리에 상품이 없습니다.</p>
-        ) : (
-          products.map((product) => (
-            <ProductCard
-              key={product._id}
-              _id={product._id}
-              image={product.image}
-              name={product.name}
-              price={product.price}
-            />
-          ))
-        )}
+        {products.map((product) => (
+          <ProductCard
+            key={product._id}
+            _id={product._id}
+            image={product.image}
+            name={product.name}
+            price={product.price}
+          />
+        ))}
       </div>
 
       <Pagination
