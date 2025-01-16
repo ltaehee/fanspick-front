@@ -313,10 +313,10 @@ const FixAndDeleteProductPage = () => {
     toast.info(
       <div className={styles.customToastDiv}>
         <p>정말로 수정하시겠습니까?</p>
-        <Button onClick={handleFixConfirm} label="수정"></Button>
-        <Button onClick={() => toast.dismiss()} label="취소"></Button>
+        <Button style={{zIndex:'1000', marginTop:"10px"}} onClick={handleFixConfirm} label="수정"></Button>
+        <Button style={{zIndex:'1000'}}  onClick={() => toast.dismiss()} label="취소"></Button>
       </div>,
-      { autoClose: false, draggable: false },
+      { autoClose: false, draggable: false, className: "customToastDiv" },
     );
   };
 
@@ -338,8 +338,8 @@ const FixAndDeleteProductPage = () => {
     toast.info(
       <div className={styles.customToastDiv}>
         <p>정말로 삭제하시겠습니까?</p>
-        <Button onClick={handleDeleteConfirm} label="삭제"></Button>
-        <Button onClick={() => toast.dismiss()} label="취소"></Button>
+        <Button style={{zIndex:'1000', marginTop:"10px"}} onClick={handleDeleteConfirm} label="삭제"></Button>
+        <Button style={{zIndex:'1000'}}  onClick={() => toast.dismiss()} label="취소"></Button>
       </div>,
       { autoClose: false, draggable: false },
     );

@@ -69,11 +69,8 @@ Label {
   transform: translateY(-50%);
 }
 
+.Toastify__toast-icon{
+  left: 43%;
+}
 /* toast confirm custom */
-.Toastify__toast-icon {
-  display: none;
-}
 
-.Toastify__close-button {
-  display: none;
-}

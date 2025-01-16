@@ -15,7 +15,7 @@ const Layout = () => {
         <Footer />
       </div>
       <ToastContainer
-      toastStyle={{ width: "400px"}}
+      toastStyle={{ width: "450px"}}
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}
@@ -25,7 +25,6 @@ const Layout = () => {
         draggable
         pauseOnHover
         theme="colored"
-        toastClassName="custom-toast"
       />
     </>
   );
