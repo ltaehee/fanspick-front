@@ -143,8 +143,10 @@ const Mypage = () => {
       console.log('url2 ', url);
 
       setAwsImgAddress(url.split('?')[0]); // presigned URL에서 파일 위치 추출
+      toast.success('이미지가 성공적으로 업로드되었습니다.');
     } catch (err) {
       console.log('AWS S3 업로드 실패 : ', err);
+      toast.error('이미지 업로드에 실패했습니다.');
     }
   };
 
@@ -207,6 +209,11 @@ const Mypage = () => {
       !businessNumberPattern.test(updatedUser.businessNumber)
     ) {
       toast.error('올바른 사업자번호 형식이 아닙니다. (예: 123-45-67890)');
+      return;
+    }
+
+    if (!awsImgAddress && updatedUser.profileImage === userProfile) {
+      toast.error('프로필 이미지를 업로드 중입니다. 완료 후 다시 시도해주세요.');
       return;
     }
 
@@ -386,6 +393,7 @@ const Mypage = () => {
           )}
         </ul>
       </div>
+      <p style={{color:"red", fontSize:"12px"}}>* 사진을 수정할 경우 사진이 업로드 알림 확인 후 수정버튼을 눌러주세요.</p>
       <div className={styles.edit_button_box}>
         <Button
           onClick={handleSubmit}
