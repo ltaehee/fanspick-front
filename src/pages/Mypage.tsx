@@ -393,7 +393,7 @@ const Mypage = () => {
           )}
         </ul>
       </div>
-      <p style={{color:"red", fontSize:"12px"}}>* 사진을 수정할 경우 사진이 업로드 알림 확인 후 수정버튼을 눌러주세요.</p>
+      <p style={{color:"#666", fontSize:"12px"}}>* 사진을 수정할 경우 <span style={{color:"blue"}}>사진 업로드 완료 알림 확인</span>  후 수정버튼을 눌러주세요.</p>
       <div className={styles.edit_button_box}>
         <Button
           onClick={handleSubmit}
