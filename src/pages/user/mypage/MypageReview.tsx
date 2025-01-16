@@ -68,10 +68,10 @@ const MypageReviewPage = () => {
     toast.info(
       <div className={styles.customToastDiv}>
         <p>정말로 삭제하시겠습니까?</p>
-        <Button onClick={() => confirmDelete(reviewId)} label="삭제" />
-        <Button onClick={() => toast.dismiss()} label="취소" />
+        <Button style={{zIndex:'1000', marginTop:"10px"}} onClick={() => confirmDelete(reviewId)} label="삭제" />
+        <Button style={{zIndex:'1000'}} onClick={() => toast.dismiss()} label="취소" />
       </div>,
-      { autoClose: false, draggable: false }
+      { autoClose: false, draggable: false, className: "customToastDiv"}
     );
   };
   
