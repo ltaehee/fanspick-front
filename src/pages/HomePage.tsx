@@ -82,15 +82,16 @@ const HomePage = () => {
         )}
       </h1>
       <div className={styles.productListWrap}>
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            _id={product._id}
-            image={product.image}
-            name={product.name}
-            price={product.price}
-          />
-        ))}
+        {Array.isArray(products) &&
+          products.map((product) => (
+            <ProductCard
+              key={product._id}
+              _id={product._id}
+              image={product.image}
+              name={product.name}
+              price={product.price}
+            />
+          ))}
       </div>
 
       <Pagination

@@ -264,10 +264,10 @@ const AddProductPage = () => {
       toast.error('상품 설명을 등록해주세요');
       return;
     }
-    if (categoryCheckedList.length === 0) {
-      toast.error('카테고리를 등록해주세요');
-      return;
-    }
+    // if (categoryCheckedList.length === 0) {
+    //   toast.error('카테고리를 등록해주세요');
+    //   return;
+    // }
     if (predetailViewUrls.length === 0) {
       toast.error('상품상세이미지를 등록해주세요');
       return;
