@@ -12,8 +12,6 @@
 
 ## 📌 프로젝트 소개
 
-## 📌 프로젝트 소개
-
 **FansPick**은 판매자와 사용자가 각자 역할에 맞게 참여할 수 있는 **굿즈 커머스 플랫폼**입니다.  
 판매자는 상품을 등록하고 관리할 수 있으며, 사용자는 다양한 굿즈를 구매할 수 있습니다.  
 회원가입 시 역할을 선택할 수 있고, 역할에 따라 이용 가능한 기능이 분리되어 있어 실제 서비스처럼 구체적인 시나리오를 경험할 수 있도록 구현되었습니다.
@@ -58,24 +56,25 @@
 
   <img src="./public/images/main.png" alt="메인 페이지"  />
 
-- 영화 상세 페이지
+- 상품 상세 페이지
 
-  <img src="./public/images/sub1.png" alt="메인 페이지"  />
+  <img src="./public/images/productDetailPage.png" alt="상품 상세 페이지"  />
 
-- 영화(인) 검색 페이지
+- 주문,결제 페이지
 
-  <img src="./public/images/searchPage.png" alt="검색 페이지"  />
+  <img src="./public/images/orderPage.png" alt="주문,결제 페이지"  />
 
 - 유저 프로필 페이지
 
-  <div style="display: flex; gap: 16px;">
-    <img src="./public/images/Profile.png" alt="유저 프로필1" width="400" />
-    <img src="./public/images/profile2.png" alt="유저 프로필2" width="400" />
-  </div>
+    <img src="./public/images/profilePage.png" alt="프로필 페이지" />
 
 - 리뷰 페이지
 
-  <img src="./public/images/reviewPage.png" alt="리뷰 페이지" width="400" />
+  <img src="./public/images/reviewPage.png" alt="리뷰 페이지"/>
+
+- 판매자 페이지
+
+  <img src="./public/images/managerPage.png" alt="판매자 페이지"/>
 
 ---
 
