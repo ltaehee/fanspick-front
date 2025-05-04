@@ -1,50 +1,94 @@
-# React + TypeScript + Vite
+# 🛍️ FansPick - 굿즈 판매 사이트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 이 프로젝트는 일반 사용자는 굿즈를 구매하고, 판매자는 상품을 등록할 수 있는 온라인 마켓입니다.
 
-Currently, two official plugins are available:
+> 🔗 [배포 링크 바로가기](https://web-fanspick-front-m88gjvsd5fb295a9.sel4.cloudtype.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ⏱️ 프로젝트 개요
 
-## Expanding the ESLint configuration
+- 기간: 2025.01.03 ~ 2025.01.16 (2주)
+- 인원: 4명(프론트,백 같이)
+- 담당 역할: -
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 📌 프로젝트 소개
 
-- Configure the top-level `parserOptions` property like this:
+## 📌 프로젝트 소개
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**FansPick**은 판매자와 사용자가 각자 역할에 맞게 참여할 수 있는 **굿즈 커머스 플랫폼**입니다.  
+판매자는 상품을 등록하고 관리할 수 있으며, 사용자는 다양한 굿즈를 구매할 수 있습니다.  
+회원가입 시 역할을 선택할 수 있고, 역할에 따라 이용 가능한 기능이 분리되어 있어 실제 서비스처럼 구체적인 시나리오를 경험할 수 있도록 구현되었습니다.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🛠️ Skills
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **Frontend**: React, TypeScript, Tailwind CSS, Zustand, React Router
+- **Backend**: Node.js, Express, MongoDB
+- **DevOps / Infra**: AWS S3 (이미지 업로드), Cloudtype
+- **Design**: Figma
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## 👨‍💻 주요 기능
+
+### ✴️ 메인 페이지 & 카테고리별 페이지
+
+- 전체 상품 리스트를 불러와 메인 화면에서 노출
+- 카테고리별 필터링 기능 구현하여 특정 굿즈만 조회 가능
+
+### ✴️ 즐겨찾기 & 장바구니 기능 (LocalStorage 활용)
+
+- 즐겨찾기 리스트 확인 가능
+
+### ✴️ 구매하기 페이지 & 결제 시스템
+
+- 포트원(PortOne) 결제 API를 연동하여 카드 결제, 카카오 간편 결제 기능 구현
+
+### ✴️ 리뷰 페이지
+
+- 상품에 대한 리뷰 추가,수정,삭제 기능
+
+### ✴️ 유저 프로필
+
+- 내 프로필 조회(리뷰,주문내역,장바구니 등등) 가능
+
+## 📷 주요 ui
+
+- 로그인 페이지
+
+  <img src="./public/images/loginAndSignup.png" alt="로그인 페이지"  />
+
+- 메인 페이지
+
+  <img src="./public/images/main.png" alt="메인 페이지"  />
+
+- 영화 상세 페이지
+
+  <img src="./public/images/sub1.png" alt="메인 페이지"  />
+
+- 영화(인) 검색 페이지
+
+  <img src="./public/images/searchPage.png" alt="검색 페이지"  />
+
+- 유저 프로필 페이지
+
+  <div style="display: flex; gap: 16px;">
+    <img src="./public/images/Profile.png" alt="유저 프로필1" width="400" />
+    <img src="./public/images/profile2.png" alt="유저 프로필2" width="400" />
+  </div>
+
+- 리뷰 페이지
+
+  <img src="./public/images/reviewPage.png" alt="리뷰 페이지" width="400" />
+
+---
+
+## 📂 프로젝트 실행 방법
+
+```bash
+# [프론트엔드]
+
+npm install
+npm run dev
+
+# [백엔드]
+
+npm install
+node index.js
 ```
